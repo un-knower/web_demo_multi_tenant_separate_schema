@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       default-autowire="byName">
+
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close" autowire="no">
+        <property name="fairQueue" value="false"/>
+        <property name="minIdle" value="5"/>
+        <property name="maxIdle" value="10"/>
+        <property name="maxActive" value="100"/>
+        <property name="initialSize" value="10"/>
+
+        <property name="testOnBorrow" value="true"/>
+        <property name="validationQuery" value="select 1"/>
+        <property name="validationInterval" value="500000"/> <!-- 5min -->
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="30"/>
+
+        <property name="driverClassName" value="${postgre.jdbc.driver}"/>
+        <property name="url" value="${postgre.jdbc.url}"/>
+        <property name="username" value="${postgre.jdbc.username}"/>
+        <property name="password" value="${postgre.jdbc.password}"/>
+    </bean>
+
+
+    <!--初始化db，可用于H2-->
+    <!--<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">-->
+        <!--<jdbc:script location="classpath:db/db_init.sql" />-->
+    <!--</jdbc:initialize-database>-->
+
+    <!-- H2 mixed mode -->
+    <!--<bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="shutdown">-->
+        <!--<constructor-arg>-->
+            <!--<list>-->
+                <!--<value>-tcpPort</value>-->
+                <!--<value>9081</value>-->
+                <!--<value>-tcpAllowOthers</value>-->
+            <!--</list>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven />
+
+    <!-- 加载Dao -->
+    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_schema" >
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+    </context:component-scan>
+
+    <!-- 1.Spring JdbcTemplate方式 -->
+    <bean id="defaultJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="defaultNamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <!--<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>-->
+    <!---->
+    <!--<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" >-->
+        <!--<property name="transactionManager" ref="transactionManager"/>-->
+    <!--</bean>-->
+
+    <!-- 2.Mybatis方式设置-->
+    <!--<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+        <!--&lt;!&ndash;<property name="typeAliasesPackage" value="com.sky.demo.common_web.model" />&ndash;&gt;-->
+        <!--<property name="mapperLocations" value="classpath:mappers/AnLogMapper.xml"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">-->
+        <!--<constructor-arg ref="sessionFactory" />-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;配置MapperScanner，无需写 dao impl&ndash;&gt;-->
+    <!--<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="com.sky.demo.web_demo_multi_tenant_separate_db.dao"/>-->
+    <!--</bean>-->
+
+</beans>
