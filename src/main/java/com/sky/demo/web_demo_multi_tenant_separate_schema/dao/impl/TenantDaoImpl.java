@@ -200,7 +200,7 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
         List<Object> params = Lists.newArrayList();
         params.add(record.getName());
         params.add(record.getToken());
-        params.add(record.getDbName());
+        params.add(record.getSchemaName());
         params.add(record.getCreateTime());
         params.add(record.getStatus());
 
@@ -223,7 +223,7 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
         List<Object> params = Lists.newArrayList();
         params.add(record.getName());
         params.add(record.getToken());
-        params.add(record.getDbName());
+        params.add(record.getSchemaName());
         params.add(record.getStatus());
 
         sql.append("and id = ? ");

@@ -14,7 +14,7 @@ public class Tenant implements Serializable {
     private int id;
     private String name;
     private String token;
-    private String dbName;
+    private String schemaName;
     private Date createTime;
     private int status;
 
@@ -42,12 +42,12 @@ public class Tenant implements Serializable {
         this.token = token;
     }
 
-    public String getDbName() {
-        return dbName;
+    public String getSchemaName() {
+        return schemaName;
     }
 
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
     }
 
     public Date getCreateTime() {
@@ -72,7 +72,7 @@ public class Tenant implements Serializable {
                 .add("id", id)
                 .add("name", name)
                 .add("token", token)
-                .add("dbName", dbName)
+                .add("schemaName", schemaName)
                 .add("createTime", createTime)
                 .add("status", status)
                 .toString();

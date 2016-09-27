@@ -52,7 +52,7 @@ public class TenantUserServiceImpl implements TenantUserService {
             tenantForm.setId(input.getTenantId());
             tenantForm.setName(input.getTenantName());
             tenantForm.setToken(input.getTenantToken());
-            tenantForm.setDbName(input.getTenantDbName());
+            tenantForm.setSchemaName(input.getTenantDbName());
             tenantForm.setCreateTime(DateFormatUtils.format(input.getCreateTime(), Constants.DATETIME_PATTERN));
             tenantForm.setStatus(Tenant.Status.getStatusByCode(input.getTenantStatus()));
             tenantUserForm.setTenant(tenantForm);

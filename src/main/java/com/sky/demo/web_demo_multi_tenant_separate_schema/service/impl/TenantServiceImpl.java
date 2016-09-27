@@ -43,7 +43,7 @@ public class TenantServiceImpl implements TenantService {
             TenantForm tenantForm = new TenantForm();
             tenantForm.setId(input.getId());
             tenantForm.setName(input.getName());
-            tenantForm.setDbName(input.getDbName());
+            tenantForm.setSchemaName(input.getSchemaName());
             tenantForm.setCreateTime(DateFormatUtils.format(input.getCreateTime(), Constants.DATETIME_PATTERN));
             tenantForm.setStatus(Tenant.Status.getStatusByCode(input.getStatus()));
 
@@ -56,7 +56,7 @@ public class TenantServiceImpl implements TenantService {
         public Tenant apply(TenantForm input) {
             Tenant tenant = new Tenant();
             tenant.setName(input.getName());
-            tenant.setDbName(input.getDbName());
+            tenant.setSchemaName(input.getSchemaName());
             tenant.setCreateTime(new Date());
             tenant.setStatus(Tenant.Status.NORMAL.getCode());
 
@@ -70,7 +70,7 @@ public class TenantServiceImpl implements TenantService {
             Tenant tenant = new Tenant();
             tenant.setId(input.getId());
             tenant.setName(input.getName());
-            tenant.setDbName(input.getDbName());
+            tenant.setSchemaName(input.getSchemaName());
             tenant.setCreateTime(new Date());
             tenant.setStatus(input.getStatus() == null ? Tenant.Status.NORMAL.getCode() : input.getStatus().getCode());
 
