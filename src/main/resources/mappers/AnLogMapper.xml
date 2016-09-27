@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.sky.demo.web_demo_multi_tenant_separate_db.dao.AnLogDao" >
+<mapper namespace="com.sky.demo.web_demo_multi_tenant_separate_schema.dao.AnLogDao" >
 
     <!--<resultMap id="BaseResultMap" type="com.sky.demo.common_web.dto.anlog.AnLogForm" >-->
         <!--<id column="id" property="id" jdbcType="BIGINT" />-->
@@ -85,7 +85,7 @@
         </foreach>
     </delete>
 
-    <insert id="insert" parameterType="com.sky.demo.web_demo_multi_tenant_separate_db.model.AnLog" >
+    <insert id="insert" parameterType="com.sky.demo.web_demo_multi_tenant_separate_schema.model.AnLog" >
         insert into an_log (
             create_time,user_id,role_id,server_ip,
             client_ip,action_type,feature_type,action_info
@@ -106,7 +106,7 @@
         </foreach>
     </insert>
 
-    <update id="update" parameterType="com.sky.demo.web_demo_multi_tenant_separate_db.model.AnLog" >
+    <update id="update" parameterType="com.sky.demo.web_demo_multi_tenant_separate_schema.model.AnLog" >
         update an_log
         <set>
             <if test="action_type != null">
@@ -122,7 +122,7 @@
         where id = #{id}
     </update>
 
-    <update id="batchUpdate" parameterType="com.sky.demo.web_demo_multi_tenant_separate_db.model.AnLog" >
+    <update id="batchUpdate" parameterType="com.sky.demo.web_demo_multi_tenant_separate_schema.model.AnLog" >
         update an_log
         <set>
             <if test="action_type != null">

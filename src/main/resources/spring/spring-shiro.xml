@@ -48,7 +48,7 @@
 
 	<bean id="headerAuthRealm" class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.HeaderAuthRealm"/>
 
-	<!--<bean id="deviceRegisterHeaderAuthRealm" class="com.sky.demo.web_demo_multi_tenant_separate_db.filter.DeviceRegisterHeaderAuthRealm"/>-->
+	<!--<bean id="deviceRegisterHeaderAuthRealm" class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.DeviceRegisterHeaderAuthRealm"/>-->
 
 
 </beans>

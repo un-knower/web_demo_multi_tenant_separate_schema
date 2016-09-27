@@ -66,7 +66,7 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="com.sky.demo.web_demo_multi_tenant_separate_db.service.AnLogService" additivity="false" level="ERROR">
+    <logger name="com.sky.demo.web_demo_multi_tenant_separate_schema.service.AnLogService" additivity="false" level="ERROR">
         <appender-ref ref="AuditLog.ERROR" />
     </logger>
 

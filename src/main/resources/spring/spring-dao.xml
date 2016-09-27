@@ -85,7 +85,7 @@
 
     <!--&lt;!&ndash;配置MapperScanner，无需写 dao impl&ndash;&gt;-->
     <!--<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-        <!--<property name="basePackage" value="com.sky.demo.web_demo_multi_tenant_separate_db.dao"/>-->
+        <!--<property name="basePackage" value="com.sky.demo.web_demo_multi_tenant_separate_schema.dao"/>-->
     <!--</bean>-->
 
 </beans>

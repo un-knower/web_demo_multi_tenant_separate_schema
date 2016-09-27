@@ -1,15 +1,12 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.context;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.BeansException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantForm;

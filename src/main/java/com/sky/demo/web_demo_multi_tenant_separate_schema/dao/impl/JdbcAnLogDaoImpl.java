@@ -44,7 +44,10 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public AnLogDto select(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(QUERY_COLUMN)
-                .append(" from ").append(TABLE_NAME).append(" as tba, account as tbb, role as tbc ")
+                .append(" from ")
+                .append(getSchema()).append(".").append(TABLE_NAME).append(" as tba, ")
+                .append(getSchema()).append(".").append("account as tbb, ")
+                .append(getSchema()).append(".").append("role as tbc ")
                 .append(" where 1 = 1 ")
                 .append("and tba.user_id = tbb.id and tba.role_id = tbc.id ");
 
@@ -110,7 +113,10 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public List<AnLogDto> selectList(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(QUERY_COLUMN)
-                .append(" from ").append(TABLE_NAME).append(" as tba, account as tbb, role as tbc ")
+                .append(" from ")
+                .append(getSchema()).append(".").append(TABLE_NAME).append(" as tba, ")
+                .append(getSchema()).append(".").append("account as tbb, ")
+                .append(getSchema()).append(".").append("role as tbc ")
                 .append(" where 1 = 1 ")
                 .append("and tba.user_id = tbb.id and tba.role_id = tbc.id ");
 
@@ -215,7 +221,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public long selectCount(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select count(*) ")
-                .append("from ").append(TABLE_NAME)
+                .append("from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
 
@@ -259,7 +266,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         StringBuilder sql = new StringBuilder();
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
-        sql.append("insert into ").append(TABLE_NAME)
+        sql.append("insert into ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -349,7 +357,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         StringBuilder sql = new StringBuilder();
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
-        sql.append("insert into ").append(TABLE_NAME)
+        sql.append("insert into ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -400,7 +409,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     @Override
     public int update(final AnLog record) {
         StringBuilder sql = new StringBuilder();
-        sql.append("update ").append(TABLE_NAME)
+        sql.append("update ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" set action_type = ?,feature_type = ?,action_info = ? ")
                 .append(" where 1 = 1 ");
 
@@ -432,7 +442,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     @Override
     public int batchUpdate(List<AnLog> records) {
         StringBuilder sql = new StringBuilder();
-        sql.append("update ").append(TABLE_NAME)
+        sql.append("update ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" set action_type = ?,feature_type = ?,action_info = ? ")
                 .append(" where 1 = 1 ");
 
@@ -463,7 +474,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     @Override
     public int delete(final Long id) {
         StringBuilder sql = new StringBuilder();
-        sql.append("delete from ").append(TABLE_NAME)
+        sql.append("delete from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -487,7 +499,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     @Override
     public int batchDelete(List<Long> ids) {
         StringBuilder sql = new StringBuilder();
-        sql.append("delete from ").append(TABLE_NAME)
+        sql.append("delete from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         String strIds = Joiner.on(",").skipNulls().join(ids);

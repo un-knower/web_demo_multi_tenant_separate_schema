@@ -16,7 +16,7 @@
             Tenant<br>
             name : ${tenantUser.tenant.name} <br>
             token : ${tenantUser.tenant.token} <br>
-            dbName : <form:input path="tenant.dbName" type="text" value="${tenantUser.tenant.dbName}" ></form:input>
+            schemaName : <form:input path="tenant.schemaName" type="text" value="${tenantUser.tenant.schemaName}" ></form:input>
 
         </form:form>
 

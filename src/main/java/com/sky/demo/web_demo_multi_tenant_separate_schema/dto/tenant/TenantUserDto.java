@@ -19,7 +19,7 @@ public class TenantUserDto implements Serializable {
 
     private String tenantToken;
     private String tenantName;
-    private String tenantDbName;
+    private String tenantSchemaName;
     private Date tenantCreateTime;
     private int tenantStatus;
 
@@ -79,12 +79,12 @@ public class TenantUserDto implements Serializable {
         this.tenantName = tenantName;
     }
 
-    public String getTenantDbName() {
-        return tenantDbName;
+    public String getTenantSchemaName() {
+        return tenantSchemaName;
     }
 
-    public void setTenantDbName(String tenantDbName) {
-        this.tenantDbName = tenantDbName;
+    public void setTenantSchemaName(String tenantSchemaName) {
+        this.tenantSchemaName = tenantSchemaName;
     }
 
     public Date getTenantCreateTime() {
@@ -113,7 +113,7 @@ public class TenantUserDto implements Serializable {
                 .add("status", status)
                 .add("tenantToken", tenantToken)
                 .add("tenantName", tenantName)
-                .add("tenantDbName", tenantDbName)
+                .add("tenantSchemaName", tenantSchemaName)
                 .add("tenantCreateTime", tenantCreateTime)
                 .add("tenantStatus", tenantStatus)
                 .toString();

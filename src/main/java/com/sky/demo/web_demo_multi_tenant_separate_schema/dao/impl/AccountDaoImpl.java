@@ -31,7 +31,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     public Account select(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(TABLE_COLUMN)
-                .append(" from ").append(TABLE_NAME)
+                .append(" from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -63,7 +64,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     public List<Account> selectList(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(TABLE_COLUMN)
-                .append(" from ").append(TABLE_NAME)
+                .append(" from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -106,7 +108,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     public int selectCount(Map<String, Object> condition) {
         StringBuilder sql = new StringBuilder();
         sql.append("select count(*) ")
-                .append(" from ").append(TABLE_NAME)
+                .append(" from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -136,7 +139,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         StringBuilder sql = new StringBuilder();
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
-        sql.append("insert into ").append(TABLE_NAME)
+        sql.append("insert into ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -156,7 +160,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public int update(Account record) {
         StringBuilder sql = new StringBuilder();
-        sql.append("update ").append(TABLE_NAME)
+        sql.append("update ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" set user_name = ?, password = ? ")
                 .append(" where 1 = 1 ");
 
@@ -179,7 +184,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public int delete(int id) {
         StringBuilder sql = new StringBuilder();
-        sql.append("delete from ").append(TABLE_NAME)
+        sql.append("delete from ")
+                .append(getSchema()).append(".").append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();

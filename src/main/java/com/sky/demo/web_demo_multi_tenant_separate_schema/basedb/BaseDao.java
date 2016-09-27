@@ -2,6 +2,8 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.basedb;
 
 import javax.annotation.Resource;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.context.AppContext;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,5 +44,21 @@ public abstract class BaseDao {
     }
 
 
+    /**
+     * 获取schema
+     * @return
+     */
+    public String getSchema() {
+        String schema = "public";
+        try {
+            TenantForm tenant = AppContext.getTenant();
+            if (tenant != null) {
+                schema = tenant.getSchemaName();
+            }
+        } catch (Exception e) {
+            logger.error("get schema error", e);
+        }
+        return schema;
+    }
 
 }

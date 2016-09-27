@@ -25,8 +25,8 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
     private static final Logger logger = LoggerFactory.getLogger(TenantDaoImpl.class);
 
     private static final String TABLE_NAME = "tenant";
-    private static final String TABLE_COLUMN = "id, name, token, db_name, create_time, status";
-    private static final String INSERT_COLUMN = "name, token, db_name, create_time, status";
+    private static final String TABLE_COLUMN = "id, name, token, schema_name, create_time, status";
+    private static final String INSERT_COLUMN = "name, token, schema_name, create_time, status";
 
     @Override
     public Tenant select(Map<String, Object> condition) {
@@ -217,7 +217,7 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
     public int update(Tenant record) {
         StringBuilder sql = new StringBuilder();
         sql.append("update ").append(TABLE_NAME)
-                .append(" set name = ?, token = ?, db_name = ?, status = ? ")
+                .append(" set name = ?, token = ?, schema_name = ?, status = ? ")
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();

@@ -53,24 +53,24 @@
         <!--DataSource Interceptor-->
         <!--<mvc:interceptor>-->
             <!--<mvc:mapping path="/**"/>-->
-            <!--<bean id="dataSourceInterceptor" class="com.sky.demo.web_demo_multi_tenant_separate_db.interceptor.DataSourceInterceptor"/>-->
+            <!--<bean id="dataSourceInterceptor" class="com.sky.demo.web_demo_multi_tenant_separate_schema.interceptor.DataSourceInterceptor"/>-->
         <!--</mvc:interceptor>-->
 
         <!-- 登录拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean id="loginInterceptor" class="com.sky.demo.web_demo_multi_tenant_separate_db.interceptor.LoginInterceptor"/>
+            <bean id="loginInterceptor" class="com.sky.demo.web_demo_multi_tenant_separate_schema.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
 
     <!--扫描Controller层-->
-    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_db" >
+    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_schema" >
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
 
     <!--Bean适配-->
-    <bean id="SpringContextUtil" class="com.sky.demo.web_demo_multi_tenant_separate_db.util.SpringUtil"/>
+    <bean id="SpringContextUtil" class="com.sky.demo.web_demo_multi_tenant_separate_schema.util.SpringUtil"/>
 
     <!--1.jsp viewResolver-->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -104,7 +104,7 @@
     <!--</bean>-->
     
 
-    <bean id="customMapper" class="com.sky.demo.web_demo_multi_tenant_separate_db.util.json.CustomObjectMapper" >
+    <bean id="customMapper" class="com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.CustomObjectMapper" >
         <!--<property name="serializationInclusion">-->
             <!--<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>-->
         <!--</property>-->
