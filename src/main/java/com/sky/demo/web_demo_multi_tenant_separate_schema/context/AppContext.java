@@ -116,5 +116,6 @@ public class AppContext implements Serializable {
     public static void releaseAppResources() {
         releaseTenant();
         releaseTenantUser();
+        MDC.remove("tenant");
     }
 }
