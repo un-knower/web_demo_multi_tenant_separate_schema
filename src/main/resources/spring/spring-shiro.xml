@@ -3,52 +3,71 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
 
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
 
-	<bean id="myShiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<property name="filters">
-			<map>
-				<entry key="headerAuthFilter" value-ref="headerAuthFilter"/>
-				<!--<entry key="deviceRegisterHeaderAuthFilter" value-ref="deviceRegisterHeaderAuthFilter"/>-->
-			</map>
-		</property>
-		<property name="filterChainDefinitionMap">
-			<map>
-				<!--<entry key="/v1/device/register" value="noSessionCreation,deviceRegisterHeaderAuthFilter"/>-->
-				<!--<entry key="/v1/thirdparty/**" value="noSessionCreation,deviceRegisterHeaderAuthFilter"/>-->
-				<entry key="/v1/**" value="noSessionCreation,headerAuthFilter"/>
-				<entry key="/**" value="anon"/>
-			</map>
-		</property>
-	</bean>
+    <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="com.sky.demo.web_demo_multi_tenant_separate_schema.auth.credentials.RetryLimitHashedCredentialsMatcher">
+        <constructor-arg ref="cacheManager"/>
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="2"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
 
-    <bean id="headerAuthFilter"
-          class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.HeaderAuthFilter"/>
+    <!-- Realm实现 -->
+    <bean id="userRealm" class="com.sky.demo.web_demo_multi_tenant_separate_schema.auth.realm.UserRealm">
+        <!--<property name="userService" ref="userService"/>-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="true"/>
+        <property name="authenticationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="authenticationCache"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
+    </bean>
 
-    <bean id="deviceRegisterHeaderAuthFilter"
-          class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.DeviceRegisterHeaderAuthFilter" />
+    <!-- 会话ID生成器 -->
+    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
 
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realms">
-			<list>
-				<ref bean="headerAuthRealm" />
-				<!--<ref bean="deviceRegisterHeaderAuthRealm" />-->
-			</list>
-		</property>
-	</bean>
+    <!-- 会话DAO -->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+    </bean>
 
-    <!--得到SecurityManager实例 并绑定给SecurityUtils-->
+    <!-- 会话验证调度器 -->
+    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        <property name="sessionValidationInterval" value="1800000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+    </bean>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+        <property name="realms">
+            <list><ref bean="userRealm"/></list>
+        </property>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+    <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod"
-			value="org.apache.shiro.SecurityUtils.setSecurityManager">
-		</property>
-		<property name="arguments" ref="securityManager" />
-	</bean>
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
 
-
-	<bean id="headerAuthRealm" class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.HeaderAuthRealm"/>
-
-	<!--<bean id="deviceRegisterHeaderAuthRealm" class="com.sky.demo.web_demo_multi_tenant_separate_schema.filter.DeviceRegisterHeaderAuthRealm"/>-->
+    <!-- Shiro生命周期处理器-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 
 </beans>
