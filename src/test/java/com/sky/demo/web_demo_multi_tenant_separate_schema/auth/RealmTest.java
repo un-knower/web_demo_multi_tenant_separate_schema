@@ -45,7 +45,7 @@ public class RealmTest {
 
     @Test
     public void test_JDBCRealm() {
-        UsernamePasswordToken token = new UsernamePasswordToken("zhang", "123");
+        UsernamePasswordToken token = new UsernamePasswordToken("admin@tenant1.com", "123");
         BaseAuth.login("classpath:auth/shiro-jdbc-realm.ini", token);
 
         Subject subject = SecurityUtils.getSubject();
