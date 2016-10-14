@@ -61,4 +61,22 @@ public abstract class BaseDao {
         return schema;
     }
 
+
+
+    /**
+     * 获取schema
+     * @return
+     */
+    public String getSchemaDot() {
+        String schema = "public.";
+        try {
+            TenantForm tenant = AppContext.getTenant();
+            if (tenant != null) {
+                schema = tenant.getSchemaName() + ".";
+            }
+        } catch (Exception e) {
+            logger.error("get schema error", e);
+        }
+        return schema;
+    }
 }

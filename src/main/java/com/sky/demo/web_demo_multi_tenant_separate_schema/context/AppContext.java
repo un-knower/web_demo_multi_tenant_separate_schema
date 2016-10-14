@@ -58,7 +58,7 @@ public class AppContext implements Serializable {
 
 
     /**
-     * 初始化tenant，JdbcTemplate信息
+     * 初始化tenant信息
      * @param userName
      */
     public static void initAppResourcesByUserName(String userName) {
@@ -86,7 +86,7 @@ public class AppContext implements Serializable {
     }
 
     /**
-     * 初始化tenant，JdbcTemplate信息
+     * 初始化tenant信息
      * @param token
      */
     public static void initAppResourcesByToken(String token) {
