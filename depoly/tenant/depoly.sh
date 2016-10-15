@@ -1,7 +1,6 @@
 #! /bin/bash
 
 CURRENT_HOME=`pwd`
-INIT_SQL=${CURRENT_HOME}/init.sql
 SQL_FILES=${CURRENT_HOME}/sql/*.sql
 
 DB_IP=127.0.0.1
