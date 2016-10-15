@@ -11,25 +11,29 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantQuery
  */
 public interface TenantService {
 
-    TenantForm query(int id);
+    public TenantForm query(int id);
 
-    TenantForm queryByName(String name);
+    public TenantForm queryByName(String name);
 
-    TenantForm queryByToken(String token);
+    public TenantForm queryByClientId(String clientId);
 
-    List<TenantForm> queryList(List<Integer> ids);
+    public TenantForm queryByDeviceId(String deviceId);
 
-    Pager<TenantForm> queryList(TenantQueryRequest queryRequest);
+    public TenantForm queryByDeviceToken(String deviceToken);
 
-    boolean add(TenantForm record);
+    public List<TenantForm> queryList(List<Integer> ids);
 
-    boolean addList(List<TenantForm> records);
+    public Pager<TenantForm> queryList(TenantQueryRequest queryRequest);
 
-    boolean update(TenantForm record);
+    public boolean add(TenantForm record);
 
-    boolean updateList(List<TenantForm> records);
+    public boolean addList(List<TenantForm> records);
 
-    boolean delete(int id);
+    public boolean update(TenantForm record);
 
-    boolean deleteList(List<Integer> ids);
+    public boolean updateList(List<TenantForm> records);
+
+    public boolean delete(int id);
+
+    public boolean deleteList(List<Integer> ids);
 }

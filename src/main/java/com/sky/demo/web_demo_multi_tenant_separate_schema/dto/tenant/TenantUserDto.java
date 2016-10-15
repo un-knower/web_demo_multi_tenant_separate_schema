@@ -17,7 +17,9 @@ public class TenantUserDto implements Serializable {
     private Date createTime;
     private int status;
 
-    private String tenantToken;
+    private String tenantClientId;
+    private String tenantDeviceId;
+    private String tenantDeviceToken;
     private String tenantName;
     private String tenantSchemaName;
     private Date tenantCreateTime;
@@ -63,12 +65,28 @@ public class TenantUserDto implements Serializable {
         this.status = status;
     }
 
-    public String getTenantToken() {
-        return tenantToken;
+    public String getTenantClientId() {
+        return tenantClientId;
     }
 
-    public void setTenantToken(String tenantToken) {
-        this.tenantToken = tenantToken;
+    public void setTenantClientId(String tenantClientId) {
+        this.tenantClientId = tenantClientId;
+    }
+
+    public String getTenantDeviceId() {
+        return tenantDeviceId;
+    }
+
+    public void setTenantDeviceId(String tenantDeviceId) {
+        this.tenantDeviceId = tenantDeviceId;
+    }
+
+    public String getTenantDeviceToken() {
+        return tenantDeviceToken;
+    }
+
+    public void setTenantDeviceToken(String tenantDeviceToken) {
+        this.tenantDeviceToken = tenantDeviceToken;
     }
 
     public String getTenantName() {
@@ -111,7 +129,9 @@ public class TenantUserDto implements Serializable {
                 .add("userName", userName)
                 .add("createTime", createTime)
                 .add("status", status)
-                .add("tenantToken", tenantToken)
+                .add("tenantClientId", tenantClientId)
+                .add("tenantDeviceId", tenantDeviceId)
+                .add("tenantDeviceToken", tenantDeviceToken)
                 .add("tenantName", tenantName)
                 .add("tenantSchemaName", tenantSchemaName)
                 .add("tenantCreateTime", tenantCreateTime)

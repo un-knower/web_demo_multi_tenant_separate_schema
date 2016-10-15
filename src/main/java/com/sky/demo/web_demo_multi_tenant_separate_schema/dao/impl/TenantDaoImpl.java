@@ -25,8 +25,8 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
     private static final Logger logger = LoggerFactory.getLogger(TenantDaoImpl.class);
 
     private static final String TABLE_NAME = "tenant";
-    private static final String TABLE_COLUMN = "id, name, token, schema_name, create_time, status";
-    private static final String INSERT_COLUMN = "name, token, schema_name, create_time, status";
+    private static final String TABLE_COLUMN = "id, name, client_id, device_id, device_token, schema_name, create_time, status";
+    private static final String INSERT_COLUMN = "name, client_id, device_id, device_token, schema_name, create_time, status";
 
     @Override
     public Tenant select(Map<String, Object> condition) {
@@ -48,10 +48,22 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
             params.add(name);
         }
 
-        String token = (String) condition.get("token");
-        if (StringUtils.isNotBlank(token)) {
-            sql.append("and token = ? ");
-            params.add(token);
+        String deviceId = (String) condition.get("deviceId");
+        if (StringUtils.isNotBlank(deviceId)) {
+            sql.append("and device_id = ? ");
+            params.add(deviceId);
+        }
+
+        String clientId = (String) condition.get("clientId");
+        if (StringUtils.isNotBlank(clientId)) {
+            sql.append("and client_id = ? ");
+            params.add(clientId);
+        }
+
+        String deviceToken = (String) condition.get("deviceToken");
+        if (StringUtils.isNotBlank(deviceToken)) {
+            sql.append("and device_token = ? ");
+            params.add(deviceToken);
         }
 
         String beginTime = (String) condition.get("beginTime");
@@ -92,10 +104,22 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
             params.add(name);
         }
 
-        String token = (String) condition.get("token");
-        if (StringUtils.isNotBlank(token)) {
-            sql.append("and token = ? ");
-            params.add(token);
+        String deviceId = (String) condition.get("deviceId");
+        if (StringUtils.isNotBlank(deviceId)) {
+            sql.append("and device_id = ? ");
+            params.add(deviceId);
+        }
+
+        String clientId = (String) condition.get("clientId");
+        if (StringUtils.isNotBlank(clientId)) {
+            sql.append("and client_id = ? ");
+            params.add(clientId);
+        }
+
+        String deviceToken = (String) condition.get("deviceToken");
+        if (StringUtils.isNotBlank(deviceToken)) {
+            sql.append("and device_token = ? ");
+            params.add(deviceToken);
         }
 
         String beginTime = (String) condition.get("beginTime");
@@ -155,10 +179,22 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
             params.add(name);
         }
 
-        String token = (String) condition.get("token");
-        if (StringUtils.isNotBlank(token)) {
-            sql.append("and token = ? ");
-            params.add(token);
+        String deviceId = (String) condition.get("deviceId");
+        if (StringUtils.isNotBlank(deviceId)) {
+            sql.append("and device_id = ? ");
+            params.add(deviceId);
+        }
+
+        String clientId = (String) condition.get("clientId");
+        if (StringUtils.isNotBlank(clientId)) {
+            sql.append("and client_id = ? ");
+            params.add(clientId);
+        }
+
+        String deviceToken = (String) condition.get("deviceToken");
+        if (StringUtils.isNotBlank(deviceToken)) {
+            sql.append("and device_token = ? ");
+            params.add(deviceToken);
         }
 
         String beginTime = (String) condition.get("beginTime");
@@ -199,7 +235,9 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
 
         List<Object> params = Lists.newArrayList();
         params.add(record.getName());
-        params.add(record.getToken());
+        params.add(record.getClientId());
+        params.add(record.getDeviceId());
+        params.add(record.getDeviceToken());
         params.add(record.getSchemaName());
         params.add(record.getCreateTime());
         params.add(record.getStatus());
@@ -217,12 +255,14 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
     public int update(Tenant record) {
         StringBuilder sql = new StringBuilder();
         sql.append("update ").append(TABLE_NAME)
-                .append(" set name = ?, token = ?, schema_name = ?, status = ? ")
+                .append(" set name = ?, client_id = ?, device_id = ?, device_token = ?,  schema_name = ?, status = ? ")
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
         params.add(record.getName());
-        params.add(record.getToken());
+        params.add(record.getClientId());
+        params.add(record.getDeviceId());
+        params.add(record.getDeviceToken());
         params.add(record.getSchemaName());
         params.add(record.getStatus());
 

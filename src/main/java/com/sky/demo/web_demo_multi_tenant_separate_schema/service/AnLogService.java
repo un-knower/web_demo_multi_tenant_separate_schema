@@ -14,21 +14,21 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.anlog.AnLogUpdateR
  */
 public interface AnLogService {
 
-    AnLogForm query(long id);
+    public AnLogForm query(long id);
 
-    List<AnLogForm> queryList(List<Long> ids);
+    public List<AnLogForm> queryList(List<Long> ids);
 
-    Pager<AnLogForm> queryList(AnLogQueryRequest queryRequest);
+    public Pager<AnLogForm> queryList(AnLogQueryRequest queryRequest);
 
-    boolean add(AnLogInsertRequest insertRequest);
+    public boolean add(AnLogInsertRequest insertRequest);
 
-    boolean addList(List<AnLogInsertRequest> insertRequests);
+    public boolean addList(List<AnLogInsertRequest> insertRequests);
 
-    boolean update(AnLogUpdateRequest updateRequest);
+    public boolean update(AnLogUpdateRequest updateRequest);
 
-    boolean updateList(List<AnLogUpdateRequest> updateRequests);
+    public boolean updateList(List<AnLogUpdateRequest> updateRequests);
 
-    boolean delete(long id);
+    public boolean delete(long id);
 
-    boolean deleteList(List<Long> ids);
+    public boolean deleteList(List<Long> ids);
 }

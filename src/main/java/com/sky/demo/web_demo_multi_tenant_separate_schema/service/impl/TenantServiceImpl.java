@@ -43,6 +43,9 @@ public class TenantServiceImpl implements TenantService {
             TenantForm tenantForm = new TenantForm();
             tenantForm.setId(input.getId());
             tenantForm.setName(input.getName());
+            tenantForm.setClientId(input.getClientId());
+            tenantForm.setDeviceId(input.getDeviceId());
+            tenantForm.setDeviceToken(input.getDeviceToken());
             tenantForm.setSchemaName(input.getSchemaName());
             tenantForm.setCreateTime(DateFormatUtils.format(input.getCreateTime(), Constants.DATETIME_PATTERN));
             tenantForm.setStatus(Tenant.Status.getStatusByCode(input.getStatus()));
@@ -56,6 +59,9 @@ public class TenantServiceImpl implements TenantService {
         public Tenant apply(TenantForm input) {
             Tenant tenant = new Tenant();
             tenant.setName(input.getName());
+            tenant.setClientId(input.getClientId());
+            tenant.setDeviceId(input.getDeviceId());
+            tenant.setDeviceToken(input.getDeviceToken());
             tenant.setSchemaName(input.getSchemaName());
             tenant.setCreateTime(new Date());
             tenant.setStatus(Tenant.Status.NORMAL.getCode());
@@ -70,6 +76,9 @@ public class TenantServiceImpl implements TenantService {
             Tenant tenant = new Tenant();
             tenant.setId(input.getId());
             tenant.setName(input.getName());
+            tenant.setClientId(input.getClientId());
+            tenant.setDeviceId(input.getDeviceId());
+            tenant.setDeviceToken(input.getDeviceToken());
             tenant.setSchemaName(input.getSchemaName());
             tenant.setCreateTime(new Date());
             tenant.setStatus(input.getStatus() == null ? Tenant.Status.NORMAL.getCode() : input.getStatus().getCode());
@@ -119,9 +128,9 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public TenantForm queryByToken(String token) {
+    public TenantForm queryByClientId(String clientId) {
         Map<String, Object> condition = Maps.newHashMap();
-        condition.put("token", token);
+        condition.put("clientId", clientId);
         condition.put("status", Tenant.Status.NORMAL.getCode());
 
         TenantForm result = null;
@@ -129,7 +138,47 @@ public class TenantServiceImpl implements TenantService {
         try {
             tenant = tenantDao.select(condition);
         } catch (Exception e) {
-            logger.error("query by token error", e);
+            logger.error("query by client id error", e);
+        }
+
+        if (tenant != null) {
+            result = transfer2Form.apply(tenant);
+        }
+        return result;
+    }
+
+    @Override
+    public TenantForm queryByDeviceId(String deviceId) {
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("deviceId", deviceId);
+        condition.put("status", Tenant.Status.NORMAL.getCode());
+
+        TenantForm result = null;
+        Tenant tenant = null;
+        try {
+            tenant = tenantDao.select(condition);
+        } catch (Exception e) {
+            logger.error("query by device id error", e);
+        }
+
+        if (tenant != null) {
+            result = transfer2Form.apply(tenant);
+        }
+        return result;
+    }
+
+    @Override
+    public TenantForm queryByDeviceToken(String deviceToken) {
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("deviceToken", deviceToken);
+        condition.put("status", Tenant.Status.NORMAL.getCode());
+
+        TenantForm result = null;
+        Tenant tenant = null;
+        try {
+            tenant = tenantDao.select(condition);
+        } catch (Exception e) {
+            logger.error("query by device token error", e);
         }
 
         if (tenant != null) {

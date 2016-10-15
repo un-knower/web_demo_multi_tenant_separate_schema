@@ -13,7 +13,9 @@ public class Tenant implements Serializable {
     private static final long serialVersionUID = -1394462897506118206L;
     private int id;
     private String name;
-    private String token;
+    private String clientId;
+    private String deviceId;
+    private String deviceToken;
     private String schemaName;
     private Date createTime;
     private int status;
@@ -34,12 +36,28 @@ public class Tenant implements Serializable {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 
     public String getSchemaName() {
@@ -71,7 +89,9 @@ public class Tenant implements Serializable {
         return Objects.toStringHelper(this)
                 .add("id", id)
                 .add("name", name)
-                .add("token", token)
+                .add("clientId", clientId)
+                .add("deviceId", deviceId)
+                .add("deviceToken", deviceToken)
                 .add("schemaName", schemaName)
                 .add("createTime", createTime)
                 .add("status", status)

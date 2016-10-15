@@ -3,6 +3,8 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,29 +50,59 @@ public class TenantController {
 
     @RequestMapping("/queryByName")
     @ResponseBody
-    public RetData<TenantForm> queryByName(@RequestParam String name) {
+    public RetData<TenantForm> queryByName(@RequestParam String name, HttpServletRequest request, HttpServletResponse response) {
         RetData<TenantForm> result = null;
         try {
             TenantForm TenantForm = tenantService.queryByName(name);
 
             result = RetUtil.buildSuccessRet(TenantForm);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
     }
 
-    @RequestMapping("/queryByToken")
+    @RequestMapping("/queryByClientId")
     @ResponseBody
-    public RetData<TenantForm> queryByToken(@RequestParam String token) {
+    public RetData<TenantForm> queryByClientId(@RequestParam String clientId, HttpServletRequest request, HttpServletResponse response) {
         RetData<TenantForm> result = null;
         try {
-            TenantForm TenantForm = tenantService.queryByToken(token);
+            TenantForm TenantForm = tenantService.queryByClientId(clientId);
 
             result = RetUtil.buildSuccessRet(TenantForm);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryByDeviceId")
+    @ResponseBody
+    public RetData<TenantForm> queryByDeviceId(@RequestParam String deviceId, HttpServletRequest request, HttpServletResponse response) {
+        RetData<TenantForm> result = null;
+        try {
+            TenantForm TenantForm = tenantService.queryByDeviceId(deviceId);
+
+            result = RetUtil.buildSuccessRet(TenantForm);
+        } catch (Exception e) {
+            logger.error("query error",e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryByDeviceToken")
+    @ResponseBody
+    public RetData<TenantForm> queryByDeviceToken(@RequestParam String deviceToken, HttpServletRequest request, HttpServletResponse response) {
+        RetData<TenantForm> result = null;
+        try {
+            TenantForm TenantForm = tenantService.queryByDeviceToken(deviceToken);
+
+            result = RetUtil.buildSuccessRet(TenantForm);
+        } catch (Exception e) {
+            logger.error("query tenant error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;

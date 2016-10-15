@@ -14,7 +14,9 @@ public class TenantForm implements Serializable {
     private static final long serialVersionUID = 5802983685287791418L;
     private int id;
     private String name;
-    private String token;
+    private String clientId;
+    private String deviceId;
+    private String deviceToken;
     private String schemaName;
     private String createTime;
     private Tenant.Status status;
@@ -35,12 +37,28 @@ public class TenantForm implements Serializable {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 
     public String getSchemaName() {
@@ -72,7 +90,9 @@ public class TenantForm implements Serializable {
         return Objects.toStringHelper(this)
                 .add("id", id)
                 .add("name", name)
-                .add("token", token)
+                .add("clientId", clientId)
+                .add("deviceId", deviceId)
+                .add("deviceToken", deviceToken)
                 .add("schemaName", schemaName)
                 .add("createTime", createTime)
                 .add("status", status)
