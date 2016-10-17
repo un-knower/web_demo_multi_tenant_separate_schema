@@ -19,12 +19,11 @@ public abstract class BaseTenantDao implements MarkTenantDao {
     @Resource
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-
-    public JdbcTemplate getTenantJdbcTemplate() {
+    public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }
 
-    public NamedParameterJdbcTemplate getTenantNamedParameterJdbcTemplate() {
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
         return namedParameterJdbcTemplate;
     }
 }

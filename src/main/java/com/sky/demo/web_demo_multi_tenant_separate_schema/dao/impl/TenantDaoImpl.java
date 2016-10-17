@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseDefaultDao;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.model.Tenant;
  * Created by user on 16/9/18.
  */
 @Repository
-public class TenantDaoImpl extends BaseDao implements TenantDao {
+public class TenantDaoImpl extends BaseDefaultDao implements TenantDao { //BaseDao
 
     private static final Logger logger = LoggerFactory.getLogger(TenantDaoImpl.class);
 
@@ -64,6 +65,12 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
         if (StringUtils.isNotBlank(deviceToken)) {
             sql.append("and device_token = ? ");
             params.add(deviceToken);
+        }
+
+        String schemaName = (String) condition.get("schemaName");
+        if (StringUtils.isNotBlank(schemaName)) {
+            sql.append("and schema_name = ? ");
+            params.add(schemaName);
         }
 
         String beginTime = (String) condition.get("beginTime");
@@ -120,6 +127,12 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
         if (StringUtils.isNotBlank(deviceToken)) {
             sql.append("and device_token = ? ");
             params.add(deviceToken);
+        }
+
+        String schemaName = (String) condition.get("schemaName");
+        if (StringUtils.isNotBlank(schemaName)) {
+            sql.append("and schema_name = ? ");
+            params.add(schemaName);
         }
 
         String beginTime = (String) condition.get("beginTime");
@@ -195,6 +208,12 @@ public class TenantDaoImpl extends BaseDao implements TenantDao {
         if (StringUtils.isNotBlank(deviceToken)) {
             sql.append("and device_token = ? ");
             params.add(deviceToken);
+        }
+
+        String schemaName = (String) condition.get("schemaName");
+        if (StringUtils.isNotBlank(schemaName)) {
+            sql.append("and schema_name = ? ");
+            params.add(schemaName);
         }
 
         String beginTime = (String) condition.get("beginTime");

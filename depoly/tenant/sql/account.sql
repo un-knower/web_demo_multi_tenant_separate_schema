@@ -17,7 +17,16 @@ COMMENT ON COLUMN account.password IS '密码';
 create unique index unique_idx_account_user_name on account(user_name);
 
 
---tenant1
-insert into account (user_name, password) values ('admin@tenant1.com', '123');
-insert into account (user_name, password) values ('guest@tenant1.com', '123');
+-- --tenant1
+-- insert into account (user_name, password) values ('admin@tenant1.com', '123');
+-- insert into account (user_name, password) values ('guest@tenant1.com', '123');
+
+-- --tenant2
+-- insert into account (user_name, password) values ('admin@tenant2.com', '123');
+-- insert into account (user_name, password) values ('guest@tenant2.com', '123');
+
+-- --tenant3
+insert into account (user_name, password) values ('admin@tenant3.com', '123');
+insert into account (user_name, password) values ('guest@tenant3.com', '123');
+
 

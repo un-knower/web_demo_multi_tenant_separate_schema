@@ -17,7 +17,8 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.context.AppContext;
 /**
  * Created by user on 16/9/23.
  */
-@Component
+@Deprecated
+//@Component
 public class DataSourceInterceptor extends HandlerInterceptorAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSourceInterceptor.class);
@@ -35,7 +36,7 @@ public class DataSourceInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        AppContext.releaseAppResources();
+        AppContext.releaseResources();
 
         String url = request.getRequestURL().toString();
 
@@ -45,9 +46,9 @@ public class DataSourceInterceptor extends HandlerInterceptorAdapter {
         String token = authorization;
 
         if (StringUtils.isNotBlank(userName)) {
-            AppContext.initAppResourcesByUserName(userName.trim());
+            AppContext.initResourcesByUserName(userName.trim());
         } else if (StringUtils.isNotBlank(token)) {
-            AppContext.initAppResourcesByToken(token.trim());
+            AppContext.initResourcesByToken(token.trim());
         }
 
         return true;

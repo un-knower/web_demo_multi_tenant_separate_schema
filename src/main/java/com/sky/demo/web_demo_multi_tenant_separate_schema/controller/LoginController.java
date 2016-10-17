@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.context.DBContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,8 @@ public class LoginController {
 
         ModelAndView modelAndView = new ModelAndView();
         try {
-            AppContext.initAppResourcesByUserName(userName);
+//            AppContext.initResourcesByUserName(userName);
+            DBContext.initResourcesByUserName(userName);
             TenantUserForm tenantUserForm = tenantUserService.queryByUserName(userName);
 
             if (tenantUserForm != null) {
@@ -68,7 +70,8 @@ public class LoginController {
             logger.error("login error", e);
             modelAndView.setViewName("error");
         } finally {
-            AppContext.releaseAppResources();
+//            AppContext.releaseResources();
+            DBContext.releaseResources();
         }
         return modelAndView;
     }
@@ -87,7 +90,8 @@ public class LoginController {
             logger.error("logout error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         } finally {
-            AppContext.releaseAppResources();
+//            AppContext.releaseResources();
+            DBContext.releaseResources();
         }
         return result;
     }

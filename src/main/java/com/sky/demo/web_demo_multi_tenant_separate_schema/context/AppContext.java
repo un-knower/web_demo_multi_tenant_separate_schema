@@ -18,6 +18,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.util.SpringUtil;
 /**
  * Created by user on 16/9/20.
  */
+@Deprecated
 public class AppContext implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(AppContext.class);
@@ -61,9 +62,9 @@ public class AppContext implements Serializable {
      * 初始化tenant信息
      * @param userName
      */
-    public static void initAppResourcesByUserName(String userName) {
+    public static void initResourcesByUserName(String userName) {
         Preconditions.checkState(StringUtils.isNotBlank(userName), "userName is blank!!");
-        logger.debug("init App Resources user name = " + userName);
+        logger.debug("init Resources user name = " + userName);
 
         try {
             TenantUserService tenantUserService = SpringUtil.getCtx().getBean(TenantUserService.class);
@@ -74,13 +75,13 @@ public class AppContext implements Serializable {
             setTenant(tenantUser.getTenant());
 
         } catch (BeansException e) {
-            logger.error("init app resources by userName error", e);
+            logger.error("init resources by userName error", e);
         }
 
         try {
-            logger.debug("   ====> init AppResources by userName: " + userName + ", tenantUser=" + getTenantUser().getUserName());
+            logger.debug("   ====> init Resources by userName: " + userName + ", tenantUser=" + getTenantUser().getUserName());
         } catch (Exception e) {
-            logger.error("print app resource error");
+            logger.error("print resource error");
         }
 
     }
@@ -89,9 +90,9 @@ public class AppContext implements Serializable {
      * 初始化tenant信息
      * @param token
      */
-    public static void initAppResourcesByToken(String token) {
+    public static void initResourcesByToken(String token) {
         Preconditions.checkState(StringUtils.isNotBlank(token), "token is blank!!");
-        logger.debug("init App Resources token = " + token);
+        logger.debug("init Resources token = " + token);
 
         try {
             TenantService tenantService = SpringUtil.getCtx().getBean(TenantService.class);
@@ -100,20 +101,20 @@ public class AppContext implements Serializable {
 
             setTenant(tenant);
         } catch (BeansException e) {
-            logger.error("init app resource by token error", e);
+            logger.error("init resource by token error", e);
         }
 
         try {
-            logger.debug("   ====> init AppResources by token: " + token);
+            logger.debug("   ====> init Resources by token: " + token);
         } catch (Exception e) {
-            logger.error("print app resource error");
+            logger.error("print resource error");
         }
     }
 
     /**
      * 释放AppContext中资源
      */
-    public static void releaseAppResources() {
+    public static void releaseResources() {
         releaseTenant();
         releaseTenantUser();
         MDC.remove("tenant");

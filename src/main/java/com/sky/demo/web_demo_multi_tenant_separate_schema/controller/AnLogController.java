@@ -1,9 +1,17 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.controller;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.context.DBContext;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantUserForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.AsyncWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -130,6 +138,59 @@ public class AnLogController {
         } catch (Exception e) {
             logger.error("delete log error",e);
             result = RetUtil.buildErrorRet(RetStatus.DELETE_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/asyncAdd")
+    @ResponseBody
+    public RetData<String> asyncAdd(@RequestBody AnLogInsertRequest insertRequest, HttpServletRequest request, HttpServletResponse response) {
+        RetData<String> result = null;
+        try {
+            TenantForm tenant = DBContext.getTenant();
+
+            Future<Boolean> futrueResult = AsyncWorker.submit(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    boolean isAdd = false;
+                    try {
+//                        AppContext.initResourcesByUserName(tenantUser.getUserName());    //need init App Resource
+                        DBContext.initResourcesByDbKey(tenant.getSchemaName());    //need init App Resource
+
+                        isAdd = anLogService.add(insertRequest);
+                    } catch (Exception e) {
+                        logger.error("async add error", e);
+                    } finally {
+//                        AppContext.releaseResources();
+                        DBContext.releaseResources();
+                    }
+                    return isAdd;
+                }
+            });
+
+            Preconditions.checkArgument(futrueResult.get(), "add error");
+
+            result = RetUtil.buildSuccessRet("success");
+
+        } catch (Exception e) {
+            logger.error("add error",e);
+            result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/asyncUpdate")
+    @ResponseBody
+    public RetData<String> asyncUpdate(@RequestBody AnLogUpdateRequest updateRequest, HttpServletRequest request, HttpServletResponse response) {
+        RetData<String> result = null;
+        try {
+            boolean isUpdate = anLogService.asyncUpdate(updateRequest);
+            Preconditions.checkArgument(isUpdate, "async update error");
+
+            result = RetUtil.buildSuccessRet("success");
+        } catch (Exception e) {
+            logger.error("update error",e);
+            result = RetUtil.buildErrorRet(RetStatus.UPDATE_ERROR);
         }
         return result;
     }

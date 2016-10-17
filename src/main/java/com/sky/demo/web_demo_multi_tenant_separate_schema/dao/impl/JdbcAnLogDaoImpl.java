@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseTenantDao;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseDao;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dao.JdbcAnLogDao;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.anlog.AnLogDto;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.AnLog;
@@ -26,7 +26,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.model.AnLog;
  * Created by rg on 15/6/30.
  */
 @Repository
-public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
+public class JdbcAnLogDaoImpl extends BaseTenantDao implements JdbcAnLogDao {   //BaseDao
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcAnLogDaoImpl.class);
 
@@ -45,9 +45,12 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(QUERY_COLUMN)
                 .append(" from ")
-                .append(getSchema()).append(".").append(TABLE_NAME).append(" as tba, ")
-                .append(getSchema()).append(".").append("account as tbb, ")
-                .append(getSchema()).append(".").append("role as tbc ")
+//                .append(getSchemaDot())
+                .append(TABLE_NAME).append(" as tba, ")
+//                .append(getSchemaDot())
+                .append("account as tbb, ")
+//                .append(getSchemaDot())
+                .append("role as tbc ")
                 .append(" where 1 = 1 ")
                 .append("and tba.user_id = tbb.id and tba.role_id = tbc.id ");
 
@@ -72,7 +75,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
 
         //方式一
         RowMapper<AnLogDto> rowMapper = BeanPropertyRowMapper.newInstance(AnLogDto.class);
-        AnLogDto result = getDefaultJdbcTemplate().queryForObject(sql.toString(), params.toArray(), rowMapper);
+        AnLogDto result = getJdbcTemplate().queryForObject(sql.toString(), params.toArray(), rowMapper);
 
         //方式二
 //        AnLog result = getJdbcTemplate().queryForObject(sql.toString(), new ParameterizedRowMapper<AnLog>() {
@@ -114,9 +117,12 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(QUERY_COLUMN)
                 .append(" from ")
-                .append(getSchema()).append(".").append(TABLE_NAME).append(" as tba, ")
-                .append(getSchema()).append(".").append("account as tbb, ")
-                .append(getSchema()).append(".").append("role as tbc ")
+//                .append(getSchemaDot())
+                .append(TABLE_NAME).append(" as tba, ")
+//                .append(getSchemaDot())
+                .append("account as tbb, ")
+//                .append(getSchemaDot())
+                .append("role as tbc ")
                 .append(" where 1 = 1 ")
                 .append("and tba.user_id = tbb.id and tba.role_id = tbc.id ");
 
@@ -154,7 +160,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
 
         // 方式一
         RowMapper<AnLogDto> rowMapper = BeanPropertyRowMapper.newInstance(AnLogDto.class);
-        List<AnLogDto> result = getDefaultJdbcTemplate().query(sql.toString(), params.toArray(), rowMapper);
+        List<AnLogDto> result = getJdbcTemplate().query(sql.toString(), params.toArray(), rowMapper);
 
         //方式二
 //        List<AnLog> result = Lists.newArrayList();
@@ -222,7 +228,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select count(*) ")
                 .append("from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
 
@@ -256,7 +263,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
             params.add(offset);
         }
 
-        long count = getDefaultJdbcTemplate().queryForObject(sql.toString(), params.toArray(), Long.class);
+        long count = getJdbcTemplate().queryForObject(sql.toString(), params.toArray(), Long.class);
         return count;
     }
 
@@ -267,7 +274,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
         sql.append("insert into ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -282,7 +290,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         params.add(record.getActionInfo());
 
         //方式一
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
 
         //方式二
 //        int row = jdbcTemplate.update(sql.toString(), new PreparedStatementSetter() {
@@ -358,7 +366,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
         sql.append("insert into ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -383,7 +392,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
             }
         };
 
-        int[] rows = getDefaultJdbcTemplate().batchUpdate(sql.toString(), setter);
+        int[] rows = getJdbcTemplate().batchUpdate(sql.toString(), setter);
 
 
         //方式二
@@ -410,7 +419,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public int update(final AnLog record) {
         StringBuilder sql = new StringBuilder();
         sql.append("update ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" set action_type = ?,feature_type = ?,action_info = ? ")
                 .append(" where 1 = 1 ");
 
@@ -423,7 +433,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         params.add(record.getId());
 
         //方式一
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
 
         //方式二
 //        int row = getJdbcTemplate().update(sql.toString(), new PreparedStatementSetter() {
@@ -443,7 +453,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public int batchUpdate(List<AnLog> records) {
         StringBuilder sql = new StringBuilder();
         sql.append("update ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" set action_type = ?,feature_type = ?,action_info = ? ")
                 .append(" where 1 = 1 ");
 
@@ -466,7 +477,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
             }
         };
 
-        int[] rows = getDefaultJdbcTemplate().batchUpdate(sql.toString(), setter);
+        int[] rows = getJdbcTemplate().batchUpdate(sql.toString(), setter);
         return rows.length;
     }
 
@@ -475,7 +486,8 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public int delete(final Long id) {
         StringBuilder sql = new StringBuilder();
         sql.append("delete from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -483,7 +495,7 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
         params.add(id);
 
         //方式一
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
 
         //方式二
 //        int row = getJdbcTemplate().update(sql,new PreparedStatementSetter() {
@@ -500,13 +512,14 @@ public class JdbcAnLogDaoImpl extends BaseDao implements JdbcAnLogDao {
     public int batchDelete(List<Long> ids) {
         StringBuilder sql = new StringBuilder();
         sql.append("delete from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         String strIds = Joiner.on(",").skipNulls().join(ids);
         sql.append("and id in (").append(strIds).append(") ");
 
-        int row = getDefaultJdbcTemplate().update(sql.toString());
+        int row = getJdbcTemplate().update(sql.toString());
         return row;
     }
 

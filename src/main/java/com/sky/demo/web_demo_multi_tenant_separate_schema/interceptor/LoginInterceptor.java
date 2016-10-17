@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.context.DBContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -52,7 +53,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        AppContext.releaseAppResources();
+//        AppContext.releaseResources();
+        DBContext.releaseResources();
 
         boolean flag = true;
         try {
@@ -68,7 +70,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     //validate some url
 
                     TenantUserForm tenantUser = sessionInfo.getTenantUser();
-                    AppContext.initAppResourcesByUserName(tenantUser.getUserName());
+//                    AppContext.initResourcesByUserName(tenantUser.getUserName());
+                    DBContext.initResourcesByUserName(tenantUser.getUserName());
 
                 }
             }

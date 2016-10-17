@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
@@ -224,6 +225,19 @@ public class JdbcAnLogServiceImpl implements AnLogService {
 
     @Override
     public boolean update(AnLogUpdateRequest updateRequest) {
+        AnLog log = transferUpdateReq2AnLog.apply(updateRequest);
+        int row = 0;
+        try {
+            row = anLogDao.update(log);
+        } catch (Exception e) {
+            logger.error("update error", e);
+        }
+        return row > 0;
+    }
+
+    @Async
+    @Override
+    public boolean asyncUpdate(AnLogUpdateRequest updateRequest) {
         AnLog log = transferUpdateReq2AnLog.apply(updateRequest);
         int row = 0;
         try {

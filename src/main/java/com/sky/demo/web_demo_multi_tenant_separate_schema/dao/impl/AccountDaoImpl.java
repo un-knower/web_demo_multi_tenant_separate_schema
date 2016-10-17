@@ -3,6 +3,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseTenantDao;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
-import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseDao;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dao.AccountDao;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.Account;
 
@@ -19,7 +19,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.model.Account;
  * Created by user on 16/9/19.
  */
 @Repository
-public class AccountDaoImpl extends BaseDao implements AccountDao {
+public class AccountDaoImpl extends BaseTenantDao implements AccountDao {       //BaseDao
 
     private static final Logger logger = LoggerFactory.getLogger(AccountDaoImpl.class);
 
@@ -32,7 +32,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(TABLE_COLUMN)
                 .append(" from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+                //.append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -55,7 +56,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         }
 
         RowMapper<Account> rowMapper = BeanPropertyRowMapper.newInstance(Account.class);
-        Account result = getDefaultJdbcTemplate().queryForObject(sql.toString(), params.toArray(), rowMapper);
+        Account result = getJdbcTemplate().queryForObject(sql.toString(), params.toArray(), rowMapper);
 
         return result;
     }
@@ -65,7 +66,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select ").append(TABLE_COLUMN)
                 .append(" from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -99,7 +101,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         }
 
         RowMapper<Account> rowMapper = BeanPropertyRowMapper.newInstance(Account.class);
-        List<Account> result = getDefaultJdbcTemplate().query(sql.toString(), params.toArray(), rowMapper);
+        List<Account> result = getJdbcTemplate().query(sql.toString(), params.toArray(), rowMapper);
 
         return result;
     }
@@ -109,7 +111,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select count(*) ")
                 .append(" from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
@@ -130,7 +133,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
             sql.append("and id in (").append(ids).append(") ");
         }
 
-        int count = getDefaultJdbcTemplate().queryForObject(sql.toString(), params.toArray(), Integer.class);
+        int count = getJdbcTemplate().queryForObject(sql.toString(), params.toArray(), Integer.class);
         return count;
     }
 
@@ -140,7 +143,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
 
         sql.append("insert into ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" (").append(INSERT_COLUMN).append(") ")
                 .append("values (").append(param).append(") ");
 
@@ -148,7 +152,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         params.add(record.getUserName());
         params.add(record.getPassword());
 
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
         return row;
     }
 
@@ -161,7 +165,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     public int update(Account record) {
         StringBuilder sql = new StringBuilder();
         sql.append("update ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" set user_name = ?, password = ? ")
                 .append(" where 1 = 1 ");
 
@@ -172,7 +177,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         sql.append("and id = ? ");
         params.add(record.getId());
 
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
         return row;
     }
 
@@ -185,14 +190,15 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     public int delete(int id) {
         StringBuilder sql = new StringBuilder();
         sql.append("delete from ")
-                .append(getSchema()).append(".").append(TABLE_NAME)
+//                .append(getSchemaDot())
+                .append(TABLE_NAME)
                 .append(" where 1 = 1 ");
 
         List<Object> params = Lists.newArrayList();
         sql.append("and id = ? ");
         params.add(id);
 
-        int row = getDefaultJdbcTemplate().update(sql.toString(), params.toArray());
+        int row = getJdbcTemplate().update(sql.toString(), params.toArray());
         return row;
     }
 

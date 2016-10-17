@@ -9,10 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 
 /**
  * Created by user on 16/9/18.
  */
+@Deprecated
 public abstract class BaseDao {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseDao.class);
@@ -26,8 +30,21 @@ public abstract class BaseDao {
     @Resource
     private NamedParameterJdbcTemplate defaultNamedParameterJdbcTemplate;      //default_db
 
+
     //default_db
     public JdbcTemplate getDefaultJdbcTemplate() {
+        //此方式有问题
+//        try {
+//            final Connection connection = defaultJdbcTemplate.getDataSource().getConnection();
+////            connection.createStatement().execute("set schema '" + getSchema() + "'");
+//
+//            logger.debug("====>schema:{}", getSchema());
+//            connection.createStatement().execute("set search_path='" + getSchema() + "'");
+//        } catch (SQLException e) {
+//            logger.error("switch schema error", e);
+//            throw new RuntimeException("switch schema error");
+//        }
+
         return defaultJdbcTemplate;
     }
 

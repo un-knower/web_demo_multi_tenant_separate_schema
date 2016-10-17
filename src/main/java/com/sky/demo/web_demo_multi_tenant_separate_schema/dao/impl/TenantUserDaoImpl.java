@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseDefaultDao;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.model.TenantUser;
  * Created by user on 16/9/18.
  */
 @Repository
-public class TenantUserDaoImpl extends BaseDao implements TenantUserDao {
+public class TenantUserDaoImpl extends BaseDefaultDao implements TenantUserDao { //BaseDao
 
     private static final Logger logger = LoggerFactory.getLogger(TenantUserDaoImpl.class);
 

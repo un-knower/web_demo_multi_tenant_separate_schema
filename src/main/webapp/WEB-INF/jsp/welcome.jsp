@@ -15,7 +15,8 @@
             <br><br>
             Tenant<br>
             name : ${tenantUser.tenant.name} <br>
-            token : ${tenantUser.tenant.token} <br>
+            deviceId : ${tenantUser.tenant.deviceId} <br>
+            deviceToken : ${tenantUser.tenant.deviceToken} <br>
             schemaName : <form:input path="tenant.schemaName" type="text" value="${tenantUser.tenant.schemaName}" ></form:input>
 
         </form:form>

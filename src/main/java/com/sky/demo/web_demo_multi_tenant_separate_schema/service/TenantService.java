@@ -21,6 +21,8 @@ public interface TenantService {
 
     public TenantForm queryByDeviceToken(String deviceToken);
 
+    public TenantForm queryBySchemaName(String schemaName);
+
     public List<TenantForm> queryList(List<Integer> ids);
 
     public Pager<TenantForm> queryList(TenantQueryRequest queryRequest);

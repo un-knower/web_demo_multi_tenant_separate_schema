@@ -26,6 +26,8 @@ public interface AnLogService {
 
     public boolean update(AnLogUpdateRequest updateRequest);
 
+    public boolean asyncUpdate(AnLogUpdateRequest updateRequest);
+
     public boolean updateList(List<AnLogUpdateRequest> updateRequests);
 
     public boolean delete(long id);
