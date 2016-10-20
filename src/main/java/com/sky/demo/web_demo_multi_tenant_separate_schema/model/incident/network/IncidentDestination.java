@@ -26,16 +26,30 @@ public class IncidentDestination implements Serializable {
     private long destinationEntryId;
 
     private String destinationEntryName;
+
+    @JsonIgnore
     private IncidentDestinationType destinationType;
+    @JsonIgnore
     private String localeDestinationType;
+    private int destinationTypeCode;
+
+    @JsonIgnore
     private IncidentActionType actionType;
+    @JsonIgnore
     private String localeActionType;
+    private int actionTypeCode;
+
     private boolean isReleased;
     private String releasedBy;
     private String localeReleaseTime;
+    @JsonIgnore
     private Timestamp releaseTime;
+
+    @JsonIgnore
     private IncidentDirectionType directionType;
+    @JsonIgnore
     private String localeDirectionType;
+    private int directionTypeCode;
 
     @JsonIgnore
     private long urlCategoryId;

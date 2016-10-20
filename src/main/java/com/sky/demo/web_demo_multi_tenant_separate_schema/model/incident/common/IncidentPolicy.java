@@ -34,7 +34,7 @@ public class IncidentPolicy implements Serializable {
 
     @JsonIgnore
     private IncidentSeverityType severityType;
-    private int serverityTypeCode;
+    private int severityTypeCode;
 
     private boolean isTrickle;      //零星式
     private boolean isVisible;
