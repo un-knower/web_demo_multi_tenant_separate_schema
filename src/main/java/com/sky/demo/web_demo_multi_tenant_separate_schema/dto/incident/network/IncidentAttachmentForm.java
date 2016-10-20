@@ -10,10 +10,7 @@ public class IncidentAttachmentForm implements Serializable {
     private static final long serialVersionUID = -9129094027595568735L;
     private String fileName;
     private long fileSize;
-    private String localeFileSize;
     private int fileType;
-    private String fileTypeName;
-    private String encodeType;
 
     public String getFileName() {
         return fileName;
@@ -31,14 +28,6 @@ public class IncidentAttachmentForm implements Serializable {
         this.fileSize = fileSize;
     }
 
-    public String getLocaleFileSize() {
-        return localeFileSize;
-    }
-
-    public void setLocaleFileSize(String localeFileSize) {
-        this.localeFileSize = localeFileSize;
-    }
-
     public int getFileType() {
         return fileType;
     }
@@ -47,31 +36,12 @@ public class IncidentAttachmentForm implements Serializable {
         this.fileType = fileType;
     }
 
-    public String getFileTypeName() {
-        return fileTypeName;
-    }
-
-    public void setFileTypeName(String fileTypeName) {
-        this.fileTypeName = fileTypeName;
-    }
-
-    public String getEncodeType() {
-        return encodeType;
-    }
-
-    public void setEncodeType(String encodeType) {
-        this.encodeType = encodeType;
-    }
-
     @Override
     public String toString() {
         return "IncidentAttachmentForm{" +
                 "fileName='" + fileName + '\'' +
                 ", fileSize=" + fileSize +
-                ", localeFileSize='" + localeFileSize + '\'' +
                 ", fileType=" + fileType +
-                ", fileTypeName='" + fileTypeName + '\'' +
-                ", encodeType='" + encodeType + '\'' +
                 '}';
     }
 }

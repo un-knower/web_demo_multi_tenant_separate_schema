@@ -42,8 +42,11 @@ public class NetworkIncident extends BaseIncident {
     private String sourceEntryName;
     private String attachmentNames;
     private boolean hasAttachment;
+
     private boolean isReleased;
+    @JsonIgnore
     private String localeReleaseStatus;
+
     private boolean hasForensics;
 
     @JsonIgnore

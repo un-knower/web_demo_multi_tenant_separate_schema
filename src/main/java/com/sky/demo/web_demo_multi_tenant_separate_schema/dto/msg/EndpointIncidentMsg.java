@@ -1,11 +1,13 @@
-package com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.network;
+package com.sky.demo.web_demo_multi_tenant_separate_schema.dto.msg;
 
 import com.google.common.collect.Lists;
-import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.common.BaseIncidentForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.common.IncidentBreachContentForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.common.IncidentElementForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.common.IncidentPolicyForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.endpoint.EndpointIncidentForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.info.IncidentEntryInfoForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.network.IncidentAttachmentForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.network.IncidentDestinationForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 
 import java.io.Serializable;
@@ -15,149 +17,34 @@ import java.util.UUID;
 /**
  * Created by user on 16/10/20.
  */
-public class NetworkIncidentForm extends BaseIncidentForm implements Serializable {
+public class EndpointIncidentMsg extends BaseMsg implements Serializable {
 
-    private static final long serialVersionUID = 2660982442839156927L;
-    private String details;
-    private int channelTypeCode;
-    private String destinations;
-    private String sourceEntryName;
-    private String attachmentNames;
-    private boolean hasAttachment;
-    private boolean isReleased;
-    private boolean hasForensics;
-    private int workModeTypeCode;
-    private boolean isVisible;
-    private IncidentEntryInfoForm sourceEntryInfo;
-    private List<IncidentDestinationForm> incidentDestinations = Lists.newArrayList();
-    private List<IncidentAttachmentForm> incidentAttachments = Lists.newArrayList();
+    private static final long serialVersionUID = 4492038482390350377L;
+    private EndpointIncidentForm incident;
 
-    public String getDetails() {
-        return details;
+    public EndpointIncidentForm getIncident() {
+        return incident;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public int getChannelTypeCode() {
-        return channelTypeCode;
-    }
-
-    public void setChannelTypeCode(int channelTypeCode) {
-        this.channelTypeCode = channelTypeCode;
-    }
-
-    public String getDestinations() {
-        return destinations;
-    }
-
-    public void setDestinations(String destinations) {
-        this.destinations = destinations;
-    }
-
-    public String getSourceEntryName() {
-        return sourceEntryName;
-    }
-
-    public void setSourceEntryName(String sourceEntryName) {
-        this.sourceEntryName = sourceEntryName;
-    }
-
-    public String getAttachmentNames() {
-        return attachmentNames;
-    }
-
-    public void setAttachmentNames(String attachmentNames) {
-        this.attachmentNames = attachmentNames;
-    }
-
-    public boolean isHasAttachment() {
-        return hasAttachment;
-    }
-
-    public void setHasAttachment(boolean hasAttachment) {
-        this.hasAttachment = hasAttachment;
-    }
-
-    public boolean isReleased() {
-        return isReleased;
-    }
-
-    public void setReleased(boolean isReleased) {
-        this.isReleased = isReleased;
-    }
-
-    public boolean isHasForensics() {
-        return hasForensics;
-    }
-
-    public void setHasForensics(boolean hasForensics) {
-        this.hasForensics = hasForensics;
-    }
-
-    public int getWorkModeTypeCode() {
-        return workModeTypeCode;
-    }
-
-    public void setWorkModeTypeCode(int workModeTypeCode) {
-        this.workModeTypeCode = workModeTypeCode;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
-    }
-
-    public void setVisible(boolean isVisible) {
-        this.isVisible = isVisible;
-    }
-
-    public IncidentEntryInfoForm getSourceEntryInfo() {
-        return sourceEntryInfo;
-    }
-
-    public void setSourceEntryInfo(IncidentEntryInfoForm sourceEntryInfo) {
-        this.sourceEntryInfo = sourceEntryInfo;
-    }
-
-    public List<IncidentDestinationForm> getIncidentDestinations() {
-        return incidentDestinations;
-    }
-
-    public void setIncidentDestinations(List<IncidentDestinationForm> incidentDestinations) {
-        this.incidentDestinations = incidentDestinations;
-    }
-
-    public List<IncidentAttachmentForm> getIncidentAttachments() {
-        return incidentAttachments;
-    }
-
-    public void setIncidentAttachments(List<IncidentAttachmentForm> incidentAttachments) {
-        this.incidentAttachments = incidentAttachments;
+    public void setIncident(EndpointIncidentForm incident) {
+        this.incident = incident;
     }
 
     @Override
     public String toString() {
-        return "NetworkIncidentForm{" +
-                "details='" + details + '\'' +
-                ", channelTypeCode=" + channelTypeCode +
-                ", destinations='" + destinations + '\'' +
-                ", sourceEntryName='" + sourceEntryName + '\'' +
-                ", attachmentNames='" + attachmentNames + '\'' +
-                ", hasAttachment=" + hasAttachment +
-                ", isReleased=" + isReleased +
-                ", hasForensics=" + hasForensics +
-                ", workModeTypeCode=" + workModeTypeCode +
-                ", isVisible=" + isVisible +
-                ", sourceEntryInfo=" + sourceEntryInfo +
-                ", incidentDestinations=" + incidentDestinations +
-                ", incidentAttachments=" + incidentAttachments +
+        return "EndpointIncidentMsg{" +
+                "incident=" + incident +
                 "} " + super.toString();
     }
 
-
     public static void main(String[] args) {
-        NetworkIncidentForm incidentForm = new NetworkIncidentForm();
+
+        EndpointIncidentMsg msg = new EndpointIncidentMsg();
+        msg.setTenantCode("tenant1");
+        msg.setTenantType("vip");
+        msg.setIncidentType("endpoint");
+
+        EndpointIncidentForm incidentForm = new EndpointIncidentForm();
 
         incidentForm.setId(1234567890);
         incidentForm.setTransactionId(UUID.randomUUID().toString());
@@ -222,16 +109,22 @@ public class NetworkIncidentForm extends BaseIncidentForm implements Serializabl
         incidentForm.setIncidentPolicies(incidentPolicies);
 
 
-        //network
+        //endpoint
         incidentForm.setDetails("details");
         incidentForm.setChannelTypeCode(1);
         incidentForm.setDestinations("destiantions");
         incidentForm.setSourceEntryName("zhangsan");
         incidentForm.setAttachmentNames("attachment");
         incidentForm.setHasAttachment(true);
-        incidentForm.setReleased(true);
         incidentForm.setHasForensics(false);
-        incidentForm.setWorkModeTypeCode(1);
+        incidentForm.setDirectionTypes("type1;type2");
+        incidentForm.setDirectionNames("name1");
+        incidentForm.setOperationTypeCode(1);
+        incidentForm.setDeviceTypeCode(1);
+        incidentForm.setCorporateTypeCode(1);
+        incidentForm.setOperationSystem("linux");
+        incidentForm.setHostname("hostname");
+
         incidentForm.setVisible(true);
 
         IncidentEntryInfoForm sourceEntryInfo = new IncidentEntryInfoForm();
@@ -316,10 +209,11 @@ public class NetworkIncidentForm extends BaseIncidentForm implements Serializabl
         }
         incidentForm.setIncidentAttachments(incidentAttachments);
 
+        msg.setIncident(incidentForm);
+
 
         //print
-        String json = JsonUtil.writeValueAsString(incidentForm);
+        String json = JsonUtil.writeValueAsString(msg);
         System.out.println(json);
-
     }
 }

@@ -1,5 +1,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.dto.incident.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -15,8 +17,6 @@ public class IncidentBreachContentForm implements Serializable {
     private double similarity;
     private int matches;
     private int fileType;
-    private String fileTypeName;
-    private String encodeType;
 
     public String getContent() {
         return content;
@@ -74,22 +74,6 @@ public class IncidentBreachContentForm implements Serializable {
         this.fileType = fileType;
     }
 
-    public String getFileTypeName() {
-        return fileTypeName;
-    }
-
-    public void setFileTypeName(String fileTypeName) {
-        this.fileTypeName = fileTypeName;
-    }
-
-    public String getEncodeType() {
-        return encodeType;
-    }
-
-    public void setEncodeType(String encodeType) {
-        this.encodeType = encodeType;
-    }
-
     @Override
     public String toString() {
         return "IncidentBreachContentForm{" +
@@ -100,8 +84,6 @@ public class IncidentBreachContentForm implements Serializable {
                 ", similarity=" + similarity +
                 ", matches=" + matches +
                 ", fileType=" + fileType +
-                ", fileTypeName='" + fileTypeName + '\'' +
-                ", encodeType='" + encodeType + '\'' +
                 '}';
     }
 }

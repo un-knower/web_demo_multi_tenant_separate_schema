@@ -24,7 +24,10 @@ public class IncidentBreachContent implements Serializable {
     private double similarity;
     private int matches;
     private int fileType;
+
+    @JsonIgnore
     private String fileTypeName;
+    @JsonIgnore
     private String encodeType;
 
     public String getContent() {

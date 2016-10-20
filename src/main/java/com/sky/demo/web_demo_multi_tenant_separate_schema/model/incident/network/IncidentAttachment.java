@@ -17,9 +17,13 @@ public class IncidentAttachment implements Serializable {
 
     private String fileName;
     private long fileSize;
+
+    @JsonIgnore
     private String localeFileSize;
     private int fileType;
+    @JsonIgnore
     private String fileTypeName;
+    @JsonIgnore
     private String encodeType;
 
     public long getId() {
