@@ -1,6 +1,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.context;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +36,8 @@ public class AppContext implements Serializable {
         tenantThreadLocal.set(tenant);
 
         if (tenant != null) {
+//            String traceId = UUID.randomUUID().toString().replaceAll("-", "");
+//            MDC.put("traceId", traceId);
             MDC.put("tenant", tenant.getName());
         }
     }
@@ -117,6 +120,7 @@ public class AppContext implements Serializable {
     public static void releaseResources() {
         releaseTenant();
         releaseTenantUser();
+//        MDC.remove("traceId");
         MDC.remove("tenant");
     }
 }
