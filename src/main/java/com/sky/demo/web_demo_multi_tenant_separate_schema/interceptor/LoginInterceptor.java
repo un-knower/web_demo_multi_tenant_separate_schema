@@ -35,6 +35,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         IGNORE_URIS.add("/js");
         IGNORE_URIS.add("/css");
         IGNORE_URIS.add("/images");
+
+        IGNORE_URIS.add("/v1");
     }
 
     private static final Predicate<String> isContainIgnoreUrl = new Predicate<String>() {
@@ -54,7 +56,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        AppContext.releaseResources();
-        DBContext.releaseResources();
+//        DBContext.releaseResources();
 
         boolean flag = true;
         try {
@@ -64,6 +66,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             } else {
                 SessionInfo sessionInfo = SessionUtil.getSessionInfo(request);
                 if (sessionInfo == null || sessionInfo.getTenantUser() == null) {
+                    logger.error("session info is null!! send 403");
                     response.sendError(403);
                     flag = false;
                 } else {

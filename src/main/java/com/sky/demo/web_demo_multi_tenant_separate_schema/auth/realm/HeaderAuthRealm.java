@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.auth.realm;
 
 import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.auth.token.HeaderAuthToken;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.context.DBContext;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.tenant.TenantForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.service.TenantService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.SHAUtil;
@@ -54,17 +55,20 @@ public class HeaderAuthRealm extends AuthorizingRealm {
         }
 
         try {
-            TenantForm tenantForm = tenantService.queryByDeviceId(deviceId);
-            Preconditions.checkNotNull(tenantForm, "tenant is null");
+            TenantForm tenant = tenantService.queryByDeviceId(deviceId);
+            Preconditions.checkNotNull(tenant, "tenant is null");
 
-            String deviceToken = tenantForm.getDeviceToken();
+            String deviceToken = tenant.getDeviceToken();
             logger.debug("device token is {}", deviceToken);
 
             String tokenCheck = SHAUtil.encrypt(timestamp + deviceToken + deviceId);
-            logger.debug("begin to validate, token is {}", tokenCheck);
+            logger.debug("begin to validate, encrypt token is {}, auth token is {}", tokenCheck, tokenStr);
             if (!tokenCheck.equals(tokenStr)) {
                 throw new AuthenticationException("Invalid token");
             }
+
+            DBContext.initResourcesByToken(tenant.getDeviceToken());
+
         } catch (AuthenticationException e) {
             logger.error("encrypt token error" + e);
             throw new AuthenticationException("encrypt token error");

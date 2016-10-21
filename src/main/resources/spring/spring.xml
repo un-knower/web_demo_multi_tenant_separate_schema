@@ -13,7 +13,7 @@
     <import resource="classpath:spring/spring-message.xml"/>
     <import resource="classpath:spring/spring-dao.xml"/>
     <import resource="classpath:spring/spring-service.xml"/>
-    <import resource="classpath:spring/spring-quartz.xml"/>
+    <!--<import resource="classpath:spring/spring-quartz.xml"/>-->
     <import resource="classpath:spring/spring-shiro.xml"/>
 
 </beans>
