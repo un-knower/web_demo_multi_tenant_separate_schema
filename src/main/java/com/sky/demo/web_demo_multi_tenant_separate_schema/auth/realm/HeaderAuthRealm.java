@@ -67,7 +67,10 @@ public class HeaderAuthRealm extends AuthorizingRealm {
                 throw new AuthenticationException("Invalid token");
             }
 
-            DBContext.initResourcesByToken(tenant.getDeviceToken());
+            //init tenant info
+//            DBContext.initResourcesByDbKey(tenant.getSchemaName());
+            DBContext.initResourcesByDeviceId(tenant.getDeviceId());
+//            DBContext.initResourcesByDeviceToken(tenant.getDeviceToken());
 
         } catch (AuthenticationException e) {
             logger.error("encrypt token error" + e);

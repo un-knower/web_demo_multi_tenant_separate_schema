@@ -101,24 +101,47 @@ public class DBContext {
 
     /**
      * 初始化tenant信息
-     * @param token
+     * @param deviceId
      */
-    public static void initResourcesByToken(String token) {
-        Preconditions.checkState(StringUtils.isNotBlank(token), "token is blank!!");
-        logger.debug("   ====> init Resources token = " + token);
+    public static void initResourcesByDeviceId(String deviceId) {
+        Preconditions.checkState(StringUtils.isNotBlank(deviceId), "deviceId is blank!!");
+        logger.debug("   ====> init Resources deviceId = " + deviceId);
 
         try {
             TenantService tenantService = SpringUtil.getCtx().getBean(TenantService.class);
-            TenantForm tenant = tenantService.queryByDeviceToken(token);
+            TenantForm tenant = tenantService.queryByDeviceId(deviceId);
             Preconditions.checkNotNull(tenant, "tenant is null!");
 
             setDbKey(tenant.getSchemaName());
             setTenant(tenant);
         } catch (BeansException e) {
-            logger.error("init resource by token error", e);
+            logger.error("init resource by deviceId error", e);
         }
 
-        logger.debug("   ====> init Resources by token: " + token + ", tenant = " + getTenant().getSchemaName());
+        logger.debug("   ====> init Resources by deviceId: " + deviceId + ", tenant = " + getTenant().getSchemaName());
+
+    }
+
+    /**
+     * 初始化tenant信息
+     * @param deviceToken
+     */
+    public static void initResourcesByDeviceToken(String deviceToken) {
+        Preconditions.checkState(StringUtils.isNotBlank(deviceToken), "deviceToken is blank!!");
+        logger.debug("   ====> init Resources deviceToken = " + deviceToken);
+
+        try {
+            TenantService tenantService = SpringUtil.getCtx().getBean(TenantService.class);
+            TenantForm tenant = tenantService.queryByDeviceToken(deviceToken);
+            Preconditions.checkNotNull(tenant, "tenant is null!");
+
+            setDbKey(tenant.getSchemaName());
+            setTenant(tenant);
+        } catch (BeansException e) {
+            logger.error("init resource by deviceToken error", e);
+        }
+
+        logger.debug("   ====> init Resources by deviceToken: " + deviceToken + ", tenant = " + getTenant().getSchemaName());
 
     }
 
