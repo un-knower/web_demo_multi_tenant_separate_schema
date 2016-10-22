@@ -35,11 +35,13 @@ public class DeviceRegisterHeaderAuthRealm extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        RegisterHeaderAuthToken registerHeaderAuthToken = (RegisterHeaderAuthToken) token;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        RegisterHeaderAuthToken registerHeaderAuthToken = (RegisterHeaderAuthToken) authenticationToken;
+        logger.debug("....begin to validate AuthenticationToken....");
         String timestamp = registerHeaderAuthToken.getTimestamp();
         String tokenStr = registerHeaderAuthToken.getToken();
 
+        logger.debug("...registry request: timestamp is {},token is {}", new Object[]{timestamp, tokenStr});
         if (StringUtils.isBlank(timestamp) || StringUtils.isBlank(tokenStr)) {
             throw new AuthenticationException("token is empty");
         }
@@ -52,6 +54,9 @@ public class DeviceRegisterHeaderAuthRealm extends AuthorizingRealm {
             if (!tokenCheck.equals(tokenStr)) {
                 throw new AuthenticationException("Invalid token");
             }
+
+            //注： 如果只传 timestamp 、默认的token 是无法识别租户信息的
+
         } catch (UnsupportedEncodingException e) {
             logger.error("encrypt token error" + e);
             throw new AuthenticationException("encrypt token error");

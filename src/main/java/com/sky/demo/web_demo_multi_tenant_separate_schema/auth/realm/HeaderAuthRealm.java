@@ -42,14 +42,14 @@ public class HeaderAuthRealm extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        HeaderAuthToken headerAuthToken = (HeaderAuthToken) token;
-        logger.debug("..... begin to validate token....");
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        HeaderAuthToken headerAuthToken = (HeaderAuthToken) authenticationToken;
+        logger.debug("....begin to validate AuthenticationToken....");
         String timestamp = headerAuthToken.getTimestamp();
         String tokenStr = headerAuthToken.getToken();
         String deviceId = headerAuthToken.getDeviceId();
 
-        logger.debug(".....header info in client request: timestamp is {},token is {},device uuid is {}....", new Object[]{timestamp, tokenStr, deviceId});
+        logger.debug("...header info request: timestamp is {},token is {},device uuid is {}", new Object[]{timestamp, tokenStr, deviceId});
         if (StringUtils.isBlank(timestamp) || StringUtils.isBlank(tokenStr) || StringUtils.isBlank(deviceId)) {
             throw new AuthenticationException("token is empty");
         }
