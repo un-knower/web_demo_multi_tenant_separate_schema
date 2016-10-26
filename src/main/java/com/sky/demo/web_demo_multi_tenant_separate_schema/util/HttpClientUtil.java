@@ -105,6 +105,11 @@ public class HttpClientUtil {
     }
 
 
+    /**
+     * HttpClient GET 自动执行302的重定向
+     * @param url
+     * @return
+     */
     public static HttpResponse getProcessRedirect(String url) {
         Preconditions.checkState(StringUtils.isNotBlank(url), "url is blank!");
 
@@ -115,7 +120,16 @@ public class HttpClientUtil {
             HttpGet httpGet = new HttpGet(url);
 
             response = httpClient.execute(httpGet);
-            httpGet.abort();       //释放post请求
+//            httpGet.abort();       //GET 会自动重定向，不能释放请求
+
+            // 获取响应实体
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                // 响应内容长度
+                logger.info("Response content length: {}", entity.getContentLength());
+                // 响应内容
+                logger.info("Response content: {}", EntityUtils.toString(entity));
+            }
 
             //处理http返回码302的情况
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY) { //302
@@ -123,7 +137,7 @@ public class HttpClientUtil {
                 response = get(locationUrl);  //跳转到重定向的url
             }
         } catch (IOException e) {
-            logger.error("http ");
+            logger.error("http redirect error", e);
         } finally {
             try {
                 httpClient.close();
@@ -134,6 +148,12 @@ public class HttpClientUtil {
         return response;
     }
 
+    /**
+     * HttpClient POST 和 PUT，不支持自动转发，因此需要对页面转向做处理。
+     * @param url
+     * @param httpEntity
+     * @return
+     */
     public static HttpResponse postProcessRedirect(String url, HttpEntity httpEntity) {
         Preconditions.checkState(StringUtils.isNotBlank(url), "url is blank!");
 
@@ -145,7 +165,7 @@ public class HttpClientUtil {
             httpPost.setEntity(httpEntity);
 
             response = httpClient.execute(httpPost);
-            httpPost.abort();       //释放post请求
+            httpPost.abort();       //POST 不会重定向，需要释放请求
 
             //处理http返回码302的情况
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY) { //302
@@ -153,7 +173,7 @@ public class HttpClientUtil {
                 response = post(locationUrl, httpEntity);  //跳转到重定向的url
             }
         } catch (IOException e) {
-            logger.error("http ");
+            logger.error("http redirect error", e);
         } finally {
             try {
                 httpClient.close();
@@ -169,6 +189,8 @@ public class HttpClientUtil {
 //        String url = "http://127.0.0.1:8080/web_demo/http/query/1";
 //        HttpResponse httpResponse = get(url);
 
+        String url = "http://127.0.0.1:8080/web_demo/http/redirect/query/1";
+        HttpResponse httpResponse = getProcessRedirect(url);
 
 //        // 创建参数队列
 //        List<NameValuePair> pairList = Lists.newArrayList();
@@ -187,8 +209,8 @@ public class HttpClientUtil {
 //        String postUrl = "http://127.0.0.1:8080/web_demo/http/queryList";
 //        HttpResponse response = post(postUrl, httpEntity);
 
-        String postUrl = "http://127.0.0.1:8080/web_demo/http/redirect/queryList";
-        HttpResponse response = postProcessRedirect(postUrl, httpEntity);
+//        String postUrl = "http://127.0.0.1:8080/web_demo/http/redirect/queryList";
+//        HttpResponse response = postProcessRedirect(postUrl, httpEntity);
 
 
     }

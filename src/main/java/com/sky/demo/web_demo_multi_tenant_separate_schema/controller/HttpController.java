@@ -64,7 +64,7 @@ public class HttpController {
 
     @RequestMapping(value = "/redirect/query/{id}", method = RequestMethod.GET)
     public void redirectQuery(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
-        String url =  request.getRequestURI() + "/http/query/" + id; //TODO
+        String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
         logger.info("redirect query, url: {}", url);
         response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
         response.setHeader("Location", url);
@@ -72,7 +72,7 @@ public class HttpController {
 
     @RequestMapping(value = "/redirect/queryList", method = RequestMethod.POST)
     public void redirectQueryList(@RequestBody TenantQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
-        String url = request.getRequestURL() + "/http/queryList"; //TODO
+        String url = "http://127.0.0.1:8080/web_demo" + "/http/queryList";
         logger.info("redirect query, url: {}", url);
 
         response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
