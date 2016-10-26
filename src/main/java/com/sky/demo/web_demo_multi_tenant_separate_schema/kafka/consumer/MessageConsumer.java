@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by rg on 25/10/2016.
  */
-public class KafkaConsumer {
+public class MessageConsumer {
 
-    private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
 }

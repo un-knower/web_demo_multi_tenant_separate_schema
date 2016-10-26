@@ -15,6 +15,7 @@
         <springframework.version>4.1.6.RELEASE</springframework.version>
         <project.json.version>2.5.4</project.json.version>
         <project.shiro.version>1.2.3</project.shiro.version>
+        <project.kafka.version>0.10.0.0</project.kafka.version>
     </properties>
 
     <dependencyManagement>
@@ -329,11 +330,17 @@
             </dependency>
 
             <!--Kafka-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.kafka</groupId>-->
+                <!--<artifactId>kafka_2.11</artifactId>-->
+                <!--<version>${project.kafka.version}</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka_2.11</artifactId>
-                <version>0.10.0.0</version>
+                <artifactId>kafka-clients</artifactId>
+                <version>${project.kafka.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>com.github.abel533</groupId>
@@ -504,11 +511,14 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-all</artifactId>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.kafka</groupId>-->
+            <!--<artifactId>kafka_2.11</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.11</artifactId>
+            <artifactId>kafka-clients</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.github.abel533</groupId>
             <artifactId>ECharts</artifactId>
