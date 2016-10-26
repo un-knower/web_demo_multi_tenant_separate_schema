@@ -49,7 +49,7 @@ public class HeaderAuthRealm extends AuthorizingRealm {
         String tokenStr = headerAuthToken.getToken();
         String deviceId = headerAuthToken.getDeviceId();
 
-        logger.debug("...header info request: timestamp is {},token is {},device uuid is {}", new Object[]{timestamp, tokenStr, deviceId});
+        logger.debug("...header info request: timestamp is {},token is {},device id is {}", new Object[]{timestamp, tokenStr, deviceId});
         if (StringUtils.isBlank(timestamp) || StringUtils.isBlank(tokenStr) || StringUtils.isBlank(deviceId)) {
             throw new AuthenticationException("token is empty");
         }
