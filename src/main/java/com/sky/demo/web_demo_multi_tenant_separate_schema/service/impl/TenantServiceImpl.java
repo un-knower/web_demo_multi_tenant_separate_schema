@@ -309,7 +309,14 @@ public class TenantServiceImpl implements TenantService {
     public boolean delete(int id) {
         int row = 0;
         try {
-            row = tenantDao.delete(id);
+//            row = tenantDao.delete(id);
+            TenantForm tenantForm = query(id);
+            if (tenantForm != null) {
+                Tenant tenant = transfer2Tenant.apply(tenantForm);
+
+                tenant.setStatus(Tenant.Status.DELETED.getCode());
+                row = tenantDao.update(tenant);
+            }
         } catch (Exception e) {
             logger.error("delete error", e);
         }

@@ -47,14 +47,14 @@ public class AnLogController {
 
     @RequestMapping("/query/{id}")
     @ResponseBody
-    public RetData<AnLogForm> query(@PathVariable long id) {
+    public RetData<AnLogForm> query(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) {
         RetData<AnLogForm> result = null;
         try {
             AnLogForm anLogForm = anLogService.query(id);
 
             result = RetUtil.buildSuccessRet(anLogForm);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -62,14 +62,14 @@ public class AnLogController {
 
     @RequestMapping("/queryList")
     @ResponseBody
-    public RetData<Pager<AnLogForm>> queryList(@RequestBody AnLogQueryRequest queryRequest) {
+    public RetData<Pager<AnLogForm>> queryList(@RequestBody AnLogQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
 
         RetData<Pager<AnLogForm>> result = null;
         try {
             Pager<AnLogForm> ret  = anLogService.queryList(queryRequest);
             result = RetUtil.buildSuccessRet(ret);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -78,7 +78,7 @@ public class AnLogController {
 
     @RequestMapping("/add")
     @ResponseBody
-    public RetData<String> add(@RequestBody AnLogInsertRequest insertRequest) {
+    public RetData<String> add(@RequestBody AnLogInsertRequest insertRequest, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = anLogService.add(insertRequest);
@@ -87,7 +87,7 @@ public class AnLogController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("add log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -95,7 +95,7 @@ public class AnLogController {
 
     @RequestMapping("/addList")
     @ResponseBody
-    public RetData<String> addList(@RequestBody List<AnLogInsertRequest> insertRequests) {
+    public RetData<String> addList(@RequestBody List<AnLogInsertRequest> insertRequests, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = anLogService.addList(insertRequests);
@@ -104,7 +104,7 @@ public class AnLogController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("add log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -112,7 +112,7 @@ public class AnLogController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public RetData<String> update(@RequestBody AnLogUpdateRequest updateRequest) {
+    public RetData<String> update(@RequestBody AnLogUpdateRequest updateRequest, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isUpdate = anLogService.update(updateRequest);
@@ -120,7 +120,7 @@ public class AnLogController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("update log error",e);
+            logger.error("update error",e);
             result = RetUtil.buildErrorRet(RetStatus.UPDATE_ERROR);
         }
         return result;
@@ -128,7 +128,7 @@ public class AnLogController {
 
     @RequestMapping("/delete/{id}")
     @ResponseBody
-    public RetData<String> delete(@PathVariable long id) {
+    public RetData<String> delete(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isDelete = anLogService.delete(id);
@@ -136,7 +136,7 @@ public class AnLogController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("delete log error",e);
+            logger.error("delete error",e);
             result = RetUtil.buildErrorRet(RetStatus.DELETE_ERROR);
         }
         return result;

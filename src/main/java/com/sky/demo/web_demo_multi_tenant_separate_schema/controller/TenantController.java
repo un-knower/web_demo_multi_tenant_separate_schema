@@ -35,14 +35,14 @@ public class TenantController {
 
     @RequestMapping("/query/{id}")
     @ResponseBody
-    public RetData<TenantForm> query(@PathVariable int id) {
+    public RetData<TenantForm> query(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         RetData<TenantForm> result = null;
         try {
             TenantForm TenantForm = tenantService.query(id);
 
             result = RetUtil.buildSuccessRet(TenantForm);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -102,7 +102,7 @@ public class TenantController {
 
             result = RetUtil.buildSuccessRet(TenantForm);
         } catch (Exception e) {
-            logger.error("query tenant error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -110,14 +110,14 @@ public class TenantController {
 
     @RequestMapping("/queryList")
     @ResponseBody
-    public RetData<Pager<TenantForm>> queryList(@RequestBody TenantQueryRequest request) {
+    public RetData<Pager<TenantForm>> queryList(@RequestBody TenantQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
 
         RetData<Pager<TenantForm>> result = null;
         try {
-            Pager<TenantForm> ret  = tenantService.queryList(request);
+            Pager<TenantForm> ret  = tenantService.queryList(queryRequest);
             result = RetUtil.buildSuccessRet(ret);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -126,7 +126,7 @@ public class TenantController {
 
     @RequestMapping("/add")
     @ResponseBody
-    public RetData<String> add(@RequestBody TenantForm record) {
+    public RetData<String> add(@RequestBody TenantForm record, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = tenantService.add(record);
@@ -135,7 +135,7 @@ public class TenantController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("insert log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -143,7 +143,7 @@ public class TenantController {
 
     @RequestMapping("/addList")
     @ResponseBody
-    public RetData<String> addList(@RequestBody List<TenantForm> records) {
+    public RetData<String> addList(@RequestBody List<TenantForm> records, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = tenantService.addList(records);
@@ -152,7 +152,7 @@ public class TenantController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("add log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -160,7 +160,7 @@ public class TenantController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public RetData<String> update(@RequestBody TenantForm record) {
+    public RetData<String> update(@RequestBody TenantForm record, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isUpdate = tenantService.update(record);
@@ -168,7 +168,7 @@ public class TenantController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("update log error",e);
+            logger.error("update error",e);
             result = RetUtil.buildErrorRet(RetStatus.UPDATE_ERROR);
         }
         return result;
@@ -176,7 +176,7 @@ public class TenantController {
 
     @RequestMapping("/delete/{id}")
     @ResponseBody
-    public RetData<String> delete(@PathVariable int id) {
+    public RetData<String> delete(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isDelete = tenantService.delete(id);
@@ -184,7 +184,7 @@ public class TenantController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("delete log error",e);
+            logger.error("delete error",e);
             result = RetUtil.buildErrorRet(RetStatus.DELETE_ERROR);
         }
         return result;

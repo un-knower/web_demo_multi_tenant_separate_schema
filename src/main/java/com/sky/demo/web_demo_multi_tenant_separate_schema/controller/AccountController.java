@@ -3,6 +3,8 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,7 @@ public class AccountController {
 
     @RequestMapping("/query/{id}")
     @ResponseBody
-    public RetData<Account> query(@PathVariable int id) {   //, @RequestParam String userName
+    public RetData<Account> query(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {   //, @RequestParam String userName
         RetData<Account> result = null;
         try {
             //AppContext.initResourcesByUserName(userName);
@@ -45,7 +47,7 @@ public class AccountController {
 
             result = RetUtil.buildSuccessRet(Account);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -53,14 +55,14 @@ public class AccountController {
 
     @RequestMapping("/queryList")
     @ResponseBody
-    public RetData<Pager<Account>> queryList(@RequestBody AccountQueryRequest request) {
+    public RetData<Pager<Account>> queryList(@RequestBody AccountQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
 
         RetData<Pager<Account>> result = null;
         try {
-            Pager<Account> ret  = accountService.queryList(request);
+            Pager<Account> ret  = accountService.queryList(queryRequest);
             result = RetUtil.buildSuccessRet(ret);
         } catch (Exception e) {
-            logger.error("query log error",e);
+            logger.error("query error",e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -69,7 +71,7 @@ public class AccountController {
 
     @RequestMapping("/add")
     @ResponseBody
-    public RetData<String> add(@RequestBody Account record) {
+    public RetData<String> add(@RequestBody Account record, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = accountService.add(record);
@@ -78,7 +80,7 @@ public class AccountController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("insert log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -86,7 +88,7 @@ public class AccountController {
 
     @RequestMapping("/addList")
     @ResponseBody
-    public RetData<String> addList(@RequestBody List<Account> records) {
+    public RetData<String> addList(@RequestBody List<Account> records, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isAdd = accountService.addList(records);
@@ -95,7 +97,7 @@ public class AccountController {
             result = RetUtil.buildSuccessRet("success");
 
         } catch (Exception e) {
-            logger.error("add log error",e);
+            logger.error("add error",e);
             result = RetUtil.buildErrorRet(RetStatus.INSERT_ERROR);
         }
         return result;
@@ -103,7 +105,7 @@ public class AccountController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public RetData<String> update(@RequestBody Account record) {
+    public RetData<String> update(@RequestBody Account record, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isUpdate = accountService.update(record);
@@ -111,7 +113,7 @@ public class AccountController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("update log error",e);
+            logger.error("update error",e);
             result = RetUtil.buildErrorRet(RetStatus.UPDATE_ERROR);
         }
         return result;
@@ -119,7 +121,7 @@ public class AccountController {
 
     @RequestMapping("/delete/{id}")
     @ResponseBody
-    public RetData<String> delete(@PathVariable int id) {
+    public RetData<String> delete(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         RetData<String> result = null;
         try {
             boolean isDelete = accountService.delete(id);
@@ -127,7 +129,7 @@ public class AccountController {
 
             result = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
-            logger.error("delete log error",e);
+            logger.error("delete error",e);
             result = RetUtil.buildErrorRet(RetStatus.DELETE_ERROR);
         }
         return result;

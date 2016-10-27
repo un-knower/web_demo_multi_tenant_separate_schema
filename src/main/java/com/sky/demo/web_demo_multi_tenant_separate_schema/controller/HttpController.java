@@ -1,5 +1,6 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.controller;
 
+import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.Pager;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetData;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetStatus;
@@ -60,6 +61,23 @@ public class HttpController {
         }
         return result;
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public RetData<String> delete(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
+        RetData<String> result = null;
+        try {
+            boolean isDelete = tenantService.delete(id);
+            Preconditions.checkArgument(isDelete, "delete error");
+
+            result = RetUtil.buildSuccessRet("success");
+        } catch (Exception e) {
+            logger.error("delete log error",e);
+            result = RetUtil.buildErrorRet(RetStatus.DELETE_ERROR);
+        }
+        return result;
+    }
+
 
 
     @RequestMapping(value = "/redirect/query/{id}", method = RequestMethod.GET)
