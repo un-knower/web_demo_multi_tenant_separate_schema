@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,9 @@ public class HttpController {
 
     @Resource
     private TenantService tenantService;
+
+    @Resource
+    private RestTemplate restTemplate;
 
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
@@ -106,4 +110,15 @@ public class HttpController {
         response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
         response.setHeader("Location", url);
     }
+
+
+
+//    @RequestMapping(value = "/rest/query/{id}", method = RequestMethod.GET)
+//    public void restQuery(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
+//        String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
+//        logger.info("redirect query, url: {}", url);
+//
+//        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+//        response.setHeader("Location", url);
+//    }
 }

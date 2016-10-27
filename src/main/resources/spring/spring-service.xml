@@ -12,4 +12,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />
     </context:component-scan>
 
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+
 </beans>

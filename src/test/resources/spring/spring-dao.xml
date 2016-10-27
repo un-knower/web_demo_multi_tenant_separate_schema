@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       default-autowire="byName">
+
+    <!--<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close" autowire="no">-->
+        <!--<property name="fairQueue" value="false"/>-->
+        <!--<property name="minIdle" value="5"/>-->
+        <!--<property name="maxIdle" value="10"/>-->
+        <!--<property name="maxActive" value="100"/>-->
+        <!--<property name="initialSize" value="10"/>-->
+
+        <!--<property name="testOnBorrow" value="true"/>-->
+        <!--<property name="validationQuery" value="select 1"/>-->
+        <!--<property name="validationInterval" value="500000"/> &lt;!&ndash; 5min &ndash;&gt;-->
+        <!--<property name="removeAbandoned" value="true"/>-->
+        <!--<property name="removeAbandonedTimeout" value="30"/>-->
+
+        <!--<property name="driverClassName" value="${postgre.jdbc.driver}"/>-->
+        <!--<property name="url" value="${postgre.jdbc.url}"/>-->
+        <!--<property name="username" value="${postgre.jdbc.username}"/>-->
+        <!--<property name="password" value="${postgre.jdbc.password}"/>-->
+    <!--</bean>-->
+
+
+    <!-- 每隔1分钟检查一次数据库中空闲超过10分钟的链接，发现就回收，直到空闲连接数达到 minIdle 个 , 注：dbcp 支持parent，tomcat jdbc 不支持-->
+    <bean id="parentDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" autowire="no" abstract="true">
+        <!--<property name="driverClassName" value="${postgre.jdbc.driver}" />-->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>  <!-- 每隔毫秒秒检查一次连接池中空闲的连接 -->
+        <property name="minEvictableIdleTimeMillis" value="600000" />   <!-- 连接池中连接可空闲的时间,毫秒 -->
+
+        <property name="removeAbandoned" value="true" /> <!-- 是否清理removeAbandonedTimeout秒没有使用的活动连接,清理后并没有放回连接池 -->
+        <property name="removeAbandonedTimeout" value="60" />  <!-- 活动连接的最大空闲时间 -->
+
+        <property name="minIdle" value="10" /> <!-- 最小空闲连接数 -->
+        <property name="maxWait" value="60000" /> <!-- 最大等待时间，当没有可用连接时，连接池等待连接释放的最大时间 -->
+    </bean>
+    <!--default-->
+    <bean id="defaultDataSource" parent="parentDataSource">
+        <property name="driverClassName" value="${postgre.jdbc.driver}"/>
+        <property name="url" value="${postgre.jdbc.url}" />
+        <property name="username" value="${postgre.jdbc.username}" />
+        <property name="password" value="${postgre.jdbc.password}" />
+    </bean>
+
+    <bean id="tenantDataSource" parent="parentDataSource">
+        <property name="driverClassName" value="${postgre.jdbc.driver}"/>
+        <property name="url" value="${postgre.jdbc.url}" />
+        <property name="username" value="${postgre.jdbc.username}" />
+        <property name="password" value="${postgre.jdbc.password}" />
+    </bean>
+
+    <!--tenant 需要动态切换-->
+    <bean id="dataSource" class="com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.TenantRoutingDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="${jdbc.default.key}" value-ref="defaultDataSource" />
+                <!--<entry key="${jdbc.default.key}" value-ref="tenantDataSource" />-->
+            </map>
+        </property>
+        <!--<property name="defaultTargetDataSource" ref="defaultDataSource" /> -->
+    </bean>
+
+
+
+    <!--初始化db，可用于H2-->
+    <!--<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">-->
+        <!--<jdbc:script location="classpath:db/db_init.sql" />-->
+    <!--</jdbc:initialize-database>-->
+
+    <!-- H2 mixed mode -->
+    <!--<bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="shutdown">-->
+        <!--<constructor-arg>-->
+            <!--<list>-->
+                <!--<value>-tcpPort</value>-->
+                <!--<value>9081</value>-->
+                <!--<value>-tcpAllowOthers</value>-->
+            <!--</list>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven />
+
+    <!-- 加载Dao -->
+    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_schema" >
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+    </context:component-scan>
+
+    <!-- 1.Spring JdbcTemplate方式 -->
+    <bean id="defaultJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="defaultDataSource" />
+    </bean>
+    <bean id="defaultNamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
+        <constructor-arg ref="defaultDataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" >
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <!--<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>-->
+    <!---->
+    <!--<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" >-->
+        <!--<property name="transactionManager" ref="transactionManager"/>-->
+    <!--</bean>-->
+
+    <!-- 2.Mybatis方式设置-->
+    <!--<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+        <!--<property name="mapperLocations" value="classpath:mappers/AnLogMapper.xml"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">-->
+        <!--<constructor-arg ref="sessionFactory" />-->
+    <!--</bean>-->
+
+    <!--配置MapperScanner，无需写 dao impl-->
+    <!--<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="com.sky.demo.web_demo_multi_tenant_separate_schema.dao"/>-->
+    <!--</bean>-->
+
+</beans>
