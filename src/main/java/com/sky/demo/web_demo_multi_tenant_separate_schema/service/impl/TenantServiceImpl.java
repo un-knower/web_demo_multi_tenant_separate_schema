@@ -312,7 +312,7 @@ public class TenantServiceImpl implements TenantService {
 //            row = tenantDao.delete(id);
             TenantForm tenantForm = query(id);
             if (tenantForm != null) {
-                Tenant tenant = transfer2Tenant.apply(tenantForm);
+                Tenant tenant = transfer2UpdateTenant.apply(tenantForm);
 
                 tenant.setStatus(Tenant.Status.DELETED.getCode());
                 row = tenantDao.update(tenant);

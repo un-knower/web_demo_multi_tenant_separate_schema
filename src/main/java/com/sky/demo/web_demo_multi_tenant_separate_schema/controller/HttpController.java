@@ -84,6 +84,7 @@ public class HttpController {
     public void redirectQuery(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
         logger.info("redirect query, url: {}", url);
+
         response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
         response.setHeader("Location", url);
     }
@@ -95,6 +96,14 @@ public class HttpController {
 
         response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
         response.setHeader("Location", url);
+    }
 
+    @RequestMapping(value = "/redirect/delete/{id}", method = RequestMethod.DELETE)
+    public void redirectDelete(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
+        String url = "http://127.0.0.1:8080/web_demo" + "/http/delete/" + id;
+        logger.info("redirect delete, url: {}", url);
+
+        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+        response.setHeader("Location", url);
     }
 }

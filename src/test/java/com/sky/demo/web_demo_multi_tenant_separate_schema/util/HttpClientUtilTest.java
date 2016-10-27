@@ -90,6 +90,27 @@ public class HttpClientUtilTest {
         }
     }
 
+    @Test
+    public void test_delete() throws IOException {
+
+        String url = "http://127.0.0.1:8080/web_demo/http/delete/1";
+        HttpResponse response = HttpClientUtil.delete(url);
+
+        //获取响应实体
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            // 响应内容长度
+            logger.info("Response content length: {}", entity.getContentLength());
+            // 响应内容
+//            logger.info("Response content: {}" + EntityUtils.toString(entity));
+        }
+    }
+
+
+
+
+    //========================== Redirect ================================//
+
 
     @Test
     public void test_get_ProcessRedirect() throws IOException {
@@ -157,4 +178,19 @@ public class HttpClientUtilTest {
         }
     }
 
+    @Test
+    public void test_delete_ProcessRedirect() throws IOException {
+
+        String url = "http://127.0.0.1:8080/web_demo/http/redirect/delete/1";
+        HttpResponse response = HttpClientUtil.deleteProcessRedirect(url);
+
+        //获取响应实体
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            // 响应内容长度
+            logger.info("Response content length: {}", entity.getContentLength());
+            // 响应内容
+//            logger.info("Response content: {}" + EntityUtils.toString(entity));
+        }
+    }
 }
