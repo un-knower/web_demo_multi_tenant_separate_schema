@@ -32,10 +32,6 @@ public class HttpController {
     @Resource
     private TenantService tenantService;
 
-    @Resource
-    private RestTemplate restTemplate;
-
-
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     @ResponseBody
     public RetData<TenantForm> query(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
@@ -89,7 +85,8 @@ public class HttpController {
         String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
         logger.info("redirect query, url: {}", url);
 
-        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+//        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);  //302
+        response.setStatus(HttpStatus.SC_TEMPORARY_REDIRECT);        //307
         response.setHeader("Location", url);
     }
 
@@ -98,7 +95,7 @@ public class HttpController {
         String url = "http://127.0.0.1:8080/web_demo" + "/http/queryList";
         logger.info("redirect query, url: {}", url);
 
-        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+        response.setStatus(HttpStatus.SC_TEMPORARY_REDIRECT);
         response.setHeader("Location", url);
     }
 
@@ -107,18 +104,8 @@ public class HttpController {
         String url = "http://127.0.0.1:8080/web_demo" + "/http/delete/" + id;
         logger.info("redirect delete, url: {}", url);
 
-        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
+        response.setStatus(HttpStatus.SC_TEMPORARY_REDIRECT);
         response.setHeader("Location", url);
     }
 
-
-
-//    @RequestMapping(value = "/rest/query/{id}", method = RequestMethod.GET)
-//    public void restQuery(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
-//        String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
-//        logger.info("redirect query, url: {}", url);
-//
-//        response.setStatus(HttpStatus.SC_MOVED_TEMPORARILY);
-//        response.setHeader("Location", url);
-//    }
 }

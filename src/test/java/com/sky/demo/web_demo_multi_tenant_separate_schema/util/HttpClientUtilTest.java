@@ -130,6 +130,7 @@ public class HttpClientUtilTest {
 
 
     //========================== Redirect ================================//
+    //  在http1.1 中，301，302 会 redirect 为GET请求，307 会 redirect 为原始请求！！
 
 
     @Test
@@ -281,6 +282,8 @@ public class HttpClientUtilTest {
         System.out.println(result);
     }
 
+
+    // 301,302 redirect to GET, 307 redirect to original request
     @Test
     public void test_post_redirect_restTemplate() throws IOException {
         String url = "http://127.0.0.1:8080/web_demo/http/redirect/queryList";
@@ -293,23 +296,23 @@ public class HttpClientUtilTest {
                 "    \"endDate\": \"2018-01-01\"\n" +
                 "}";
 
-        HttpEntity httpEntity = new StringEntity(json);
-        List<Header> headers = HttpClientUtil.buildHeaders();
+//        HttpEntity httpEntity = new StringEntity(json);
+//        List<Header> headers = HttpClientUtil.buildHeaders();
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
 
-//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
-//        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
-//        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
+        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
+        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
 
-//        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity(json, headers);
+        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity(json, headers);
 
 
         final RestTemplate template = new RestTemplate();
         final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         final HttpClient httpClient = HttpClientBuilder.create()
-                .setDefaultHeaders(headers)
+//                .setDefaultHeaders(headers)
                 .setRedirectStrategy(new LaxRedirectStrategy())
                 .build();
         factory.setHttpClient(httpClient);

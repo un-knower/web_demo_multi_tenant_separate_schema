@@ -234,7 +234,7 @@ public class HttpClientUtil {
             logger.info("http request url:{}", httpDelete.getURI());
 
             response = httpClient.execute(httpDelete);
-            httpDelete.abort();       // 会自动重定向，不能释放请求
+            httpDelete.abort();       //POST, PUT, DELETE ,HEAD 不会重定向，需要释放请求
 
             //处理http返回码302的情况
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY) { //302
@@ -254,8 +254,8 @@ public class HttpClientUtil {
     }
 
     /**
-     * HttpClient GET 自动执行302的重定向
-     * HttpClient POST, PUT, DELETE，不支持自动转发，因此需要对页面转向做处理。
+     * HttpClient GET 自动执行301/302的重定向
+     * HttpClient POST, PUT, DELETE, HEAD，不支持自动重定向，因此需要对页面转向做处理。
      *
      * @param url
      * @param httpEntity
@@ -283,7 +283,7 @@ public class HttpClientUtil {
 
                     httpPost.setEntity(httpEntity);
                     response = httpClient.execute(httpPost);
-                    httpPost.abort();         //POST, PUT 不会重定向，需要释放请求
+                    httpPost.abort();         //POST, PUT, DELETE ,HEAD 不会重定向，需要释放请求
                     break;
                 }
 
@@ -293,7 +293,7 @@ public class HttpClientUtil {
 
                     httpPut.setEntity(httpEntity);
                     response = httpClient.execute(httpPut);
-                    httpPut.abort();         //POST, PUT 不会重定向，需要释放请求
+                    httpPut.abort();         //POST, PUT, DELETE ,HEAD 不会重定向，需要释放请求
                     break;
                 }
                 case DELETE :{
@@ -301,6 +301,7 @@ public class HttpClientUtil {
                     logger.info("http request url:{}", httpDelete.getURI());
 
                     response = httpClient.execute(httpDelete);
+                    httpDelete.abort();     //POST, PUT, DELETE ,HEAD 不会重定向，需要释放请求
                     break;
                 }
 
@@ -327,7 +328,8 @@ public class HttpClientUtil {
     }
 
     /**
-     * 处理http返回码302的情况
+     * 处理http返回码301/302/307的情况
+     * 另：在http1.1 中，301，302 会 redirect 为GET请求，307 会 redirect 为原始请求！！
      * @param response
      * @return
      */
@@ -535,6 +537,7 @@ public class HttpClientUtil {
         Header headerAccept = new BasicHeader(org.springframework.http.HttpHeaders.ACCEPT, "text/plain;charset=UTF-8");
         Header headerUserAgent = new BasicHeader(org.springframework.http.HttpHeaders.USER_AGENT, "Twisted Web Client Example");
         Header headerAuthorization = new BasicHeader(org.springframework.http.HttpHeaders.AUTHORIZATION, "Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx");
+
         List<Header> headers = Lists.newArrayList(headerContentType, headerAccept, headerUserAgent, headerAuthorization);
 
         return headers;
