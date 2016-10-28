@@ -26,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -238,9 +239,10 @@ public class HttpClientUtilTest {
         String url = "https://172.22.111.75:31075/app/v1/protocol/all";  //https must use sslFactory
 
         HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
-
-        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
         headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
         headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
 
@@ -270,9 +272,10 @@ public class HttpClientUtilTest {
                 "}";
 
         HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
-
-        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
         headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
         headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
 
@@ -300,9 +303,10 @@ public class HttpClientUtilTest {
 //        List<Header> headers = HttpClientUtil.buildHeaders();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
-
-        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
         headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
         headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
 
@@ -328,7 +332,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_get_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31075/app/v1/protocol/all";
+        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -354,7 +358,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_get_restTemplate_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31075/app/v1/protocol/all";
+        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -367,12 +371,13 @@ public class HttpClientUtilTest {
         List<Header> headers = HttpClientUtil.buildHeaders();
 
 //        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
-
-//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", "application/json;charset=UTF-8"));
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+//        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+////        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
 //        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
 //        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
-//
+
 //        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity("", headers);
 
         final RestTemplate template = new RestTemplate();
@@ -389,7 +394,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_post_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31075/app/v1/protocol/all";
+        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -415,7 +420,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_post_restTemplate_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31075/app/v1/protocol/all";
+        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -424,22 +429,23 @@ public class HttpClientUtilTest {
                 "    \"endDate\": \"2018-01-01\"\n" +
                 "}";
 
-        HttpEntity httpEntity = new StringEntity(json);
-        List<Header> headers = HttpClientUtil.buildHeaders();
+//        HttpEntity httpEntity = new StringEntity(json);
+//        List<Header> headers = HttpClientUtil.buildHeaders();
 
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON); //Also tried with multipart...
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
+        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
 
-//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", "application/json;charset=UTF-8"));
-//        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
-//        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
-//
-//        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity("", headers);
+        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity(json, headers);
 
         final RestTemplate template = new RestTemplate();
         final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 
-        final HttpClient httpClient = HttpClientUtil.createSSLClientDefault(headers);
+        final HttpClient httpClient = HttpClientUtil.createSSLClientDefault(Lists.newArrayList());
         factory.setHttpClient(httpClient);
         template.setRequestFactory(factory);
 
