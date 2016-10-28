@@ -57,6 +57,8 @@ public class RestTemplateWrapper {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private HttpComponentsClientHttpRequestFactory factory;
+
     private ThreadLocal<RestTemplateEx> template = new ThreadLocal<RestTemplateEx>(){
 
         @Override
@@ -64,7 +66,7 @@ public class RestTemplateWrapper {
             RestTemplateEx restTemplate = new RestTemplateEx();
             RestTemplateWrapper.this.logger.debug("Initiate RestTemplate");
             try {
-                factory = RestTemplateWrapper.getTrustFactory();
+                factory = RestTemplateWrapper.buildTrustFactory();
             } catch (Exception e) {
                 logger.error("get Factory error", e);
             }
@@ -74,7 +76,6 @@ public class RestTemplateWrapper {
         }
     };
 
-    private HttpComponentsClientHttpRequestFactory factory;
 
 
     private static void replaceStringMessageConverter(List<HttpMessageConverter<?>> messageConverters) {
@@ -99,8 +100,8 @@ public class RestTemplateWrapper {
     public RestTemplateEx getTemplate(Map<String, String> headers) {
         HeaderInterceptor interceptor = null;
         interceptor = headers != null && headers.size() > 0 ? new HeaderInterceptor(headers) : new HeaderInterceptor();
-        this.template.get().setInterceptors(Collections.singletonList(interceptor));
-        return this.template.get();
+        template.get().setInterceptors(Collections.singletonList(interceptor));
+        return template.get();
     }
 
     @PreDestroy
@@ -109,10 +110,9 @@ public class RestTemplateWrapper {
     }
 
 
-    public static HttpComponentsClientHttpRequestFactory getTrustFactory() throws ClientProtocolException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-        SSLContextBuilder builder = new SSLContextBuilder();
-        builder.loadTrustMaterial(null, new TrustStrategy(){
+    public static HttpComponentsClientHttpRequestFactory buildTrustFactory() throws ClientProtocolException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
+        SSLContextBuilder builder = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy(){
             public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
                 return true;
             }

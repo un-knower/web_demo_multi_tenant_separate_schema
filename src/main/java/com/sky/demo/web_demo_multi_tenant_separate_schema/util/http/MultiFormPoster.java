@@ -55,7 +55,7 @@ public class MultiFormPoster {
 
     public MultiFormPoster(RestTemplateWrapper restTemplate, Map<String, String> authHeaders) {
         try {
-            this.requestFactory = RestTemplateWrapper.getTrustFactory();
+            this.requestFactory = RestTemplateWrapper.buildTrustFactory();
             this.authHeaders = authHeaders;
         }
         catch (IOException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {

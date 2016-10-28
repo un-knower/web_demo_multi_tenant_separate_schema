@@ -460,7 +460,7 @@ public class HttpClientUtil {
                     .setDefaultHeaders(headers)
                     .setSSLSocketFactory(socketFactory)
 //                    .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
-                    .setRedirectStrategy(new LaxRedirectStrategy())
+                    .setRedirectStrategy(new LaxRedirectStrategy())  //auto redirect for POST, PUT, DELETE
                     .build();
 
 
