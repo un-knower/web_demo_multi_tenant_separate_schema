@@ -83,7 +83,7 @@ public class HttpController {
     }
 
 
-
+//    @ResponseStatus(value = HttpStatus.MOVED_TEMPORARILY)
     @RequestMapping(value = "/redirect/query/{id}", method = RequestMethod.GET)
     public void redirectQuery(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
         String url =  "http://127.0.0.1:8080/web_demo" + "/http/query/" + id;
