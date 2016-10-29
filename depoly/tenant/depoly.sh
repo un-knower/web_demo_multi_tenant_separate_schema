@@ -8,7 +8,7 @@ DB_PORT=5432
 DB_USERNAME=sps
 DB_PASSWD=sps
 DB_NAME=sps_db
-SCHEMA_NAME=$1
+#SCHEMA_NAME=$1
 
 #export PGPASSWORD=sps
 
@@ -25,17 +25,33 @@ ImportSQL()
     done
 }
 
+CreateSchema()
+{
+    read -p "input tenant schema name:" SCHEMA_NAME
+    echo -e "\n ==> create schema : ${SCHEMA_NAME} ..."
+#   psql -h ${DB_IP} -p ${DB_PORT} -U ${DB_USERNAME} -d ${DB_NAME} < ${FILE}
+#   sudo -u postgres psql -f ${INIT_SQL}  | grep "ERROR" | tee -a /tmp/${DATE}.log
+#CREATE_SCHEMA=`psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} dbname=${DB_NAME}" << EOF
+#    create schema ${SCHEMA_NAME};
+#EOF`
+#echo ${CREATE_SCHEMA}
+
+psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} dbname=${DB_NAME}" << EOF
+    \set ON_ERROR_STOP TRUE
+    create schema ${SCHEMA_NAME};
+EOF
+
+
+
+}
+
+
 
 #start
-echo "====> start import sql..."
-if [ -n "${SCHEMA_NAME}" ]; then
-    echo -e "\n ==> create schema : ${SCHEMA_NAME} ..."
-    #psql -h ${DB_IP} -p ${DB_PORT} -U ${DB_USERNAME} -d ${DB_NAME} < ${FILE}
-#    sudo -u postgres psql -f ${INIT_SQL}  | grep "ERROR" | tee -a /tmp/${DATE}.log
-CREATE_SCHEMA=`psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} dbname=${DB_NAME}" << EOF
-    create schema ${SCHEMA_NAME};
-EOF`
-    echo ${CREATE_SCHEMA}
+CreateSchema
+
+if [ $? -eq 0 ]; then
+    echo "====> start import sql..."
 
     echo -e "\n ==> import business sql..."
     if [ -n "${SQL_FILES}" ]; then
