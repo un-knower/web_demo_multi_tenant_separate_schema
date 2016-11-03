@@ -7,7 +7,7 @@ DB_IP=127.0.0.1
 DB_PORT=5432
 DB_USERNAME=sps
 DB_PASSWD=sps
-DB_NAME=sps_db
+DB_NAME=demo_db
 #SCHEMA_NAME=$1
 
 #export PGPASSWORD=sps

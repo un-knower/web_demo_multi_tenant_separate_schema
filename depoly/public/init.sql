@@ -1,5 +1,5 @@
 
 create user sps with password 'sps';
 
-create database sps_db owner sps;
-grant all privileges on database sps_db to sps;
+create database demo_db owner sps;
+grant all privileges on database demo_db to sps;
