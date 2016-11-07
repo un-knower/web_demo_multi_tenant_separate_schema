@@ -5,8 +5,8 @@ SQL_FILES=${CURRENT_HOME}/sql/*.sql
 
 DB_IP=127.0.0.1
 DB_PORT=5432
-DB_USERNAME=sps
-DB_PASSWD=sps
+DB_USERNAME=demo_user
+DB_PASSWD=demo_pwd
 DB_NAME=demo_db
 #SCHEMA_NAME=$1
 
