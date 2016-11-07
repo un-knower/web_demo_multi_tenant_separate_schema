@@ -9,4 +9,15 @@ import org.slf4j.LoggerFactory;
 public class MessageConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
+
+
+    // singleton
+    private static MessageConsumer INSTANCE = new MessageConsumer();
+
+    private MessageConsumer() {}
+
+    public static MessageConsumer getInstance() {
+        return INSTANCE;
+    }
+
 }
