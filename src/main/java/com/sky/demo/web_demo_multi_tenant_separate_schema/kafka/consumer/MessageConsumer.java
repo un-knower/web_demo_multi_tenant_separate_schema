@@ -49,12 +49,12 @@ public class MessageConsumer {
 
 
 
-    public List<ConsumerRecord<String, String>> consume(List<String> topics, int size) {
+    public List<ConsumerRecord<String, String>> consume(String topic, int size) {
         List<ConsumerRecord<String, String>> result = Lists.newArrayList();
 
         int consumedSize = 0;
         try {
-            consumer.subscribe(topics);
+            consumer.subscribe(Lists.newArrayList(topic));      // only one topic
 
             do {
                 int offset = (size - consumedSize) > CONSUMER_SIZE ? CONSUMER_SIZE : (size - consumedSize);
@@ -79,15 +79,15 @@ public class MessageConsumer {
 
     /**
      * properties : enable.auto.commit = false
-     * @param topics
+     * @param topic
      * @param size
      * @return
      */
-    public List<String> consumeByManulCommit(List<String> topics, int size) {
+    public List<String> consumeByManulCommit(String topic, int size) {
 
 
         List<String> result = null;
-        consumer.subscribe(topics);
+        consumer.subscribe(Lists.newArrayList(topic));
 
 
         return result;

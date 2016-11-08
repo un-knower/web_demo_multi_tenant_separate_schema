@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Future;
 
@@ -47,11 +48,13 @@ public class MessageProducer {
 
 
 
-    public boolean send(String topic, String value) {
+    public boolean send(String topic, List<String> values) {
         boolean result = false;
 
         try {
-            producer.send(new ProducerRecord<String, String>(topic, value));
+            for (String value : values) {
+                producer.send(new ProducerRecord<String, String>(topic, value));
+            }
 
             result = true;
         } catch (Exception e) {
@@ -64,20 +67,21 @@ public class MessageProducer {
         return result;
     }
 
-    public void sendWithCallBack(String topic, String value) {
+    public void sendWithCallBack(String topic, List<String> values) {
 
         try {
-            Future<RecordMetadata> recordMetadataFuture = producer.send(new ProducerRecord<String, String>(topic, value), new Callback() {
-                @Override
-                public void onCompletion(RecordMetadata metadata, Exception exception) {
-                    if (exception != null) {
-                        logger.error("send failed, topic:{}, value:{}, offset:{}", topic, value, metadata.offset());
-
-                    } else {
-                        logger.info("send success");
+            for (String value : values) {
+                Future<RecordMetadata> recordMetadataFuture = producer.send(new ProducerRecord<String, String>(topic, value), new Callback() {
+                    @Override
+                    public void onCompletion(RecordMetadata metadata, Exception exception) {
+                        if (exception != null) {
+                            logger.error("send failed, topic:{}, value:{}, offset:{}", topic, value, metadata.offset());
+                        } else {
+                            logger.info("send success");
+                        }
                     }
-                }
-            });
+                });
+            }
         } catch (Exception e) {
             logger.error("send failed", e);
         } finally {
