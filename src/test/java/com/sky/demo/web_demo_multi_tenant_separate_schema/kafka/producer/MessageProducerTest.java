@@ -21,4 +21,14 @@ public class MessageProducerTest {
         Assert.assertTrue(result);
     }
 
+    @Test
+    public void test_sendWithCallBack() {
+        String topic = AppConfig.getItem("kafka.topic.test", "test");
+        String value = "{\"name\":\"zhangsan\"}";
+
+        MessageProducer producer = MessageProducer.getInstance();
+
+        producer.sendWithCallBack(topic, value);
+    }
+
 }
