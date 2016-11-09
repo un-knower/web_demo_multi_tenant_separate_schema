@@ -16,7 +16,7 @@ public class MessageConsumerTest {
     @Test
     public void test_consume() {
         String topic = AppConfig.getItem("kafka.topic.test", "test");
-        int size = 3;
+        int size = 100;
 
         MessageConsumer consumer = MessageConsumer.getInstance();
         List<ConsumerRecord<String, String>> result = consumer.consume(topic, size);
@@ -24,4 +24,14 @@ public class MessageConsumerTest {
         System.out.println(result);
     }
 
+    @Test
+    public void test_consumeByManualCommit() {
+        String topic = AppConfig.getItem("kafka.topic.test", "test");
+        int size = 3;
+
+        MessageConsumer consumer = MessageConsumer.getInstance();
+        List<ConsumerRecord<String, String>> result = consumer.consumeByManulCommit(topic, size);
+
+        System.out.println(result);
+    }
 }

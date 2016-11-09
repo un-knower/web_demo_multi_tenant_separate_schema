@@ -19,7 +19,7 @@ public class MessageProducerTest {
         boolean result = false;
 
         List<String> values = Lists.newArrayList();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 40; i++) {
             String value = "{\"name\":\"message" + i +"\"}";
             values.add(value);
         }
