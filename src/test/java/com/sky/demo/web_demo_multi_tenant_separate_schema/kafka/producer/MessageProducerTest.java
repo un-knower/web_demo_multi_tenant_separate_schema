@@ -18,14 +18,16 @@ public class MessageProducerTest {
         String topic = AppConfig.getItem("kafka.topic.test", "test");
         boolean result = false;
 
-        List<String> values = Lists.newArrayList();
-        for (int i = 0; i < 40; i++) {
-            String value = "{\"name\":\"message" + i +"\"}";
-            values.add(value);
+        for (int i = 0 ; i < 5; i++) {
+            List<String> values = Lists.newArrayList();
+            for (int j = 0; j < 10; j++) {
+                String value = "{\"name\":\"message" + i + j +"\"}";
+                values.add(value);
+            }
+            MessageProducer producer = MessageProducer.getInstance();
+            result = producer.send(topic, values);
         }
-        MessageProducer producer = MessageProducer.getInstance();
 
-        result = producer.send(topic, values);
         Assert.assertTrue(result);
     }
 

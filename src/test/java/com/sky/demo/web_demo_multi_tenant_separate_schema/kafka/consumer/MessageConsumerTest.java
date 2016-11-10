@@ -19,9 +19,10 @@ public class MessageConsumerTest {
         int size = 100;
 
         MessageConsumer consumer = MessageConsumer.getInstance();
-        List<ConsumerRecord<String, String>> result = consumer.consume(topic, size);
-
-        System.out.println(result);
+        for (int i = 0; i < 2; i++) {
+            List<ConsumerRecord<String, String>> result = consumer.fetch(topic, size);
+            System.out.println(result.size());
+        }
     }
 
     @Test
@@ -30,7 +31,7 @@ public class MessageConsumerTest {
         int size = 3;
 
         MessageConsumer consumer = MessageConsumer.getInstance();
-        List<ConsumerRecord<String, String>> result = consumer.consumeByManulCommit(topic, size);
+        List<ConsumerRecord<String, String>> result = consumer.fetchByManualCommit(topic, size);
 
         System.out.println(result);
     }
