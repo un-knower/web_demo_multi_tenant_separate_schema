@@ -37,12 +37,44 @@ public class MessageProducerTest {
 
         List<String> values = Lists.newArrayList();
         for (int i = 0; i < 10; i++) {
-            String value = "{\"name\":\"message" + i +"\"}";
+            String value = "{\"name\":\"message" + i + "\"}";
             values.add(value);
         }
         MessageProducer producer = MessageProducer.getInstance();
 
         producer.sendWithCallBack(topic, values);
+    }
+
+    @Test
+    public void test_sendMultiTopic() {
+        String topic1 = AppConfig.getItem("kafka.topic.test");
+        String topic2 = "origin_incidents";
+
+
+        List<String> values = Lists.newArrayList();
+        for (int j = 0; j < 10; j++) {
+            String value = "{\"name\":\"message" + j +"\"}";
+            values.add(value);
+        }
+        MessageProducer producer = MessageProducer.getInstance();
+        producer.send(topic1, values);
+        producer.send(topic2, values);
+    }
+
+    @Test
+    public void test_sendWithCallBackMultiTopic() {
+        String topic1 = AppConfig.getItem("kafka.topic.test");
+        String topic2 = "origin_incidents";
+
+        List<String> values = Lists.newArrayList();
+        for (int i = 0; i < 10; i++) {
+            String value = "{\"name\":\"message" + i +"\"}";
+            values.add(value);
+        }
+        MessageProducer producer = MessageProducer.getInstance();
+
+        producer.sendWithCallBack(topic1, values);
+        producer.sendWithCallBack(topic2, values);
     }
 
 }

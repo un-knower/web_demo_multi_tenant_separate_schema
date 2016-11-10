@@ -53,7 +53,7 @@ public class MessageProducer {
 
         try {
             for (String value : values) {
-                producer.send(new ProducerRecord<String, String>(topic, value));
+                Future<RecordMetadata> recordMetadataFuture = producer.send(new ProducerRecord<String, String>(topic, value));
             }
 
             result = true;
@@ -77,7 +77,7 @@ public class MessageProducer {
                         if (exception != null) {
                             logger.error("send failed, topic:{}, value:{}, offset:{}", topic, value, metadata.offset());
                         } else {
-                            logger.info("send success");
+                            logger.info("send success, topic:{}, offset:{}", topic, metadata.offset());
                         }
                     }
                 });

@@ -35,4 +35,24 @@ public class MessageConsumerTest {
 
         System.out.println(result);
     }
+
+
+
+    @Test
+    public void test_consumeMultiTopic() {
+        String topic1 = AppConfig.getItem("kafka.topic.test", "test");
+        String topic2 = "origin_incidents";
+        int size = 10;
+
+        MessageConsumer consumer = MessageConsumer.getInstance();
+        for (int i = 0; i < 2; i++) {
+            List<ConsumerRecord<String, String>> result = consumer.fetch(topic1, size);
+            System.out.println(result.size());
+        }
+
+        for (int i = 0; i < 2; i++) {
+            List<ConsumerRecord<String, String>> result = consumer.fetch(topic2, size);
+            System.out.println(result.size());
+        }
+    }
 }

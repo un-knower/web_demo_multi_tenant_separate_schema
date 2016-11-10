@@ -24,7 +24,7 @@ public class MessageConsumer {
     static {
         props = new Properties();
         props.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "test5");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "test8");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, AppConfig.getItem("kafka.enable.auto.commit")); //是否自动commit
         props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);     //定时commit的周期
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);              //poll max size
@@ -64,7 +64,7 @@ public class MessageConsumer {
             do {
                 long timeout = 0;
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(timeout);
-                logger.info("   =====> polled size :{}", consumerRecords.count());
+                logger.info("   =====> polled size :{}, topic : {}", consumerRecords.count(), topic);
 
                 for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
                     result.add(consumerRecord);
@@ -103,7 +103,7 @@ public class MessageConsumer {
 
                 long timeout = 0;
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(timeout);
-                logger.info("   =====> poll size :{}", consumerRecords.count());
+                logger.info("   =====> poll size :{}, topic : {}", consumerRecords.count(), topic);
 
                 for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
                     result.add(consumerRecord);
