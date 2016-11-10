@@ -25,13 +25,13 @@ public class MessageConsumer {
         props.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
         props.put("group.id", "test");
         props.put("enable.auto.commit", AppConfig.getItem("kafka.enable.auto.commit")); //是否自动commit
-        props.put("auto.commit.interval.ms", "1000");   //定时commit的周期
+        props.put("auto.commit.interval.ms", 1000);   //定时commit的周期
 
         //设置使用最开始的offset偏移量为该group.id的earliest。如果不设置，则会是latest，即该topic最新一个消息的offset
         //如果采用latest，消费者只能得到其启动后，生产者生产的消息
         props.put("auto.offset.reset", "earliest"); //latest, earliest, none
 
-        props.put("session.timeout.ms", "30000");       //consumer活性超时时间
+        props.put("session.timeout.ms", 30000);       //consumer活性超时时间
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
 
