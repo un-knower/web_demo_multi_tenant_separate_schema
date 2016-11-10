@@ -12,9 +12,24 @@ import java.util.List;
  */
 public class MessageProducerTest {
 
-
     @Test
     public void test_send() {
+        String topic = AppConfig.getItem("kafka.topic.test", "test");
+        boolean result = false;
+
+        List<String> values = Lists.newArrayList();
+        for (int j = 0; j < 9; j++) {
+            String value = "{\"name\":\"message" + j +"\"}";
+            values.add(value);
+        }
+        MessageProducer producer = MessageProducer.getInstance();
+        result = producer.send(topic, values);
+
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void test_send_multi() {
         String topic = AppConfig.getItem("kafka.topic.test", "test");
         boolean result = false;
 
@@ -25,7 +40,7 @@ public class MessageProducerTest {
                 values.add(value);
             }
             MessageProducer producer = MessageProducer.getInstance();
-            result = producer.send(topic, values);
+            result &= producer.send(topic, values);
         }
 
         Assert.assertTrue(result);

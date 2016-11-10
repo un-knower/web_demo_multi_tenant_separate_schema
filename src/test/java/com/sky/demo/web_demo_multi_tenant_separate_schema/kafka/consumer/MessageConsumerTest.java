@@ -14,7 +14,18 @@ public class MessageConsumerTest {
 
 
     @Test
-    public void test_consume() {
+    public void test_fetch() {
+        String topic = AppConfig.getItem("kafka.topic.test", "test");
+
+        MessageConsumer consumer = MessageConsumer.getInstance();
+        for (int i = 0; i < 20; i++) {
+            List<ConsumerRecord<String, String>> result = consumer.fetch(topic);
+            System.out.println(result.size());
+        }
+    }
+
+    @Test
+    public void test_fetch_with_size() {
         String topic = AppConfig.getItem("kafka.topic.test", "test");
         int size = 100;
 

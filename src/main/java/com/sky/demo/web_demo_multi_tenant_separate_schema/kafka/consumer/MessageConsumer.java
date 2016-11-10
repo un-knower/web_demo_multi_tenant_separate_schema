@@ -52,8 +52,42 @@ public class MessageConsumer {
     }
 
 
+    /**
+     * properties : enable.auto.commit = true
+     * @param topic
+     * @return
+     */
+    public List<ConsumerRecord<String, String>> fetch(String topic) {
+        List<ConsumerRecord<String, String>> result = Lists.newArrayList();
+
+        try {
+            consumer.subscribe(Lists.newArrayList(topic));      // only one topic
+
+            long timeout = 1000;
+            ConsumerRecords<String, String> consumerRecords = consumer.poll(timeout);
+            logger.info("   =====> polled size :{}, topic : {}", consumerRecords.count(), topic);
+
+            for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
+                result.add(consumerRecord);
+            }
+
+        } catch (Exception e) {
+            logger.error("poll message failed", e);
+        } finally {
+            //consumer.close();
+        }
+
+        return result;
+    }
 
 
+
+    /**
+     * properties : enable.auto.commit = true
+     * @param topic
+     * @param size
+     * @return
+     */
     public List<ConsumerRecord<String, String>> fetch(String topic, int size) {
         List<ConsumerRecord<String, String>> result = Lists.newArrayList();
 
