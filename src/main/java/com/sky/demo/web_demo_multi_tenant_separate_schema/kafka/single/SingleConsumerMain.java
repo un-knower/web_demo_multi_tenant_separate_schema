@@ -8,9 +8,9 @@ public class SingleConsumerMain {
 
     public static void main(String[] args) {
 
-        String brokers = "localhost:9092";
-        String groupId = "group01";
-        String topic = "HelloKafkaTopic";
+        String brokers = "172.22.1.36:9092";
+        String groupId = "group03";
+        String topic = "origin_incidents";
         int numberOfThread = 3;
 
         if (args != null && args.length > 4) {
@@ -21,17 +21,16 @@ public class SingleConsumerMain {
         }
 
         // Start Notification Producer Thread
-        ProducerThread producerThread = new ProducerThread(brokers, topic);
-        Thread t1 = new Thread(producerThread);
-        t1.start();
+//        ProducerThread producerThread = new ProducerThread(brokers, topic);
+//        Thread t1 = new Thread(producerThread);
+//        t1.start();
 
         // Start group of Notification Consumer Thread
         NotificationConsumer consumers = new NotificationConsumer(brokers, groupId, topic);
-
         consumers.execute(numberOfThread);
 
         try {
-            Thread.sleep(100000);
+            Thread.sleep(10000);
         } catch (InterruptedException ie) {
 
         }
