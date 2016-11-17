@@ -14,6 +14,7 @@ import java.util.Properties;
 
 /**
  * Created by rg on 25/10/2016.
+ * 注：此Consumer不支持多线程
  */
 public class MessageConsumer {
 
