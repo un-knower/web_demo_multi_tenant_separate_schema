@@ -332,7 +332,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_get_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
+        String url = "https://172.22.113.103:30533/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -358,7 +358,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_get_restTemplate_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
+        String url = "https://172.22.113.103:30533/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -394,7 +394,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_post_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
+        String url = "https://172.22.113.103:30533/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
@@ -420,7 +420,7 @@ public class HttpClientUtilTest {
 
     @Test
     public void test_ssl_post_restTemplate_requestSSLNoCert() throws UnsupportedEncodingException {
-        String url = "https://172.22.111.75:31310/app/v1/protocol/all";
+        String url = "https://172.22.113.103:30533/app/v1/protocol/all";
 
         String json = "{\n" +
                 "    \"pageNumber\": 1,\n" +
