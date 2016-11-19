@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.ContentLengthHeaderRemover;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.*;
 import org.apache.http.HttpEntity;
@@ -457,8 +458,9 @@ public class HttpClientUtil {
             SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER); //
 
             httpClient = HttpClients.custom()
-                    .setDefaultHeaders(headers)
+//                    .setDefaultHeaders(headers)
                     .setSSLSocketFactory(socketFactory)
+//                    .addInterceptorFirst(new ContentLengthHeaderRemover())
 //                    .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
                     .setRedirectStrategy(new LaxRedirectStrategy())  //auto redirect for POST, PUT, DELETE
                     .build();
