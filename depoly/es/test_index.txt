@@ -1,0 +1,14 @@
+
+
+# create index
+curl -XPUT http://172.22.1.36:9200/music
+
+# insert document
+curl -XPUT http://172.22.1.36:9200/music/songs/1 -d '
+{
+    "name": "Deck the halls",
+    "year": 1885
+}'
+
+# query document
+curl -XGET http://172.22.1.36:9200/music/songs/1
