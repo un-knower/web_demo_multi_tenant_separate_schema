@@ -47,7 +47,7 @@ public abstract class BaseIncident implements Serializable {
     @JsonIgnore
     private String localeIgnoreStatus;
 
-    private String policyNames;  // ;
+    private String policyNames;  // ; seperated
 
     @JsonIgnore
     private int assignedToId;
@@ -73,21 +73,15 @@ public abstract class BaseIncident implements Serializable {
     private String analyzeAgentHost;
 
     private String tagContent;
-    private String breachContents;      // ;
+    private String breachContents;      // ; seperated
     private String localeDetectTime;    //UTC
-
-    @JsonIgnore
     private Timestamp detectTime;
-    @JsonIgnore
-    private String localeIncidentTime;
-    @JsonIgnore
+    private String localeIncidentTime;  //UTC insert time
     private Timestamp incidentTime;
-
     private int maxMatches;
 
     @JsonIgnore
     private String localeTransactionSize;
-
     private long transactionSize;
 
     @JsonIgnore
@@ -113,6 +107,43 @@ public abstract class BaseIncident implements Serializable {
     private List<IncidentPolicyInfo> originalIncidentPolicyInfos;
     @JsonIgnore
     private IncidentProperties incidentProperties;
+
+
+    public int getActionTypeCode() {
+        return actionTypeCode;
+    }
+
+    public void setActionTypeCode(int actionTypeCode) {
+        this.actionTypeCode = actionTypeCode;
+    }
+
+    public int getSeverityTypeCode() {
+        return severityTypeCode;
+    }
+
+    public void setSeverityTypeCode(int severityTypeCode) {
+        this.severityTypeCode = severityTypeCode;
+    }
+
+    public int getStatusTypeCode() {
+        return statusTypeCode;
+    }
+
+    public void setStatusTypeCode(int statusTypeCode) {
+        this.statusTypeCode = statusTypeCode;
+    }
+
+    public boolean isIgnored() {
+        return isIgnored;
+    }
+
+    public void setIgnored(boolean isIgnored) {
+        this.isIgnored = isIgnored;
+    }
+
+    public boolean isExceedBreachContentsLimit() {
+        return exceedBreachContentsLimit;
+    }
 
     public long getId() {
         return this.id;
@@ -502,51 +533,54 @@ public abstract class BaseIncident implements Serializable {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("id", id)
-                .add("transactionId", transactionId)
-                .add("trafficId", trafficId)
-                .add("actionType", actionType)
-                .add("localeActionType", localeActionType)
-                .add("severityType", severityType)
-                .add("localeSeverityType", localeSeverityType)
-                .add("statusType", statusType)
-                .add("localeStatusType", localeStatusType)
-                .add("isIgnored", isIgnored)
-                .add("localeIgnoreStatus", localeIgnoreStatus)
-                .add("policyNames", policyNames)
-                .add("assignedToId", assignedToId)
-                .add("assignedToName", assignedToName)
-                .add("commandName", commandName)
-                .add("detectedByUuid", detectedByUuid)
-                .add("detectedByName", detectedByName)
-                .add("detectAgentType", detectAgentType)
-                .add("detectAgentHost", detectAgentHost)
-                .add("analyzedByUuid", analyzedByUuid)
-                .add("analyzedByName", analyzedByName)
-                .add("analyzeAgentType", analyzeAgentType)
-                .add("analyzeAgentHost", analyzeAgentHost)
-                .add("tagContent", tagContent)
-                .add("breachContents", breachContents)
-                .add("localeDetectTime", localeDetectTime)
-                .add("detectTime", detectTime)
-                .add("localeIncidentTime", localeIncidentTime)
-                .add("incidentTime", incidentTime)
-                .add("maxMatches", maxMatches)
-                .add("localeTransactionSize", localeTransactionSize)
-                .add("transactionSize", transactionSize)
-                .add("deployVersion", deployVersion)
-                .add("policyActionType", policyActionType)
-                .add("agentActionType", agentActionType)
-                .add("incidentPolicies", incidentPolicies)
-                .add("incidentHistories", incidentHistories)
-                .add("incidentBreachContents", incidentBreachContents)
-                .add("breachContentSet", breachContentSet)
-                .add("exceedBreachContentsLimit", exceedBreachContentsLimit)
-                .add("triggeredIncidentPolicyInfos", triggeredIncidentPolicyInfos)
-                .add("originalIncidentPolicyInfos", originalIncidentPolicyInfos)
-                .add("incidentProperties", incidentProperties)
-                .toString();
+        return "BaseIncident{" +
+                "id=" + id +
+                ", transactionId='" + transactionId + '\'' +
+                ", trafficId=" + trafficId +
+                ", actionType=" + actionType +
+                ", localeActionType='" + localeActionType + '\'' +
+                ", actionTypeCode=" + actionTypeCode +
+                ", severityType=" + severityType +
+                ", localeSeverityType='" + localeSeverityType + '\'' +
+                ", severityTypeCode=" + severityTypeCode +
+                ", statusType=" + statusType +
+                ", localeStatusType='" + localeStatusType + '\'' +
+                ", statusTypeCode=" + statusTypeCode +
+                ", isIgnored=" + isIgnored +
+                ", localeIgnoreStatus='" + localeIgnoreStatus + '\'' +
+                ", policyNames='" + policyNames + '\'' +
+                ", assignedToId=" + assignedToId +
+                ", assignedToName='" + assignedToName + '\'' +
+                ", commandName='" + commandName + '\'' +
+                ", detectedByUuid='" + detectedByUuid + '\'' +
+                ", detectedByName='" + detectedByName + '\'' +
+                ", detectAgentType=" + detectAgentType +
+                ", detectAgentHost='" + detectAgentHost + '\'' +
+                ", analyzedByUuid='" + analyzedByUuid + '\'' +
+                ", analyzedByName='" + analyzedByName + '\'' +
+                ", analyzeAgentType=" + analyzeAgentType +
+                ", analyzeAgentHost='" + analyzeAgentHost + '\'' +
+                ", tagContent='" + tagContent + '\'' +
+                ", breachContents='" + breachContents + '\'' +
+                ", localeDetectTime='" + localeDetectTime + '\'' +
+                ", detectTime=" + detectTime +
+                ", localeIncidentTime='" + localeIncidentTime + '\'' +
+                ", incidentTime=" + incidentTime +
+                ", maxMatches=" + maxMatches +
+                ", localeTransactionSize='" + localeTransactionSize + '\'' +
+                ", transactionSize=" + transactionSize +
+                ", deployVersion=" + deployVersion +
+                ", policyActionType=" + policyActionType +
+                ", agentActionType=" + agentActionType +
+                ", incidentPolicies=" + incidentPolicies +
+                ", incidentHistories=" + incidentHistories +
+                ", incidentBreachContents=" + incidentBreachContents +
+                ", breachContentSet=" + breachContentSet +
+                ", exceedBreachContentsLimit=" + exceedBreachContentsLimit +
+                ", triggeredIncidentPolicyInfos=" + triggeredIncidentPolicyInfos +
+                ", originalIncidentPolicyInfos=" + originalIncidentPolicyInfos +
+                ", incidentProperties=" + incidentProperties +
+                '}';
     }
 }
 

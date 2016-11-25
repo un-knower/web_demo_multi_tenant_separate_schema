@@ -1,0 +1,191 @@
+
+# create index
+curl -XPUT http://172.22.1.36:9200/tenant1
+
+# insert document
+curl -XPUT http://172.22.1.36:9200/tenant1/network/1 -d @network-single.json
+
+# or
+curl -XPUT http://172.22.1.36:9200/tenant1/network/1 -d '
+{
+    "id": 1,
+    "transactionId": "1000dddd-9192-4f72-9e1b-fab0cac00b10",
+    "actionTypeCode": 1,
+    "severityTypeCode": 1,
+    "statusTypeCode": 1,
+    "isIgnored": false,
+    "policyNames": "policy611-001",
+    "detectedByName": "ATS (ATS)",
+    "analyzedByName": "Content Analysis Engine (ATS)",
+    "tagContent": null,
+    "breachContents": "\\\\172.0.0.1\\proxy.user.ini",
+    "localeDetectTime": null,
+    "detectTime": 1468294205326,
+    "localeIncidentTime": null,
+    "incidentTime": null,
+    "maxMatches": 4,
+    "transactionSize": 4446,
+    "incidentPolicies": [
+        {
+            "policyUuid": "21111111-1111-1111-1111-111111111111",
+            "policyName": "policy611-001",
+            "ruleUuid": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+            "ruleName": "rule1 with regex 1",
+            "actionUuid": "action-1",
+            "actionName": "high action",
+            "matches": 4,
+            "severityTypeCode": 1,
+            "isTrickle": false,
+            "isVisible": true,
+            "incidentElements": [
+                {
+                    "conditionUuid": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1",
+                    "elementUuid": "abc-100",
+                    "elementName": "test keyword demo 1",
+                    "elementTypeCode": 0,
+                    "matches": 4,
+                    "isTruncated": false,
+                    "incidentBreachContents": [
+                        {
+                            "content": "\\\\172.0.0.1\\proxy.user.ini",
+                            "locationTypeCode": 0,
+                            "locationTypesPath": "16|||16|||3",
+                            "locationNamesPath": "Other|||Other|||proxy.user.ini",
+                            "similarity": 70.1,
+                            "matches": 2,
+                            "fileType": 0
+                        }
+                    ],
+                    "truncated": false
+                }
+            ],
+            "trickle": false,
+            "visible": true
+        }
+    ],
+    "tenant": "tenant1",
+    "details": "goagent ip keywordgoagent ip keyword",
+    "channelTypeCode": 0,
+    "destinations": "danieldiy@126.com",
+    "sourceEntryName": null,
+    "attachmentNames": null,
+    "hasAttachment": false,
+    "isReleased": false,
+    "hasForensics": true,
+    "workModeTypeCode": 0,
+    "isVisible": true,
+    "sourceEntryInfo": {
+        "entryUuid": null,
+        "appUuid": null,
+        "commonName": "192.168.1.1",
+        "distinguishedName": null,
+        "fullName": null,
+        "logonName": null,
+        "department": null,
+        "manager": null,
+        "title": null,
+        "mobile": null,
+        "telephone": null,
+        "mail": null,
+        "username": null,
+        "ip": "192.168.1.1",
+        "hostname": null,
+        "domain": null,
+        "deviceName": null,
+        "deviceModel": null,
+        "appName": null,
+        "entryType": 0,
+        "countryCode": null,
+        "regionCode": null,
+        "cityCode": null,
+        "url": null
+    },
+    "incidentDestinations": [
+        {
+            "destinationEntryName": null,
+            "destinationTypeCode": 0,
+            "actionTypeCode": 0,
+            "isReleased": false,
+            "releasedBy": null,
+            "localeReleaseTime": null,
+            "directionTypeCode": 0,
+            "destinationEntryInfo": {
+                "entryUuid": null,
+                "appUuid": null,
+                "commonName": null,
+                "distinguishedName": null,
+                "fullName": null,
+                "logonName": null,
+                "department": null,
+                "manager": null,
+                "title": null,
+                "mobile": null,
+                "telephone": null,
+                "mail": null,
+                "username": null,
+                "ip": null,
+                "hostname": null,
+                "domain": null,
+                "deviceName": null,
+                "deviceModel": null,
+                "appName": null,
+                "entryType": 0,
+                "countryCode": null,
+                "regionCode": null,
+                "cityCode": null,
+                "url": null
+            },
+            "incidentDropAttachments": [],
+            "released": false
+        },
+        {
+            "destinationEntryName": null,
+            "destinationTypeCode": 0,
+            "actionTypeCode": 0,
+            "isReleased": false,
+            "releasedBy": null,
+            "localeReleaseTime": null,
+            "directionTypeCode": 0,
+            "destinationEntryInfo": {
+                "entryUuid": null,
+                "appUuid": null,
+                "commonName": "danieldiy@126.com",
+                "distinguishedName": null,
+                "fullName": null,
+                "logonName": null,
+                "department": null,
+                "manager": null,
+                "title": null,
+                "mobile": null,
+                "telephone": null,
+                "mail": "danieldiy@126.com",
+                "username": null,
+                "ip": null,
+                "hostname": null,
+                "domain": null,
+                "deviceName": null,
+                "deviceModel": null,
+                "appName": null,
+                "entryType": 0,
+                "countryCode": null,
+                "regionCode": null,
+                "cityCode": null,
+                "url": null
+            },
+            "incidentDropAttachments": [],
+            "released": false
+        }
+    ],
+    "incidentAttachments": [],
+    "visible": true,
+    "released": false,
+    "ignored": false
+}'
+
+
+
+
+
+
+# query document
+curl -XGET http://172.22.1.36:9200/tenant1/network/1
