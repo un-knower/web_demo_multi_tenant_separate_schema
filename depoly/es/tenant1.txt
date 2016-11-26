@@ -3,10 +3,10 @@
 curl -XPUT http://172.22.1.36:9200/tenant1
 
 # insert document
-curl -XPUT http://172.22.1.36:9200/tenant1/network/1 -d @network-single.json
+curl -XPUT http://172.22.1.36:9200/tenant1/network/12340001 -d @network-single.json
 
 # or
-curl -XPUT http://172.22.1.36:9200/tenant1/network/1 -d '
+curl -XPUT http://172.22.1.36:9200/tenant1/network/12340001 -d '
 {
     "id": 12340001,
     "transactionId": "12340001-dddd-4f72-9e1b-fab0cac00b10",
