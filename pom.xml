@@ -13,9 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springframework.version>4.1.6.RELEASE</springframework.version>
+        <project.sl4j.version>1.7.21</project.sl4j.version>
         <project.json.version>2.5.4</project.json.version>
         <project.shiro.version>1.2.3</project.shiro.version>
         <project.kafka.version>0.10.0.0</project.kafka.version>
+        <project.es.version>5.0.0</project.es.version>
     </properties>
 
     <dependencyManagement>
@@ -91,17 +93,22 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.12</version>
+                <version>${project.sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.12</version>
+                <version>${project.sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>log4j-over-slf4j</artifactId>
-                <version>1.7.21</version>
+                <version>${project.sl4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>2.6.2</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -113,7 +120,6 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.1.3</version>
             </dependency>
-
 
             <!--jdbc-->
             <dependency>
@@ -347,6 +353,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>transport</artifactId>
+                <version>${project.es.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15</artifactId>
                 <version>1.45</version>
@@ -412,6 +424,14 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -548,6 +568,10 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
