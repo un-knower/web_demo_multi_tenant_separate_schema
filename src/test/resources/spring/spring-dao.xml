@@ -92,7 +92,7 @@
     <tx:annotation-driven />
 
     <!-- 加载Dao -->
-    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_schema" >
+    <context:component-scan base-package="com.sky.demo.web_demo_multi_tenant_separate_schema.*" >
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
     </context:component-scan>
 

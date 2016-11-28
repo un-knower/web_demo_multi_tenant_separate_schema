@@ -11,7 +11,7 @@
     <!--<context:property-placeholder location="file:${CATALINA_HOME}/conf/config.properties" ignore-unresolvable="true" />-->
 
     <!--<import resource="classpath:spring/spring-message.xml"/>-->
-    <!--<import resource="classpath:spring/spring-dao.xml"/>-->
+    <import resource="classpath:spring/spring-dao.xml"/>
     <import resource="classpath:spring/spring-service.xml"/>
     <!--<import resource="classpath:spring/spring-quartz.xml"/>-->
     <!--<import resource="classpath:spring/spring-shiro.xml"/>-->
