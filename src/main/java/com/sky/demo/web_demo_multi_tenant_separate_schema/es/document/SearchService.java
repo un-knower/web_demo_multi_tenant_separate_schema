@@ -2,7 +2,9 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto.SearchCondition;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import java.util.List;
 
@@ -11,9 +13,14 @@ import java.util.List;
  */
 public interface SearchService {
 
+    public SearchResponse search(String index, String type, QueryBuilder queryBuilder, SortBuilder sortBuilder, int from, int size);
+
     public SearchResponse search(SearchCondition searchCondition);
 
     public SearchResponse searchUsingScroll(SearchCondition searchCondition);
 
     public List<SearchHit> searchUsingScrollAllHits(SearchCondition searchCondition);
+
+
+
 }

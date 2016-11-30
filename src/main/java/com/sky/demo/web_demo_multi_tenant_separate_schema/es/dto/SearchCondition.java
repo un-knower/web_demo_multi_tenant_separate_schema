@@ -1,10 +1,11 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto;
 
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by user on 16/11/29.
@@ -14,7 +15,9 @@ public class SearchCondition implements Serializable {
     private List<String> indexes;
     private List<String> types;
     private SearchType searchType;
-    private Map<String, Object> term;
+
+    private List<QueryBuilder> queryBuilders;
+    private List<SortBuilder> sortBuilders;
 
     private Integer from;
     private Integer size;
@@ -45,12 +48,20 @@ public class SearchCondition implements Serializable {
         this.searchType = searchType;
     }
 
-    public Map<String, Object> getTerm() {
-        return term;
+    public List<QueryBuilder> getQueryBuilders() {
+        return queryBuilders;
     }
 
-    public void setTerm(Map<String, Object> term) {
-        this.term = term;
+    public void setQueryBuilders(List<QueryBuilder> queryBuilders) {
+        this.queryBuilders = queryBuilders;
+    }
+
+    public List<SortBuilder> getSortBuilders() {
+        return sortBuilders;
+    }
+
+    public void setSortBuilders(List<SortBuilder> sortBuilders) {
+        this.sortBuilders = sortBuilders;
     }
 
     public Integer getFrom() {
@@ -79,11 +90,12 @@ public class SearchCondition implements Serializable {
 
     @Override
     public String toString() {
-        return "QueryCondition{" +
+        return "SearchCondition{" +
                 "indexes=" + indexes +
                 ", types=" + types +
                 ", searchType=" + searchType +
-                ", term=" + term +
+                ", queryBuilders=" + queryBuilders +
+                ", sortBuilders=" + sortBuilders +
                 ", from=" + from +
                 ", size=" + size +
                 ", explain=" + explain +

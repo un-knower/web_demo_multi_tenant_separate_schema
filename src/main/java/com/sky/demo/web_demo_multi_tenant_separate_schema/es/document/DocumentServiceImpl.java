@@ -4,6 +4,11 @@ import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.EsClient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.ListenableActionFuture;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetRequestBuilder;
@@ -35,12 +40,17 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public IndexResponse createDocument(String index, String type, String json) {
+        return createDocument(index, type, null, json);
+    }
+
+    @Override
+    public IndexResponse createDocument(String index, String type, String id, String json) {
         Preconditions.checkState(StringUtils.isNotBlank(index), "index is null!");
         Preconditions.checkState(StringUtils.isNotBlank(type), "type is null");
         Preconditions.checkState(StringUtils.isNotBlank(json), "json is null");
 
-        IndexResponse response = esClient.getTransportClient().prepareIndex(index, type)
-                .setSource(json)       //must
+        IndexResponse response = esClient.getTransportClient().prepareIndex(index, type, id)
+                .setSource(json)
                 .get();
 
         return response;
@@ -55,6 +65,38 @@ public class DocumentServiceImpl implements DocumentService {
 
         GetResponse response = esClient.getTransportClient().prepareGet(index, type, id)
                 .get();  // short of .execute().actionGet();  // 会等待查询执行完毕并返回数据
+        return response;
+    }
+
+    @Override
+    public GetResponse getDocumentAsync(String index, String type, String id) {
+        Preconditions.checkState(StringUtils.isNotBlank(index), "index is null!");
+        Preconditions.checkState(StringUtils.isNotBlank(type), "type is null");
+        Preconditions.checkState(StringUtils.isNotBlank(id), "id is null");
+
+
+        ListenableActionFuture<GetResponse> feature = esClient.getTransportClient().prepareGet(index, type, id).execute();
+        feature.addListener(new ActionListener<GetResponse>() {
+            @Override
+            public void onResponse(GetResponse response) {
+                logger.info(response.toString());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                logger.error("get response error", e);
+                throw new RuntimeException(e);
+            }
+        });
+
+        GetResponse response = null;
+        try {
+            response = feature.get();
+        } catch (InterruptedException e) {
+            logger.error("get document error", e);
+        } catch (ExecutionException e) {
+            logger.error("get document error", e);
+        }
         return response;
     }
 
@@ -146,4 +188,23 @@ public class DocumentServiceImpl implements DocumentService {
 
         return responses;
     }
+
+    @Override
+    public BulkResponse bulkGetDocument(List<IndexRequest> indexRequests, List<UpdateRequest> updateRequests, List<DeleteRequest> deleteRequests) {
+        BulkRequestBuilder bulkRequestBuilder = esClient.getTransportClient().prepareBulk();
+
+        if (CollectionUtils.isNotEmpty(indexRequests)) {
+            indexRequests.forEach(indexRequest -> bulkRequestBuilder.add(indexRequest));
+        }
+        if (CollectionUtils.isNotEmpty(updateRequests)) {
+            updateRequests.forEach(updateRequest -> bulkRequestBuilder.add(updateRequest));
+        }
+        if (CollectionUtils.isNotEmpty(deleteRequests)) {
+            deleteRequests.forEach(deleteRequest -> bulkRequestBuilder.add(deleteRequest));
+        }
+
+        BulkResponse responses = bulkRequestBuilder.get();
+        return responses;
+    }
+
 }
