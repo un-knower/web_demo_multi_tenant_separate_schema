@@ -2,9 +2,12 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
 
 import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.EsClient;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetRequestBuilder;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
@@ -15,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -48,7 +52,9 @@ public class DocumentServiceImpl implements DocumentService {
         Preconditions.checkState(StringUtils.isNotBlank(type), "type is null");
         Preconditions.checkState(StringUtils.isNotBlank(id), "id is null");
 
-        GetResponse response = esClient.getTransportClient().prepareGet(index, type, id).get();
+
+        GetResponse response = esClient.getTransportClient().prepareGet(index, type, id)
+                .get();  // short of .execute().actionGet();  // 会等待查询执行完毕并返回数据
         return response;
     }
 
@@ -126,5 +132,18 @@ public class DocumentServiceImpl implements DocumentService {
             logger.error("upsert document error", e);
         }
         return response;
+    }
+
+    @Override
+    public MultiGetResponse multiGetDocument(String index, String type, List<String> ids) {
+        Preconditions.checkState(StringUtils.isNotBlank(index), "index is null!");
+        Preconditions.checkState(StringUtils.isNotBlank(type), "type is null");
+        Preconditions.checkState(CollectionUtils.isNotEmpty(ids), "ids is null");
+
+        MultiGetRequestBuilder builder = esClient.getTransportClient().prepareMultiGet();
+        ids.forEach(id -> builder.add(index, type, id));
+        MultiGetResponse responses = builder.get();
+
+        return responses;
     }
 }

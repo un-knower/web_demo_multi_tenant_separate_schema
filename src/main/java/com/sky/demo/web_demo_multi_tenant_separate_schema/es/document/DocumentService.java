@@ -1,11 +1,14 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
 
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.script.Script;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,4 +28,7 @@ public interface DocumentService {
 
     public UpdateResponse upsertDocumet(String index, String type, String id, String document, Map<String, Object> data);
 
+    public MultiGetResponse multiGetDocument(String index, String type, List<String> ids);
+
+    //public BulkResponse bulkGetDocument()
 }
