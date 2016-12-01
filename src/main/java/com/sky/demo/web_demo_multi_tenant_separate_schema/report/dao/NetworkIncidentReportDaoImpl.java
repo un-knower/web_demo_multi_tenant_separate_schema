@@ -24,7 +24,6 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.util.RegexpConvertor;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import java.util.Map;
 public class NetworkIncidentReportDaoImpl
 extends AbstractBaseIncidentReportDao
 implements NetworkIncidentReportDao {
+
     @Override
     public List<EchartsForm> selectListOfPolicy(Map<String, Object> condition) {
         ArrayList params = Lists.newArrayList();
@@ -256,6 +256,13 @@ implements NetworkIncidentReportDao {
 //        int count = this.queryForInt(sql.toString(), params.toArray());
         return 0;
     }
+
+    @Override
+    public NetworkIncident selectNetworkIncident(Map<String, Object> var1) {
+        return null;
+    }
+
+
 
     private void buildPolicyTb(Map<String, Object> condition, List<Object> params, StringBuilder sql) {
         sql.append("(select distinct idt_network_incidents.*, idt_network_policies.* from ");

@@ -38,5 +38,8 @@ public interface NetworkIncidentReportDao {
     public List<NetworkIncident> selectListOfNetworkIncident(Map<String, Object> var1);
 
     public int selectCountOfNetworkIncident(Map<String, Object> var1);
+
+    public NetworkIncident selectNetworkIncident(Map<String, Object> var1);
+
 }
 
