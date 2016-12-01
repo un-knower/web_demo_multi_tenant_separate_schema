@@ -8,6 +8,9 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto.SearchCondition
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.util.CollectionUtil;
+import org.elasticsearch.action.explain.ExplainResponse;
+import org.elasticsearch.action.search.MultiSearchRequestBuilder;
+import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.TimeValue;
@@ -120,5 +123,32 @@ public class SearchServiceImpl implements SearchService {
         } while (response.getHits().getHits().length != 0);
 
         return result;
+    }
+
+    @Override
+    public MultiSearchResponse multiSearch(List<SearchRequestBuilder> searchRequestBuilders) {
+
+        MultiSearchRequestBuilder multiSearchRequestBuilder = esClient.getTransportClient().prepareMultiSearch();
+        if (CollectionUtils.isNotEmpty(searchRequestBuilders)) {
+            searchRequestBuilders.forEach(searchRequestBuilder -> multiSearchRequestBuilder.add(searchRequestBuilder));
+        }
+
+        MultiSearchResponse response = multiSearchRequestBuilder.get();
+
+        return response;
+    }
+
+
+    @Override
+    public ExplainResponse explain(String index, String type, String id, QueryBuilder queryBuilder) {
+        Preconditions.checkState(StringUtils.isNotBlank(index), "index is null!");
+        Preconditions.checkState(StringUtils.isNotBlank(type), "type is null");
+        Preconditions.checkState(StringUtils.isNotBlank(id), "id is null");
+
+        ExplainResponse response = esClient.getTransportClient().prepareExplain(index, type, id)
+                .setQuery(queryBuilder)
+                .get();
+
+        return response;
     }
 }

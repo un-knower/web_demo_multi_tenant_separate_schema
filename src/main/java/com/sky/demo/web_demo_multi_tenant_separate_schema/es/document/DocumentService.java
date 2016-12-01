@@ -3,6 +3,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.explain.ExplainResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -38,4 +39,6 @@ public interface DocumentService {
     public MultiGetResponse multiGetDocument(String index, String type, List<String> ids);
 
     public BulkResponse bulkGetDocument(List<IndexRequest> indexRequests, List<UpdateRequest> updateRequests, List<DeleteRequest> deleteRequests);
+
+
 }

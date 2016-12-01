@@ -1,6 +1,9 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto.SearchCondition;
+import org.elasticsearch.action.explain.ExplainResponse;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -21,6 +24,8 @@ public interface SearchService {
 
     public List<SearchHit> searchUsingScrollAllHits(SearchCondition searchCondition);
 
+    public MultiSearchResponse multiSearch(List<SearchRequestBuilder> searchRequestBuilders);
 
+    public ExplainResponse explain(String index, String type, String id, QueryBuilder queryBuilder);
 
 }
