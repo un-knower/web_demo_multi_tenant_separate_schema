@@ -20,7 +20,9 @@ import javax.annotation.Resource;
 
 @Service
 public class BaseIncidentReportFactory {
+
     private static final Logger logger = LoggerFactory.getLogger(BaseIncidentReportFactory.class);
+
     @Resource
     private BaseNetworkIncidentReportService baseNetworkIncidentReportService;
     @Resource

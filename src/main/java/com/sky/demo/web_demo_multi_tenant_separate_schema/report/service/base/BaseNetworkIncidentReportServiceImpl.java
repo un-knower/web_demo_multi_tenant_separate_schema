@@ -16,6 +16,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.base;
 
 import com.google.common.base.Preconditions;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.acc.NetworkIncidentReportAcc;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dao.NetworkIncidentReportDao;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.EchartsForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentDashboardType;
@@ -35,9 +36,14 @@ import java.util.Map;
 public class BaseNetworkIncidentReportServiceImpl
 extends AbstractBaseIncidentReportService
 implements BaseNetworkIncidentReportService {
+
     private static final Logger logger = LoggerFactory.getLogger(BaseNetworkIncidentReportServiceImpl.class);
+
     @Resource
     private NetworkIncidentReportDao networkIncidentReportDao;
+
+    @Resource
+    private NetworkIncidentReportAcc networkIncidentReportAcc;
 
     @Override
     protected List<EchartsForm> getEcharsForms(IncidentDashboardType dashboardType, IncidentReportForm form) {

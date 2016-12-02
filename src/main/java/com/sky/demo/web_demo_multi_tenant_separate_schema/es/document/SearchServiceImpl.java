@@ -60,7 +60,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse search(SearchCondition searchCondition) {
-
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
         SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
         builder.setIndices((String[]) searchCondition.getIndexes().toArray())
                 .setTypes((String[]) searchCondition.getTypes().toArray())
@@ -83,6 +83,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchResponse searchUsingScroll(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
 
         SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
         builder.setIndices((String[]) searchCondition.getIndexes().toArray())
@@ -99,6 +100,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<SearchHit> searchUsingScrollAllHits(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
 
         List<SearchHit> result = Lists.newArrayList();
 

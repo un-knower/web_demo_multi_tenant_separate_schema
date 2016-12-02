@@ -17,6 +17,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.Incident
 import java.util.List;
 
 public interface IBaseIncidentReportService {
+
     public List<EchartsForm> queryListAllInOne(IncidentDashboardType var1, IncidentReportForm var2);
 }
 
