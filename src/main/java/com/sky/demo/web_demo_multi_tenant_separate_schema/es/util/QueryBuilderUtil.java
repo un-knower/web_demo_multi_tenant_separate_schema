@@ -45,6 +45,18 @@ public class QueryBuilderUtil {
         return queryBuilder;
     }
 
+    public static QueryBuilder buildMatchPhraseQuery(String name, Object text) {
+        QueryBuilder queryBuilder = QueryBuilders.matchPhraseQuery(name, text);
+
+        return queryBuilder;
+    }
+
+    public static QueryBuilder buildMatchPhrasePrefixQuery(String name, Object text) {
+        QueryBuilder queryBuilder = QueryBuilders.matchPhrasePrefixQuery(name, text);
+
+        return queryBuilder;
+    }
+
     public static QueryBuilder buildCommonTermsQuery(String fieldName, Object text) {
         QueryBuilder queryBuilder = QueryBuilders.commonTermsQuery(fieldName, text);
 

@@ -9,7 +9,9 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -31,7 +33,7 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
 
 
     @Override
-    public List<NetworkIncident> selectListOfNetworkIncident(QueryCondition queryCondition) {
+    public SearchResponse selectNetworkIncident(QueryCondition queryCondition) {
         Preconditions.checkNotNull(queryCondition, "queryCondition is null!");
         logger.info("QueryCondition:\n", JsonUtil.writeValueAsString(queryCondition));
 
@@ -41,30 +43,22 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
                 .setFrom(queryCondition.getFrom())
                 .setSize(queryCondition.getSize());
 
-        if (CollectionUtils.isNotEmpty(queryCondition.getQueryBuilders())) {
-            QueryBuilder queryBuilder = QueryBuilderUtil.buildBoolQuery(queryCondition.getQueryBuilders(), null ,null, null);
-
-            logger.debug("query builder{}", queryBuilder);
+        if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+            if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
+                queryCondition.getBoolQueryMusts().forEach(must -> queryBuilder.must());
+            }
+            logger.debug("query builder: {}", queryBuilder);
             searchRequestBuilder.setQuery(queryBuilder);
         }
 
+        if (CollectionUtils.isNotEmpty(queryCondition.getSortBuilders())) {
+            logger.debug("sort builders: {}", queryCondition.getSortBuilders());
+            queryCondition.getSortBuilders().forEach(sortBuilder -> searchRequestBuilder.addSort(sortBuilder));
+        }
+
+
         SearchResponse response = searchRequestBuilder.get();
-
-
-        return null;
-    }
-
-    @Override
-    public int selectCountOfNetworkIncident(QueryCondition queryCondition) {
-        Preconditions.checkNotNull(queryCondition, "queryCondition is null!");
-
-        return 0;
-    }
-
-    @Override
-    public NetworkIncident selectNetworkIncident(QueryCondition queryCondition, Map<String, Object> condition) {
-        Preconditions.checkNotNull(queryCondition, "queryCondition is null!");
-
-        return null;
+        return response;
     }
 }

@@ -14,15 +14,15 @@ public class SearchCondition implements Serializable {
 
     private List<String> indexes;
     private List<String> types;
-    private SearchType searchType;
 
-    private List<QueryBuilder> queryBuilders;
+    private QueryBuilder queryBuilder;
     private List<SortBuilder> sortBuilders;
 
     private Integer from;
     private Integer size;
-    private Boolean explain;
 
+    private SearchType searchType;
+    private Boolean explain;
 
     public List<String> getIndexes() {
         return indexes;
@@ -40,20 +40,12 @@ public class SearchCondition implements Serializable {
         this.types = types;
     }
 
-    public SearchType getSearchType() {
-        return searchType;
+    public QueryBuilder getQueryBuilder() {
+        return queryBuilder;
     }
 
-    public void setSearchType(SearchType searchType) {
-        this.searchType = searchType;
-    }
-
-    public List<QueryBuilder> getQueryBuilders() {
-        return queryBuilders;
-    }
-
-    public void setQueryBuilders(List<QueryBuilder> queryBuilders) {
-        this.queryBuilders = queryBuilders;
+    public void setQueryBuilder(QueryBuilder queryBuilder) {
+        this.queryBuilder = queryBuilder;
     }
 
     public List<SortBuilder> getSortBuilders() {
@@ -80,6 +72,14 @@ public class SearchCondition implements Serializable {
         this.size = size;
     }
 
+    public SearchType getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(SearchType searchType) {
+        this.searchType = searchType;
+    }
+
     public Boolean getExplain() {
         return explain;
     }
@@ -93,11 +93,11 @@ public class SearchCondition implements Serializable {
         return "SearchCondition{" +
                 "indexes=" + indexes +
                 ", types=" + types +
-                ", searchType=" + searchType +
-                ", queryBuilders=" + queryBuilders +
+                ", queryBuilder=" + queryBuilder +
                 ", sortBuilders=" + sortBuilders +
                 ", from=" + from +
                 ", size=" + size +
+                ", searchType=" + searchType +
                 ", explain=" + explain +
                 '}';
     }

@@ -1,9 +1,8 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.acc;
 
-import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.network.NetworkIncident;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.QueryCondition;
+import org.elasticsearch.action.search.SearchResponse;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,9 +10,5 @@ import java.util.Map;
  */
 public interface NetworkIncidentReportAcc {
 
-    public List<NetworkIncident> selectListOfNetworkIncident(QueryCondition queryCondition);
-
-    public int selectCountOfNetworkIncident(QueryCondition queryCondition);
-
-    public NetworkIncident selectNetworkIncident(QueryCondition queryCondition, Map<String, Object> condition);
+    public SearchResponse selectNetworkIncident(QueryCondition queryCondition);
 }

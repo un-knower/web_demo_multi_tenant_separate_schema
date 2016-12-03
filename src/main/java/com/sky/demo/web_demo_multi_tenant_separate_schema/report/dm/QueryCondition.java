@@ -15,7 +15,7 @@ public class QueryCondition implements Serializable {
     private String index;
     private String type;
 
-    private List<QueryBuilder> queryBuilders;
+    private List<QueryBuilder> boolQueryMusts;      //for bool query must
     private List<SortBuilder> sortBuilders;
 
     private Integer from;
@@ -37,12 +37,12 @@ public class QueryCondition implements Serializable {
         this.type = type;
     }
 
-    public List<QueryBuilder> getQueryBuilders() {
-        return queryBuilders;
+    public List<QueryBuilder> getBoolQueryMusts() {
+        return boolQueryMusts;
     }
 
-    public void setQueryBuilders(List<QueryBuilder> queryBuilders) {
-        this.queryBuilders = queryBuilders;
+    public void setBoolQueryMusts(List<QueryBuilder> boolQueryMusts) {
+        this.boolQueryMusts = boolQueryMusts;
     }
 
     public List<SortBuilder> getSortBuilders() {
@@ -74,7 +74,7 @@ public class QueryCondition implements Serializable {
         return "QueryCondition{" +
                 "index='" + index + '\'' +
                 ", type='" + type + '\'' +
-                ", queryBuilders=" + queryBuilders +
+                ", boolQueryMusts=" + boolQueryMusts +
                 ", sortBuilders=" + sortBuilders +
                 ", from=" + from +
                 ", size=" + size +
