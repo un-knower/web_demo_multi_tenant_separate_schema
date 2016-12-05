@@ -1,10 +1,11 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.util;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.*;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.SpringUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -166,85 +168,86 @@ public class IncidentReportFilterForEsUtil {
     }
 
     private static QueryBuilder buildFilterTime(FilterTimeForm timeForm) {
-        QueryBuilder queryBuilder = null;
+        RangeQueryBuilder queryBuilder = null;
         if (timeForm != null && timeForm.isEnableFilter() && timeForm.getTimeType() != null) {
-            String beginDate = "";
-            String endDate = "";
+            DateTime beginDate = null;
+            DateTime endDate = null;
             DateTime now = new DateTime();
             PeriodTimeType periodTimeType = timeForm.getTimeType();
             switch (periodTimeType) {
                 case CUSTOM_TIME: {
-                    beginDate = new DateTime(timeForm.getPreciseFrom()).toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = new DateTime(timeForm.getPreciseTo()).toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = new DateTime(timeForm.getPreciseFrom());
+                    endDate = new DateTime(timeForm.getPreciseTo());
                     break;
                 }
                 case LAST_PAST_N_DAY: {
                     DateTime pre = now.minusDays(timeForm.getLastPastDay() - 1).secondOfDay().withMinimumValue();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_24_HOURS: {
                     DateTime pre = now.minusHours(24);
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case YESTERDAY: {
                     DateTime pre = now.minusDays(1).secondOfDay().withMinimumValue();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusDays(1).secondOfDay().withMaximumValue();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_WEEK: {
                     DateTime pre = now.weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_WEEK: {
                     DateTime pre = now.minusWeeks(1).weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusWeeks(1).weekOfWeekyear().roundCeilingCopy();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_MONTH: {
                     DateTime pre = now.monthOfYear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_MONTH: {
                     DateTime pre = now.minusMonths(1).monthOfYear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusMonths(1).monthOfYear().roundCeilingCopy();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now);
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now.minusMonths(3));
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = getLastDayOfQuarter(now.minusMonths(3));
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_YEAR: {
                     DateTime pre = now.year().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
             }
-//            condition.put("BEGIN_DATE", beginDate);
-//            condition.put("END_DATE", endDate);
+            queryBuilder = QueryBuilders.rangeQuery("incidentTime")
+                    .from(beginDate.getMillis())
+                    .to(endDate.getMillis());
 
         }
         return queryBuilder;
@@ -339,22 +342,27 @@ public class IncidentReportFilterForEsUtil {
     }
 
     private static QueryBuilder buildFilterSource(FilterSourceForm sourceForm) {
-        QueryBuilder queryBuilder = null;
-//        if (sourceForm != null && sourceForm.isEnableFilter()) {
-//            DirectoryLocalEntryService directoryLocalEntryService = (DirectoryLocalEntryService) SpringUtil.getCtx().getBean(DirectoryLocalEntryService.class);
-//            List list = Lists.newArrayList();
-//            if (StringUtils.isNotBlank((String)sourceForm.getCustomSources())) {
-//                list = Splitter.on((String)",").omitEmptyStrings().trimResults().splitToList((CharSequence)sourceForm.getCustomSources());
-//                if (sourceForm.isFuzzyQuery()) {
-//                    condition.put("CUSTOM_SOURCES", (ArrayList)list);
-//                } else {
-//                    String str = SqlUtil.buildColumnsWithQuote((List)list);
-//                    condition.put("CUSTOM_SOURCES", str);
-//                }
-//                condition.put("IS_FUZZY_QUERY_FILTER_KEY_CUSTOM_SOURCES", sourceForm.isFuzzyQuery());
-//            } else {
-//                List baseDirectoryEntries = directoryLocalEntryService.getDirectoryEntriesByUuids(sourceForm.getSources(), null);
-//                if (CollectionUtils.isNotEmpty((Collection)baseDirectoryEntries)) {
+        if (sourceForm != null && sourceForm.isEnableFilter()) {
+            List<String> list = Lists.newArrayList();
+            if (StringUtils.isNotBlank(sourceForm.getCustomSources())) {
+                list = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(sourceForm.getCustomSources());
+                if (sourceForm.isFuzzyQuery()) {
+                    //TODO
+                } else {
+
+                }
+                final BoolQueryBuilder finalQueryBuilder = QueryBuilders.boolQuery();
+                list.forEach(name -> {
+                    QueryBuilder builder = QueryBuilders.matchPhraseQuery("sourceEntryInfo.commonName", name);
+                    finalQueryBuilder.should(builder);
+
+                });
+                return finalQueryBuilder;
+            } else {
+                //TODO
+//                DirectoryLocalEntryService directoryLocalEntryService = (DirectoryLocalEntryService) SpringUtil.getCtx().getBean(DirectoryLocalEntryService.class);
+//                list = directoryLocalEntryService.getDirectoryEntriesByUuids(sourceForm.getSources(), null);
+//                if (CollectionUtils.isNotEmpty(baseDirectoryEntries)) {
 //                    for (BaseDirectoryEntry base : baseDirectoryEntries) {
 //                        if (base instanceof DirectoryGroup) {
 //                            List directoryUsers = directoryLocalEntryService.getDirectoryUsersByGroupUuid(base.getUuid(), null);
@@ -366,26 +374,35 @@ public class IncidentReportFilterForEsUtil {
 //                        list.add(base.getUuid());
 //                    }
 //                }
-//                String sourceSql = SqlUtil.buildColumnsWithQuote((List)list);
-//                condition.put("SOURCES", sourceSql);
-//            }
-//        }
-        return queryBuilder;
+                final BoolQueryBuilder finalQueryBuilder = QueryBuilders.boolQuery();
+                list.forEach(uuid -> {
+                    QueryBuilder builder = QueryBuilders.matchPhraseQuery("sourceEntryInfo.entryUuid", uuid);
+                    finalQueryBuilder.should(builder);
+
+                });
+                return finalQueryBuilder;
+            }
+        }
+        return null;
     }
 
     private static QueryBuilder buildFilterDestination(FilterDestinationForm destinationForm) {
-        QueryBuilder queryBuilder = null;
-//        if (destinationForm != null && destinationForm.isEnableFilter()) {
-//            List list = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(destinationForm.getDestinations());
-//            if (destinationForm.isFuzzyQuery()) {
-//                condition.put("DESTINATIONS", list);
-//            } else {
-//                String str = SqlUtil.buildColumnsWithQuote((List) list);
-//                condition.put("DESTINATIONS", str);
-//            }
-//            condition.put("IS_FUZZY_QUERY_FILTER_KEY_DESTINATIONS", destinationForm.isFuzzyQuery());
-//        }
-        return queryBuilder;
+        if (destinationForm != null && destinationForm.isEnableFilter()) {
+            List list = Splitter.on(",").omitEmptyStrings().trimResults().splitToList(destinationForm.getDestinations());
+            if (destinationForm.isFuzzyQuery()) {
+                //TODO
+            } else {
+
+            }
+            final BoolQueryBuilder finalQueryBuilder = QueryBuilders.boolQuery();
+            list.forEach(name -> {
+                QueryBuilder builder = QueryBuilders.matchPhraseQuery("incidentDestinations.destinationEntryInfo.commonName", name);
+                finalQueryBuilder.should(builder);
+
+            });
+            return finalQueryBuilder;
+        }
+        return null;
     }
 
     private static QueryBuilder buildFilterRelease(FilterReleaseForm releaseForm) {
@@ -470,86 +487,86 @@ public class IncidentReportFilterForEsUtil {
 //    }
 
     private static QueryBuilder buildFilterIncidentTime(FilterIncidentTimeForm incidentTime) {
-        QueryBuilder queryBuilder = null;
+        RangeQueryBuilder queryBuilder = null;
         if (incidentTime != null && incidentTime.isEnableFilter() && incidentTime.getTimeType() != null) {
-            String beginDate = "";
-            String endDate = "";
+            DateTime beginDate = null;
+            DateTime endDate = null;
             DateTime now = new DateTime();
             PeriodTimeType periodTimeType = incidentTime.getTimeType();
             switch (periodTimeType) {
                 case CUSTOM_TIME: {
-                    beginDate = new DateTime(incidentTime.getPreciseFrom()).toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = new DateTime(incidentTime.getPreciseTo()).toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = new DateTime(incidentTime.getPreciseFrom());
+                    endDate = new DateTime(incidentTime.getPreciseTo());
                     break;
                 }
                 case LAST_PAST_N_DAY: {
                     DateTime pre = now.minusDays(incidentTime.getLastPastDay() - 1).secondOfDay().withMinimumValue();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_24_HOURS: {
                     DateTime pre = now.minusHours(24);
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case YESTERDAY: {
                     DateTime pre = now.minusDays(1).secondOfDay().withMinimumValue();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusDays(1).secondOfDay().withMaximumValue();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_WEEK: {
                     DateTime pre = now.weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_WEEK: {
                     DateTime pre = now.minusWeeks(1).weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusWeeks(1).weekOfWeekyear().roundCeilingCopy();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_MONTH: {
                     DateTime pre = now.monthOfYear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_MONTH: {
                     DateTime pre = now.minusMonths(1).monthOfYear().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = now.minusMonths(1).monthOfYear().roundCeilingCopy();
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now);
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
                 case LAST_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now.minusMonths(3));
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
                     pre = getLastDayOfQuarter(now.minusMonths(3));
-                    endDate = pre.toString("yyyy-MM-dd HH:mm:ss");
+                    endDate = pre;
                     break;
                 }
                 case THIS_YEAR: {
                     DateTime pre = now.year().roundFloorCopy();
-                    beginDate = pre.toString("yyyy-MM-dd HH:mm:ss");
-                    endDate = now.toString("yyyy-MM-dd HH:mm:ss");
+                    beginDate = pre;
+                    endDate = now;
                     break;
                 }
             }
-//            condition.put("INCIDENT_TIME_BEGIN_DATE", beginDate);
-//            condition.put("INCIDENT_TIME_END_DATE", endDate);
-
+            queryBuilder = QueryBuilders.rangeQuery("incidentTime")
+                    .from(beginDate.getMillis())
+                    .to(endDate.getMillis());
         }
         return queryBuilder;
     }
@@ -808,6 +825,14 @@ public class IncidentReportFilterForEsUtil {
     }
 
 
+    public static void main(String[] args) {
+
+        DateTime now = new DateTime();
+        System.out.println(now);
+
+        Timestamp timestamp = new Timestamp(now.getMillis());
+        System.out.println(timestamp);
+    }
 
 
 }
