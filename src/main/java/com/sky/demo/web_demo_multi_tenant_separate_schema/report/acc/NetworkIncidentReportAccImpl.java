@@ -35,7 +35,7 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
     @Override
     public SearchResponse selectNetworkIncident(QueryCondition queryCondition) {
         Preconditions.checkNotNull(queryCondition, "queryCondition is null!");
-        logger.info("QueryCondition:\n", JsonUtil.writeValueAsString(queryCondition));
+        logger.info("QueryCondition:\n{}", JsonUtil.writeValueAsString(queryCondition));
 
         SearchRequestBuilder searchRequestBuilder = esClient.getTransportClient()
                 .prepareSearch(queryCondition.getIndex())
@@ -46,7 +46,7 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
         if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
-                queryCondition.getBoolQueryMusts().forEach(must -> queryBuilder.must());
+                queryCondition.getBoolQueryMusts().forEach(must -> queryBuilder.must(must));
             }
             logger.debug("query builder: {}", queryBuilder);
             searchRequestBuilder.setQuery(queryBuilder);

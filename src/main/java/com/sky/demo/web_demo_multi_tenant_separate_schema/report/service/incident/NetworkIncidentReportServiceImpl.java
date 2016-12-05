@@ -8,6 +8,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.FilterIn
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportFilterForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.base.BaseNetworkIncidentReportService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.util.IncidentReportFilterForEsUtil;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.slf4j.Logger;
@@ -71,6 +72,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        logger.info("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
         return null;
     }
 
