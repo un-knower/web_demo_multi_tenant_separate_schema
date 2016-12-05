@@ -11,6 +11,8 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.util.IncidentRe
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -71,9 +73,20 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
         queryCondition.setBoolQueryMusts(queryBuilders);
 
+        NetworkIncident networkIncident = null;
         SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
-        logger.info("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-        return null;
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0 && searchHits.getAt(0) != null) {
+                String source = searchHits.getAt(0).getSourceAsString();
+                networkIncident = JsonUtil.readValue(source, NetworkIncident.class);
+            }
+        }
+        return networkIncident;
     }
 
     @Override

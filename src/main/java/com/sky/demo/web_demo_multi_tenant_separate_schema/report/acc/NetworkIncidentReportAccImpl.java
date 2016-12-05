@@ -58,7 +58,12 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
         }
 
 
-        SearchResponse response = searchRequestBuilder.get();
+        SearchResponse response = null;
+        try {
+            response = searchRequestBuilder.get();
+        } catch (Exception e) {
+            logger.error("get from es errror", e);
+        }
         return response;
     }
 }

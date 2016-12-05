@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util;
 
 import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.ContentLengthHeaderRemover;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.RestTemplateEx;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequestInterceptor;
@@ -319,7 +320,7 @@ public class HttpClientUtilTest {
         // remove headers of Content-Length
         HttpRequestInterceptor interceptor = (request, context) -> request.removeHeaders(HTTP.CONTENT_LEN);
 
-        final RestTemplate template = new RestTemplate();
+        final RestTemplateEx template = new RestTemplateEx();
         final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         final HttpClient httpClient = HttpClientBuilder.create()
 //                .setDefaultHeaders(headers)
@@ -330,8 +331,11 @@ public class HttpClientUtilTest {
         factory.setHttpClient(httpClient);
         template.setRequestFactory(factory);
 
-        String result = template.postForObject(url, httpEntity, String.class, "");
-        System.out.println(result);
+//        String result = template.postForObject(url, httpEntity, String.class, "");
+//        String result = template.putForObject(url, httpEntity, String.class, "");  //PUT do not support 307 auto redirect?
+        template.put(url, httpEntity, "");  //PUT do not support 307 auto redirect?
+
+//        System.out.println(result);
     }
 
 
