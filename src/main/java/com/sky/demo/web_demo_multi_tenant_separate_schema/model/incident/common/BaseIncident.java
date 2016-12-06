@@ -108,6 +108,15 @@ public abstract class BaseIncident implements Serializable {
     @JsonIgnore
     private IncidentProperties incidentProperties;
 
+    private String tenant;
+
+    public String getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
+    }
 
     public int getActionTypeCode() {
         return actionTypeCode;
@@ -580,6 +589,7 @@ public abstract class BaseIncident implements Serializable {
                 ", triggeredIncidentPolicyInfos=" + triggeredIncidentPolicyInfos +
                 ", originalIncidentPolicyInfos=" + originalIncidentPolicyInfos +
                 ", incidentProperties=" + incidentProperties +
+                ", tenant='" + tenant + '\'' +
                 '}';
     }
 }

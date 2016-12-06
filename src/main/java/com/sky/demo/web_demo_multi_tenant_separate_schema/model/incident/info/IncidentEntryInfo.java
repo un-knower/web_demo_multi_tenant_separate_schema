@@ -30,6 +30,7 @@ public class IncidentEntryInfo implements Serializable {
     private String hostname;
     private String domain;
     private String deviceName;
+    private String deviceModel;
     private String appName;
     private int entryType;
     private String countryCode;
@@ -229,6 +230,14 @@ public class IncidentEntryInfo implements Serializable {
         this.url = url;
     }
 
+    public String getDeviceModel() {
+        return deviceModel;
+    }
+
+    public void setDeviceModel(String deviceModel) {
+        this.deviceModel = deviceModel;
+    }
+
     @Override
     public String toString() {
         return "IncidentEntryInfo{" +
@@ -250,6 +259,7 @@ public class IncidentEntryInfo implements Serializable {
                 ", hostname='" + hostname + '\'' +
                 ", domain='" + domain + '\'' +
                 ", deviceName='" + deviceName + '\'' +
+                ", deviceModel='" + deviceModel + '\'' +
                 ", appName='" + appName + '\'' +
                 ", entryType=" + entryType +
                 ", countryCode='" + countryCode + '\'' +

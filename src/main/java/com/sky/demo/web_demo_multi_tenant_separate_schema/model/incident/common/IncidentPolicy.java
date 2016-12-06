@@ -40,6 +40,30 @@ public class IncidentPolicy implements Serializable {
     private boolean isVisible;
     private List<IncidentElement> incidentElements = Lists.newArrayList();
 
+    public int getSeverityTypeCode() {
+        return severityTypeCode;
+    }
+
+    public void setSeverityTypeCode(int severityTypeCode) {
+        this.severityTypeCode = severityTypeCode;
+    }
+
+    public boolean isTrickle() {
+        return isTrickle;
+    }
+
+    public void setTrickle(boolean isTrickle) {
+        this.isTrickle = isTrickle;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
     public String getActionName() {
         return this.actionName;
     }
@@ -173,6 +197,7 @@ public class IncidentPolicy implements Serializable {
                 ", actionName='" + actionName + '\'' +
                 ", matches=" + matches +
                 ", severityType=" + severityType +
+                ", severityTypeCode=" + severityTypeCode +
                 ", isTrickle=" + isTrickle +
                 ", isVisible=" + isVisible +
                 ", incidentElements=" + incidentElements +

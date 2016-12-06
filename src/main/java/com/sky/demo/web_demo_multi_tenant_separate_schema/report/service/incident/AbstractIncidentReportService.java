@@ -12,7 +12,7 @@ public abstract class AbstractIncidentReportService {
 
     protected QueryCondition initQueryCondition() {
         QueryCondition queryCondition = new QueryCondition();
-        queryCondition.setIndex(StringUtils.isNotBlank(DBContext.getDbKey()) ? DBContext.getDbKey() : "tenant1");
+        queryCondition.setIndex("tenant1");  //DBContext.getDbKey()
 
         return queryCondition;
     }

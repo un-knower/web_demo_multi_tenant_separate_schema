@@ -30,6 +30,14 @@ public class IncidentBreachContent implements Serializable {
     @JsonIgnore
     private String encodeType;
 
+    public int getLocationTypeCode() {
+        return locationTypeCode;
+    }
+
+    public void setLocationTypeCode(int locationTypeCode) {
+        this.locationTypeCode = locationTypeCode;
+    }
+
     public String getContent() {
         return this.content;
     }
@@ -125,6 +133,7 @@ public class IncidentBreachContent implements Serializable {
                 ", incidentElementId=" + incidentElementId +
                 ", content='" + content + '\'' +
                 ", locationType=" + locationType +
+                ", locationTypeCode=" + locationTypeCode +
                 ", locationTypesPath='" + locationTypesPath + '\'' +
                 ", locationNamesPath='" + locationNamesPath + '\'' +
                 ", similarity=" + similarity +

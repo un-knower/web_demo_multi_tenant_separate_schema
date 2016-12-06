@@ -58,6 +58,37 @@ public class IncidentDestination implements Serializable {
     private List<IncidentDropAttachment> incidentDropAttachments = Lists.newArrayList();
 
 
+    public int getDestinationTypeCode() {
+        return destinationTypeCode;
+    }
+
+    public void setDestinationTypeCode(int destinationTypeCode) {
+        this.destinationTypeCode = destinationTypeCode;
+    }
+
+    public int getActionTypeCode() {
+        return actionTypeCode;
+    }
+
+    public void setActionTypeCode(int actionTypeCode) {
+        this.actionTypeCode = actionTypeCode;
+    }
+
+    public boolean isReleased() {
+        return isReleased;
+    }
+
+    public void setReleased(boolean isReleased) {
+        this.isReleased = isReleased;
+    }
+
+    public int getDirectionTypeCode() {
+        return directionTypeCode;
+    }
+
+    public void setDirectionTypeCode(int directionTypeCode) {
+        this.directionTypeCode = directionTypeCode;
+    }
 
     public IncidentActionType getActionType() {
         return this.actionType;
@@ -211,14 +242,17 @@ public class IncidentDestination implements Serializable {
                 ", destinationEntryName='" + destinationEntryName + '\'' +
                 ", destinationType=" + destinationType +
                 ", localeDestinationType='" + localeDestinationType + '\'' +
+                ", destinationTypeCode=" + destinationTypeCode +
                 ", actionType=" + actionType +
                 ", localeActionType='" + localeActionType + '\'' +
+                ", actionTypeCode=" + actionTypeCode +
                 ", isReleased=" + isReleased +
                 ", releasedBy='" + releasedBy + '\'' +
                 ", localeReleaseTime='" + localeReleaseTime + '\'' +
                 ", releaseTime=" + releaseTime +
                 ", directionType=" + directionType +
                 ", localeDirectionType='" + localeDirectionType + '\'' +
+                ", directionTypeCode=" + directionTypeCode +
                 ", urlCategoryId=" + urlCategoryId +
                 ", destinationEntryInfo=" + destinationEntryInfo +
                 ", incidentDropAttachments=" + incidentDropAttachments +

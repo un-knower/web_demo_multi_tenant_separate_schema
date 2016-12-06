@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util.json;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.core.JsonParser;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class JsonUtil {
 
     static {
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
     }
 
     /**

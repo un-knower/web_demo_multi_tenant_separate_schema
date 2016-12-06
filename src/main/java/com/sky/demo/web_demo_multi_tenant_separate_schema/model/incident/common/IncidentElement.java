@@ -32,7 +32,21 @@ public class IncidentElement implements Serializable {
     private boolean isTruncated;    //截断
     private List<IncidentBreachContent> incidentBreachContents = Lists.newArrayList(); //违规内容
 
+    public int getElementTypeCode() {
+        return elementTypeCode;
+    }
 
+    public void setElementTypeCode(int elementTypeCode) {
+        this.elementTypeCode = elementTypeCode;
+    }
+
+    public boolean isTruncated() {
+        return isTruncated;
+    }
+
+    public void setTruncated(boolean isTruncated) {
+        this.isTruncated = isTruncated;
+    }
 
     public String getConditionUuid() {
         return this.conditionUuid;
@@ -122,6 +136,7 @@ public class IncidentElement implements Serializable {
                 ", elementUuid='" + elementUuid + '\'' +
                 ", elementName='" + elementName + '\'' +
                 ", elementType=" + elementType +
+                ", elementTypeCode=" + elementTypeCode +
                 ", matches=" + matches +
                 ", isTruncated=" + isTruncated +
                 ", incidentBreachContents=" + incidentBreachContents +

@@ -71,6 +71,50 @@ public class NetworkIncident extends BaseIncident {
     @JsonIgnore
     private IncidentKey incidentKey;
 
+    public int getChannelTypeCode() {
+        return channelTypeCode;
+    }
+
+    public void setChannelTypeCode(int channelTypeCode) {
+        this.channelTypeCode = channelTypeCode;
+    }
+
+    public boolean isHasAttachment() {
+        return hasAttachment;
+    }
+
+    public boolean isReleased() {
+        return isReleased;
+    }
+
+    public void setReleased(boolean isReleased) {
+        this.isReleased = isReleased;
+    }
+
+    public boolean isHasForensics() {
+        return hasForensics;
+    }
+
+    public int getWorkModeTypeCode() {
+        return workModeTypeCode;
+    }
+
+    public void setWorkModeTypeCode(int workModeTypeCode) {
+        this.workModeTypeCode = workModeTypeCode;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean isExceedDestinationsLimit() {
+        return exceedDestinationsLimit;
+    }
+
     public String getDetails() {
         return this.details;
     }
