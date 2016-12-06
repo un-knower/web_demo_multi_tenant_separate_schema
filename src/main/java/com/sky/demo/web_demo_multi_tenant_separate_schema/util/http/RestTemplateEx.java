@@ -1,5 +1,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.util.http;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.*;
@@ -16,33 +18,39 @@ public class RestTemplateEx extends RestTemplate {
 
     public <T> T putForObject(String url, Object request, Class<T> responseType, Object ... uriVariables) throws RestClientException {
         RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
-        HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters());
-        return (T)this.execute(url, HttpMethod.PUT, requestCallback, (ResponseExtractor)responseExtractor, uriVariables);
+        HttpMessageConverterExtractor<T> responseExtractor = new HttpMessageConverterExtractor<T>(responseType, getMessageConverters());
+        return execute(url, HttpMethod.PUT, requestCallback, responseExtractor, uriVariables);
     }
 
-    public <T> T putForObject(String url, Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
-        HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters());
-        return (T)this.execute(url, HttpMethod.PUT, requestCallback, (ResponseExtractor)responseExtractor, uriVariables);
+    public <T> ResponseEntity<T> putForObject(String url, Object request, HttpHeaders httpHeaders, Class<T> responseType, Object... uriVariables) throws RestClientException {
+
+        HttpEntity httpEntity = new HttpEntity(request, httpHeaders);
+        return exchange(url, HttpMethod.PUT, httpEntity, responseType, uriVariables);
     }
 
-    public <T> T putForObject(URI url, Object request, Class<T> responseType) throws RestClientException {
-        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
-        HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters());
-        return (T)this.execute(url, HttpMethod.PUT, requestCallback, (ResponseExtractor)responseExtractor);
-    }
-
-    public <T> ResponseEntity<T> putForEntity(String url, Object request, Class<T> responseType, Object ... uriVariables) throws RestClientException {
-        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
-        ResponseExtractor responseExtractor = this.responseEntityExtractor(responseType);
-        return (ResponseEntity)this.execute(url, HttpMethod.PUT, requestCallback, responseExtractor, uriVariables);
-    }
-
-    public <T> ResponseEntity<T> putForEntity(String url, Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
-        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
-        ResponseExtractor responseExtractor = this.responseEntityExtractor(responseType);
-        return (ResponseEntity)this.execute(url, HttpMethod.PUT, requestCallback, responseExtractor, uriVariables);
-    }
+//    public <T> T putForObject(String url, Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
+//        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
+//        HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters());
+//        return (T)this.execute(url, HttpMethod.PUT, requestCallback, (ResponseExtractor)responseExtractor, uriVariables);
+//    }
+//
+//    public <T> T putForObject(URI url, Object request, Class<T> responseType) throws RestClientException {
+//        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
+//        HttpMessageConverterExtractor responseExtractor = new HttpMessageConverterExtractor(responseType, this.getMessageConverters());
+//        return (T)this.execute(url, HttpMethod.PUT, requestCallback, (ResponseExtractor)responseExtractor);
+//    }
+//
+//    public <T> ResponseEntity<T> putForEntity(String url, Object request, Class<T> responseType, Object ... uriVariables) throws RestClientException {
+//        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
+//        ResponseExtractor responseExtractor = this.responseEntityExtractor(responseType);
+//        return (ResponseEntity)this.execute(url, HttpMethod.PUT, requestCallback, responseExtractor, uriVariables);
+//    }
+//
+//    public <T> ResponseEntity<T> putForEntity(String url, Object request, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
+//        RequestCallback requestCallback = this.httpEntityCallback(request, responseType);
+//        ResponseExtractor responseExtractor = this.responseEntityExtractor(responseType);
+//        return (ResponseEntity)this.execute(url, HttpMethod.PUT, requestCallback, responseExtractor, uriVariables);
+//    }
 
 
     //DELETE

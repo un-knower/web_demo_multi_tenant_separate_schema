@@ -47,7 +47,7 @@ public class HttpController {
         return result;
     }
 
-    @RequestMapping(value = "/queryList", method = RequestMethod.PUT) //, method = RequestMethod.POST PUT
+    @RequestMapping(value = "/queryList") //, method = RequestMethod.POST PUT
     @ResponseBody
     public RetData<Pager<TenantForm>> queryList(@RequestBody TenantQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
 
@@ -90,7 +90,7 @@ public class HttpController {
         response.setHeader("Location", url);
     }
 
-    @RequestMapping(value = "/redirect/queryList", method = RequestMethod.PUT) // method = RequestMethod.POST PUT
+    @RequestMapping(value = "/redirect/queryList") // method = RequestMethod.POST PUT
     public void redirectQueryList(@RequestBody TenantQueryRequest queryRequest, HttpServletRequest request, HttpServletResponse response) {
         String url = "http://127.0.0.1:8080/web_demo" + "/http/queryList";
         logger.info("redirect query, url: {}", url);

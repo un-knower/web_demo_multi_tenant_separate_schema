@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -331,12 +332,124 @@ public class HttpClientUtilTest {
         factory.setHttpClient(httpClient);
         template.setRequestFactory(factory);
 
+        String result = template.postForObject(url, httpEntity, String.class, "");
+//        String result = template.putForObject(url, httpEntity, String.class, "");  //PUT do not support 307 auto redirect?
+//        template.put(url, httpEntity, "");  //PUT do not support 307 auto redirect?
+
+        System.out.println(result);
+    }
+
+
+    @Test
+    public void test_put_restTemplate() throws IOException {
+        String url = "http://127.0.0.1:8080/web_demo/http/queryList";
+
+        String json = "{\n" +
+                "    \"pageNumber\": 1,\n" +
+                "    \"pageSize\": 10,\n" +
+                "    \"beginDate\": \"2016-01-01\",\n" +
+                "    \"endDate\": \"2018-01-01\"\n" +
+                "}";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
+        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
+
+        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity(json, headers);
+
+        restTemplate.put(url, httpEntity, "");
+    }
+
+
+    // 301,302 redirect to GET, 307 redirect to original request
+    @Test
+    public void test_put_redirect_restTemplate() throws IOException {
+        String url = "http://127.0.0.1:8080/web_demo/http/redirect/queryList";
+//        String url = "https://172.22.111.75:31075/app/v1/protocol/all";
+
+        String json = "{\n" +
+                "    \"pageNumber\": 1,\n" +
+                "    \"pageSize\": 10,\n" +
+                "    \"beginDate\": \"2016-01-01\",\n" +
+                "    \"endDate\": \"2018-01-01\"\n" +
+                "}";
+
+//        HttpEntity httpEntity = new StringEntity(json);
+//        List<Header> headers = HttpClientUtil.buildHeaders();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
+        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
+        headers.put("Content-Length", Lists.newArrayList("415"));
+
+        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity(json, headers);
+
+        // remove headers of Content-Length
+        HttpRequestInterceptor interceptor = (request, context) -> request.removeHeaders(HTTP.CONTENT_LEN);
+
+        final RestTemplateEx template = new RestTemplateEx();
+        final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        final HttpClient httpClient = HttpClientBuilder.create()
+//                .setDefaultHeaders(headers)
+                .addInterceptorFirst(interceptor)      //new ContentLengthHeaderRemover()
+                .setRedirectStrategy(new LaxRedirectStrategy())
+                .build();
+
+        factory.setHttpClient(httpClient);
+        template.setRequestFactory(factory);
+
 //        String result = template.postForObject(url, httpEntity, String.class, "");
 //        String result = template.putForObject(url, httpEntity, String.class, "");  //PUT do not support 307 auto redirect?
-        template.put(url, httpEntity, "");  //PUT do not support 307 auto redirect?
+//        template.put(url, httpEntity, "");  //PUT do not support 307 auto redirect?
 
-//        System.out.println(result);
+//        ResponseEntity<String> result = template.putForObject(url, json, headers, String.class, "");
+
+        ResponseEntity<String> result = template.exchange(url, HttpMethod.PUT, httpEntity, String.class, "");
+        System.out.println(result);
     }
+
+    @Test
+    public void test_delete_restTemplate() throws IOException {
+        String url = "http://127.0.0.1:8080/web_demo/http/delete/1";
+
+        restTemplate.delete(url);
+
+    }
+
+    @Test
+    public void test_delete_redirect_restTemplate() throws IOException {
+        String url = "http://127.0.0.1:8080/web_demo/http/redirect/delete/1";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN));
+        headers.setAcceptCharset(Lists.newArrayList(Charset.forName("UTF-8")));
+//        headers.put("Accept", Lists.newArrayList("text/plain;charset=UTF-8", ""));
+        headers.put("User-Agent", Lists.newArrayList("Twisted Web Client Example"));
+        headers.put("Authorization", Lists.newArrayList("Basic MTQ3Mzc1OTIzNDI1ODozZTc0MWI3NTY2OTJmZjhkM2M2MmE4NjI2NGQwNDRmODAwNDk0YWJiYjM4ZjJmMjA3NjgxMzFlMDQ0NjE2MDM2OlBSMTI4MEgxNjA1MDkwMDAx"));
+
+        org.springframework.http.HttpEntity httpEntity = new  org.springframework.http.HttpEntity("", headers);
+
+        final RestTemplateEx template = new RestTemplateEx();
+        final HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        final HttpClient httpClient = HttpClientBuilder.create()
+                .setRedirectStrategy(new LaxRedirectStrategy())
+                .build();
+        factory.setHttpClient(httpClient);
+        template.setRequestFactory(factory);
+
+        ResponseEntity<String> result = template.deleteForEntityWithRequestBody(url, httpEntity, String.class);
+        System.out.println(result);
+    }
+
 
 
 
