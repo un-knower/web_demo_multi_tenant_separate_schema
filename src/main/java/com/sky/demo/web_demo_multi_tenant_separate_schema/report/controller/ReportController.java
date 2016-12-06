@@ -1,7 +1,9 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.controller;
 
+import com.sky.demo.web_demo_multi_tenant_separate_schema.base.Pager;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetData;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetStatus;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.BaseQueryRequest;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.network.NetworkIncident;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportFilterForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.incident.NetworkIncidentReportService;
@@ -31,6 +33,29 @@ public class ReportController {
     @Resource
     private NetworkIncidentReportService networkIncidentReportService;
 
+
+    @RequestMapping("/queryNetworkIncident")
+    @ResponseBody
+    public RetData<Pager<NetworkIncident>> queryNetworkIncident(@RequestBody IncidentReportFilterForm filterForm, HttpServletRequest request,
+                                                                         HttpServletResponse response) {
+        RetData<Pager<NetworkIncident>> result = null;
+
+        try {
+            BaseQueryRequest queryRequest = new BaseQueryRequest();
+            queryRequest.setPageNumber(3);
+            queryRequest.setPageSize(3);
+
+            Pager<NetworkIncident> networkIncidents = networkIncidentReportService.queryNetworkIncident(queryRequest, filterForm);
+
+            result = RetUtil.buildSuccessRet(networkIncidents);
+
+        } catch (Exception e) {
+            logger.error("query error");
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
     @RequestMapping("/getAllFilteredNetworkIncidents")
     @ResponseBody
     public RetData<List<NetworkIncident>> getAllFilteredNetworkIncidents(@RequestBody IncidentReportFilterForm filterForm, HttpServletRequest request,
@@ -41,6 +66,23 @@ public class ReportController {
             List<NetworkIncident> networkIncidents = networkIncidentReportService.getAllFilteredNetworkIncidents(filterForm);
 
             result = RetUtil.buildSuccessRet(networkIncidents);
+
+        } catch (Exception e) {
+            logger.error("query error");
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryCountOfNetworkIncident")
+    @ResponseBody
+    public RetData<Long> queryCountOfNetworkIncident(@RequestBody IncidentReportFilterForm filterForm, HttpServletRequest request,
+                                                                         HttpServletResponse response) {
+        RetData<Long> result = null;
+        try {
+            Long count = networkIncidentReportService.queryCountOfNetworkIncident(filterForm);
+
+            result = RetUtil.buildSuccessRet(count);
 
         } catch (Exception e) {
             logger.error("query error");

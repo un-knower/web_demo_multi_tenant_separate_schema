@@ -2,6 +2,8 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.incide
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.base.Pager;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.BaseQueryRequest;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.common.IncidentType;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.network.NetworkIncident;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.acc.NetworkIncidentReportAcc;
@@ -16,6 +18,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,6 +44,46 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
     @Resource
     private NetworkIncidentReportAcc networkIncidentReportAcc;
 
+
+    @Override
+    public Pager<NetworkIncident> queryNetworkIncident(BaseQueryRequest queryRequest, IncidentReportFilterForm filterForm) {
+
+        Pager<NetworkIncident> pager = new Pager<NetworkIncident>(queryRequest.getPageNumber(), queryRequest.getPageSize());
+
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+        queryCondition.setFrom((int)pager.getOffset());
+        queryCondition.setSize(queryRequest.getPageSize());
+
+        List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        List<SortBuilder> sortBuilders = Lists.newArrayList();
+        SortBuilder sortBuilder = SortBuilders.fieldSort("detectTime")
+                .order(SortOrder.DESC);
+        sortBuilders.add(sortBuilder);
+        queryCondition.setSortBuilders(sortBuilders);
+
+        List<NetworkIncident> networkIncidents = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0) {
+                searchHits.forEach(hit -> {
+                    NetworkIncident networkIncident = JsonUtil.readValue(hit.getSourceAsString(), NetworkIncident.class);
+                    networkIncidents.add(networkIncident);
+                });
+            }
+
+            pager.setTotalRecords(searchHits.getTotalHits());
+            pager.setRows(networkIncidents);
+        }
+        return pager;
+    }
 
     @Override
     public List<NetworkIncident> getAllFilteredNetworkIncidents(IncidentReportFilterForm filterForm) {
