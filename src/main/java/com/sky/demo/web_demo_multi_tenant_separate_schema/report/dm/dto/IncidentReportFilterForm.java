@@ -358,7 +358,7 @@ implements Serializable {
     public static void main(String[] args) {
         String origin = "{\n\t\"incidentId\": {\n        \"enableFilter\": false,\n        \"ids\": \"\"\n    },\n\t\"transactionId\": {\n        \"enableFilter\": false,\n        \"ids\": \"\"\n    },\n    \"time\": {\n        \"enableFilter\": true,\n        \"timeType\": \"LAST_PAST_N_DAY\",\n        \"lastPastDay\": 30\n    },\n    \"policy\": {\n        \"enableFilter\": false,\n        \"policies\": [\n        ]\n    },\n    \"severity\": {\n        \"enableFilter\": false,\n        \"severities\": [\n        ]\n    },\n    \"status\": {\n        \"enableFilter\": false,\n        \"statuses\": [\n        ]\n    },\n    \"match\": {\n        \"enableFilter\": false,\n        \"lower\": 0,\n        \"upper\": 0\n    },\n    \"ignore\": {\n        \"enableFilter\": false,\n        \"ignoredType\": 0\n    },\n    \"detectEngine\": {\n        \"enableFilter\": false,\n        \"engines\": [\n        ]\n    },\n    \"fileSize\": {\n        \"enableFilter\": false,\n        \"lower\": 0,\n        \"upper\": 0\n    },\n    \"resourceType\": {\n        \"enableFilter\": false,\n        \"resources\": [\n        ]\n    },\n    \"task\": {\n        \"enableFilter\": false,\n        \"tasks\": [\n        ]\n    },\n    \"lock\": {\n        \"enableFilter\": false,\n        \"lockType\": 0\n    }\n}";
         IncidentReportFilterForm form = (IncidentReportFilterForm) JsonUtil.readValue((String) origin, IncidentReportFilterForm.class);
-        String str = JsonUtil.writeValueAsString((Object)form);
+        String str = JsonUtil.writeValueAsString(form);
         System.out.println(str);
     }
 }

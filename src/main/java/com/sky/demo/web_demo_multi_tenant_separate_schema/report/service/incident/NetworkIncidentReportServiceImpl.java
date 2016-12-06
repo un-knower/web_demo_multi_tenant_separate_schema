@@ -1,10 +1,13 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.incident;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.common.IncidentType;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.network.NetworkIncident;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.acc.NetworkIncidentReportAcc;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.QueryCondition;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.FilterIncidentIdForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.FilterTransactionIdForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportFilterForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.base.BaseNetworkIncidentReportService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.util.IncidentReportFilterForEsUtil;
@@ -38,23 +41,53 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
 
     @Override
     public List<NetworkIncident> getAllFilteredNetworkIncidents(IncidentReportFilterForm filterForm) {
-        List<NetworkIncident> networkIncidents = null;
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+        queryCondition.setFrom(0);
+        queryCondition.setSize(100);
 
         List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
-        try {
-//            reportCondition.put("ORDER_BY", "tb.id desc ");
-//            reportCondition.put("COLUMN_SELECTED", "* ");
-            logger.info("getAllFilteredNetworkIncidents():====> size:{}" + networkIncidents.size());
-        }
-        catch (Exception e) {
-            logger.error("An error occurred when getting network incidents by incident report form", e);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        List<NetworkIncident> networkIncidents = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0) {
+                searchHits.forEach(hit -> {
+                    NetworkIncident networkIncident = JsonUtil.readValue(hit.getSourceAsString(), NetworkIncident.class);
+                    networkIncidents.add(networkIncident);
+                });
+            }
         }
         return networkIncidents;
     }
 
     @Override
-    public int queryCountOfNetworkIncident(IncidentReportFilterForm filterForm) {
-        return 0;
+    public long queryCountOfNetworkIncident(IncidentReportFilterForm filterForm) {
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+        queryCondition.setFrom(0);
+        queryCondition.setSize(1);
+
+        List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        long count = 0;
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            count = searchHits.totalHits();
+        }
+        return count;
     }
 
     @Override
@@ -91,17 +124,102 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
 
     @Override
     public NetworkIncident getIncidentByTransactionId(String transactionId) {
-        return null;
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+        queryCondition.setFrom(0);
+        queryCondition.setSize(1);
+
+        IncidentReportFilterForm filterForm = new IncidentReportFilterForm();
+        FilterTransactionIdForm transactionIdForm = new FilterTransactionIdForm();
+        transactionIdForm.setEnableFilter(true);
+        transactionIdForm.setIds(transactionId);
+        filterForm.setTransactionId(transactionIdForm);
+
+        List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        NetworkIncident networkIncident = null;
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0 && searchHits.getAt(0) != null) {
+                String source = searchHits.getAt(0).getSourceAsString();
+                networkIncident = JsonUtil.readValue(source, NetworkIncident.class);
+            }
+        }
+        return networkIncident;
     }
 
     @Override
     public List<NetworkIncident> getIncidentsByIds(List<Long> ids) {
-        return null;
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+//        queryCondition.setFrom(0);
+//        queryCondition.setSize(1);
+
+        IncidentReportFilterForm filterForm = new IncidentReportFilterForm();
+        FilterIncidentIdForm incidentIdForm = new FilterIncidentIdForm();
+        incidentIdForm.setEnableFilter(true);
+        incidentIdForm.setIds(Joiner.on(",").skipNulls().join(ids));
+        filterForm.setIncidentId(incidentIdForm);
+
+        List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        List<NetworkIncident> networkIncidents = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0) {
+                searchHits.forEach(hit -> {
+                    NetworkIncident networkIncident = JsonUtil.readValue(hit.getSourceAsString(), NetworkIncident.class);
+                    networkIncidents.add(networkIncident);
+                });
+            }
+        }
+        return networkIncidents;
     }
 
     @Override
     public List<NetworkIncident> getIncidentsByTransactionIds(List<String> transactionIds) {
-        return null;
+        QueryCondition queryCondition = initQueryCondition();
+        queryCondition.setType(IncidentType.NETWORK.getName());
+//        queryCondition.setFrom(0);
+//        queryCondition.setSize(1);
+
+        IncidentReportFilterForm filterForm = new IncidentReportFilterForm();
+        FilterTransactionIdForm transactionIdForm = new FilterTransactionIdForm();
+        transactionIdForm.setEnableFilter(true);
+        transactionIdForm.setIds(Joiner.on(",").skipNulls().join(transactionIds));
+        filterForm.setTransactionId(transactionIdForm);
+
+        List<QueryBuilder> queryBuilders = IncidentReportFilterForEsUtil.buildIncidentReportCondition(filterForm);
+        queryCondition.setBoolQueryMusts(queryBuilders);
+
+        List<NetworkIncident> networkIncidents = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        if (response != null) {
+            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            if (searchHits.totalHits() > 0) {
+                searchHits.forEach(hit -> {
+                    NetworkIncident networkIncident = JsonUtil.readValue(hit.getSourceAsString(), NetworkIncident.class);
+                    networkIncidents.add(networkIncident);
+                });
+            }
+        }
+        return networkIncidents;
     }
 
 

@@ -14,7 +14,7 @@ public interface NetworkIncidentReportService {
 
     public List<NetworkIncident> getAllFilteredNetworkIncidents(IncidentReportFilterForm filterForm);
 
-    public int queryCountOfNetworkIncident(IncidentReportFilterForm filterForm);
+    public long queryCountOfNetworkIncident(IncidentReportFilterForm filterForm);
 
 
     public NetworkIncident getIncidentById(long id);

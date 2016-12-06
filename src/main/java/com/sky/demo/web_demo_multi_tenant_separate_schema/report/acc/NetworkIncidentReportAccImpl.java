@@ -40,8 +40,11 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
         SearchRequestBuilder searchRequestBuilder = esClient.getTransportClient()
                 .prepareSearch(queryCondition.getIndex())
                 .setTypes(queryCondition.getType())
-                .setFrom(queryCondition.getFrom())
-                .setSize(queryCondition.getSize());
+                .setFrom(queryCondition.getFrom() == null ? 0 : queryCondition.getFrom());
+
+        if (queryCondition.getSize() != null) {
+            searchRequestBuilder.setSize(queryCondition.getSize());
+        }
 
         if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
