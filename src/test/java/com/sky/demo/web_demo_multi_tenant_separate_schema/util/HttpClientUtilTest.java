@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util;
 
 import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.ContentLengthHeaderRemover;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.LaxRedirectStrategyEx;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.http.RestTemplateEx;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -400,19 +401,19 @@ public class HttpClientUtilTest {
         final HttpClient httpClient = HttpClientBuilder.create()
 //                .setDefaultHeaders(headers)
                 .addInterceptorFirst(interceptor)      //new ContentLengthHeaderRemover()
-                .setRedirectStrategy(new LaxRedirectStrategy())
+                .setRedirectStrategy(new LaxRedirectStrategyEx())   //LaxRedirectStrategy support GET,POST,HEAD,DELETE  ,do not support PUT!!
                 .build();
 
         factory.setHttpClient(httpClient);
         template.setRequestFactory(factory);
 
 //        String result = template.postForObject(url, httpEntity, String.class, "");
-//        String result = template.putForObject(url, httpEntity, String.class, "");  //PUT do not support 307 auto redirect?
+        String result = template.putForObject(url, httpEntity, String.class, "");  //PUT do not support 307 auto redirect?
 //        template.put(url, httpEntity, "");  //PUT do not support 307 auto redirect?
 
 //        ResponseEntity<String> result = template.putForObject(url, json, headers, String.class, "");
 
-        ResponseEntity<String> result = template.exchange(url, HttpMethod.PUT, httpEntity, String.class, "");
+//        ResponseEntity<String> result = template.exchange(url, HttpMethod.PUT, httpEntity, String.class, "");
         System.out.println(result);
     }
 
