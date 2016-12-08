@@ -108,4 +108,18 @@ public class HttpController {
         response.setHeader("Location", url);
     }
 
+
+
+
+    @SuppressWarnings({"uncheck", "rawtypes"})
+    @RequestMapping(value = "/querySuppress/{id}")
+    @ResponseBody
+    public RetData<TenantForm> querySuppress(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        RetData<TenantForm> result = null;
+        TenantForm TenantForm = tenantService.query(id);
+
+        result = RetUtil.buildSuccessRet(TenantForm);
+
+        throw new Exception("fuck suppress");
+    }
 }

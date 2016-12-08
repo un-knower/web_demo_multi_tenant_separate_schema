@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.filter;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.auth.token.HeaderAuthToken;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.CodecUtil;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.HttpUtil;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -48,7 +49,7 @@ public class HeaderAuthFilter extends AccessControlFilter {
             lock.lock();
 
             HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
-            logger.debug("request url is {},ip is {}", httpServletRequest.getRequestURI(), request.getRemoteHost());
+            logger.info("request url is {},ip is {}", httpServletRequest.getRequestURI(), HttpUtil.getIpAddr(httpServletRequest));
 
             AuthenticationToken token = createToken(request, response);
             logger.info("client header token is {}", token);

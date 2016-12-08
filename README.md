@@ -16,3 +16,8 @@ DaoAop + MarkDefaultDao + MarkTenantDao + DBContext + TenantRoutingDataSource + 
 4.Hibernate 4.0+
 hibernate.multiTenancy = SCHEMA
 //TODO
+
+
+
+ES SQL-DSL
+http://www.nlpcn.org:9999/web/
