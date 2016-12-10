@@ -143,6 +143,54 @@ limit 3
 
 
 
+Incient
+
+{
+    "from": 0,
+    "size": 0,
+    "_source": {
+        "includes": [
+            "COUNT",
+            "incidentDestinations.destinationEntryInfo.commonName.keyword",
+            "severityTypeCode"
+        ],
+        "excludes": [
+
+        ]
+    },
+    "stored_fields": [
+        "incidentDestinations.destinationEntryInfo.commonName.keyword",
+        "severityTypeCode"
+    ],
+    "aggregations": {
+        "incidentDestinations.destinationEntryInfo.commonName.keyword": {
+            "terms": {
+                "field": "incidentDestinations.destinationEntryInfo.commonName.keyword",
+                "size": 5,
+                "order": {
+                    "_count": "desc"
+                }
+            },
+            "aggregations": {
+                "severityTypeCode": {
+                    "terms": {
+                        "field": "severityTypeCode",
+                        "order": {
+                            "_count": "desc"
+                        }
+                    },
+                    "aggregations": {
+                        "cnt": {
+                            "value_count": {
+                                "field": "_index"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 
 
