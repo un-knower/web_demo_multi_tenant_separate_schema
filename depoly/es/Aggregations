@@ -1,0 +1,148 @@
+
+SELECT count(*) as cnt , name, type
+FROM myindex
+where id in (1,2,3)
+and status in (5,6)
+and name in ('zhang san', 'wang wu')
+group by name, type
+order by cnt desc
+limit 3
+
+
+
+
+{
+	"from": 0,
+	"size": 0,
+	"query": {
+		"bool": {
+			"must": {
+				"bool": {
+					"must": [
+						{
+							"bool": {
+								"should": [
+									{
+										"match": {
+											"id": {
+												"query": 1,
+												"type": "phrase"
+											}
+										}
+									},
+									{
+										"match": {
+											"id": {
+												"query": 2,
+												"type": "phrase"
+											}
+										}
+									},
+									{
+										"match": {
+											"id": {
+												"query": 3,
+												"type": "phrase"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"bool": {
+								"should": [
+									{
+										"match": {
+											"status": {
+												"query": 5,
+												"type": "phrase"
+											}
+										}
+									},
+									{
+										"match": {
+											"status": {
+												"query": 6,
+												"type": "phrase"
+											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"bool": {
+								"should": [
+									{
+										"match": {
+											"name": {
+												"query": "zhang san",
+												"type": "phrase"
+											}
+										}
+									},
+									{
+										"match": {
+											"name": {
+												"query": "wang wu",
+												"type": "phrase"
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		}
+	},
+	"_source": {
+		"includes": [
+			"COUNT",
+			"name",
+			"type"
+		],
+		"excludes": []
+	},
+	"stored_fields": [
+		"name",
+		"type"
+	],
+	"aggregations": {
+		"name": {
+			"terms": {
+				"field": "name",
+				"size": 3
+			},
+			"aggregations": {
+				"type": {
+					"terms": {
+						"field": "type",
+						"size": 0,
+						"order": {
+							"_count": "desc"
+						}
+					},
+					"aggregations": {
+						"cnt": {
+							"value_count": {
+								"field": "_index"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

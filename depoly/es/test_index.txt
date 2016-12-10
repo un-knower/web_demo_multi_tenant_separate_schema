@@ -12,3 +12,6 @@ curl -XPUT http://172.22.1.36:9200/music/songs/1 -d '
 
 # query document
 curl -XGET http://172.22.1.36:9200/music/songs/1
+
+# mapping
+curl -XGET http://172.22.1.36:9200/music/_mapping/songs
