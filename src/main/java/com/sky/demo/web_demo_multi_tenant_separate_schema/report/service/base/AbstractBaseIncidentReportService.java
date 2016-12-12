@@ -11,6 +11,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.base;
 
 import com.google.common.base.Preconditions;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.EchartsForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.QueryCondition;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentDashboardType;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportForm;
 
@@ -25,5 +26,12 @@ public abstract class AbstractBaseIncidentReportService {
     }
 
     protected abstract List<EchartsForm> getEcharsForms(IncidentDashboardType var1, IncidentReportForm var2);
+
+    protected QueryCondition initQueryCondition() {
+        QueryCondition queryCondition = new QueryCondition();
+        queryCondition.setIndex("tenant1");  //DBContext.getDbKey()
+
+        return queryCondition;
+    }
 }
 

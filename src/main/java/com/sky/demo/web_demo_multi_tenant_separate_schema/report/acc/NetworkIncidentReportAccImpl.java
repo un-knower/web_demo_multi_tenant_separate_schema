@@ -33,7 +33,7 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
 
 
     @Override
-    public SearchResponse selectNetworkIncident(QueryCondition queryCondition) {
+    public SearchResponse searchNetworkIncident(QueryCondition queryCondition) {
         Preconditions.checkNotNull(queryCondition, "queryCondition is null!");
         logger.info("QueryCondition:\n{}", JsonUtil.writeValueAsString(queryCondition));
 
@@ -44,6 +44,14 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
 
         if (queryCondition.getSize() != null) {
             searchRequestBuilder.setSize(queryCondition.getSize());
+        }
+
+        if (CollectionUtils.isNotEmpty(queryCondition.getFetchSourceIncludes())) {
+            searchRequestBuilder.setFetchSource(queryCondition.getFetchSourceIncludes().stream().toArray(String[]::new), null);
+        }
+
+        if (CollectionUtils.isNotEmpty(queryCondition.getStoreFields())) {
+            queryCondition.getStoreFields().forEach(storeField -> searchRequestBuilder.addStoredField(storeField));
         }
 
         if (CollectionUtils.isNotEmpty(queryCondition.getBoolQueryMusts())) {
@@ -60,12 +68,16 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
             queryCondition.getSortBuilders().forEach(sortBuilder -> searchRequestBuilder.addSort(sortBuilder));
         }
 
+        if (CollectionUtils.isNotEmpty(queryCondition.getAggregationBuilders())) {
+            logger.debug("aggregation builders: {}", JsonUtil.writeValueAsString(queryCondition.getAggregationBuilders()));
+            queryCondition.getAggregationBuilders().forEach(agg -> searchRequestBuilder.addAggregation(agg));
+        }
 
         SearchResponse response = null;
         try {
             response = searchRequestBuilder.get();
         } catch (Exception e) {
-            logger.error("get from es errror", e);
+            logger.error("get from es error", e);
         }
         return response;
     }

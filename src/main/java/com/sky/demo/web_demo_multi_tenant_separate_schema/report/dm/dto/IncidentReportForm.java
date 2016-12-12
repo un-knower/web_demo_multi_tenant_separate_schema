@@ -19,6 +19,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.common.
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.IncidentReport;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.ReportBuildType;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.ReportType;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
@@ -179,5 +180,31 @@ implements Serializable {
     public String toString() {
         return Objects.toStringHelper((Object)this).add("id", (Object)this.id).add("name", (Object)this.name).add("remark", (Object)this.remark).add("incidentType", (Object)this.incidentType).add("reportType", (Object)this.reportType).add("showLimit", this.showLimit).add("filter", (Object)this.filter).add("columns", this.columns).add("status", (Object)this.status).add("reportBuildType", (Object)this.reportBuildType).add("dashboardTypes", this.dashboardTypes).add("roleId", this.roleId).add("lastUpdatedBy", (Object)this.lastUpdatedBy).add("lastUpdated", (Object)this.lastUpdated).add("scheduleTaskCount", this.scheduleTaskCount).add("seriesType", (Object)this.seriesType).toString();
     }
+
+
+    public static void main(String[] args) {
+        IncidentReportForm incidentReportForm = new IncidentReportForm();
+
+        incidentReportForm.setId(1);
+        incidentReportForm.setName("Policy");
+        incidentReportForm.setRemark("remark");
+        incidentReportForm.setIncidentType(IncidentType.NETWORK);
+        incidentReportForm.setReportType(ReportType.DASHBOARD);
+        incidentReportForm.setShowLimit(10);
+
+        IncidentReportFilterForm filterForm = new IncidentReportFilterForm();
+        FilterTimeForm timeForm = new FilterTimeForm();
+        timeForm.setEnableFilter(true);
+        timeForm.setTimeType(PeriodTimeType.LAST_PAST_N_DAY);
+        timeForm.setLastPastDay(100);
+        filterForm.setTime(timeForm);
+        incidentReportForm.setFilter(filterForm);
+
+
+        System.out.println(JsonUtil.writeValueAsString(incidentReportForm));
+
+
+    }
+
 }
 

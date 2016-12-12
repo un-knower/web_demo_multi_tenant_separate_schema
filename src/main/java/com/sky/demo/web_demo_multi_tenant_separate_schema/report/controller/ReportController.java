@@ -5,7 +5,10 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetData;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetStatus;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.dto.BaseQueryRequest;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.network.NetworkIncident;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.EchartsForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportFilterForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportForm;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.base.BaseNetworkIncidentReportService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.service.incident.NetworkIncidentReportService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.RetUtil;
 import org.slf4j.Logger;
@@ -33,6 +36,9 @@ public class ReportController {
     @Resource
     private NetworkIncidentReportService networkIncidentReportService;
 
+    @Resource
+    private BaseNetworkIncidentReportService baseNetworkIncidentReportService;
+
 
     @RequestMapping("/queryNetworkIncident")
     @ResponseBody
@@ -50,7 +56,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncidents);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -68,7 +74,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncidents);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -85,7 +91,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(count);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -104,7 +110,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncident);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -122,7 +128,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncident);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -141,7 +147,7 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncidents);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;
@@ -159,7 +165,178 @@ public class ReportController {
             result = RetUtil.buildSuccessRet(networkIncident);
 
         } catch (Exception e) {
-            logger.error("query error");
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+
+    @RequestMapping("/queryListOfPolicy")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfPolicy(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfPolicy(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfSource")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfSource(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfSource(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfDestination")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfDestination(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfDestination(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfChannelType")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfChannelType(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfChannelType(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfSeverityType")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfSeverityType(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfSeverityType(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfActionType")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfActionType(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfActionType(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfPolicyGroup")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfPolicyGroup(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfPolicyGroup(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryTrendListOfSeverityType")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryTrendListOfSeverityType(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryTrendListOfSeverityType(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryTrendListOfPolicyDetectTime")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryTrendListOfPolicyDetectTime(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryTrendListOfPolicyDetectTime(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
+            result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
+        }
+        return result;
+    }
+
+    @RequestMapping("/queryListOfStatusType")
+    @ResponseBody
+    public RetData<List<EchartsForm>> queryListOfStatusType(@RequestBody IncidentReportForm form, HttpServletRequest request, HttpServletResponse response) {
+        RetData<List<EchartsForm>> result = null;
+
+        try {
+            List<EchartsForm> list = baseNetworkIncidentReportService.queryListOfStatusType(form);
+
+            result = RetUtil.buildSuccessRet(list);
+
+        } catch (Exception e) {
+            logger.error("query error", e);
             result = RetUtil.buildErrorRet(RetStatus.QUERY_ERROR);
         }
         return result;

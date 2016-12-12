@@ -243,3 +243,79 @@ date
 }
 
 
+
+
+result
+
+{
+    "took": 208,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 14,
+        "max_score": 0.0,
+        "hits": [
+
+        ]
+    },
+    "aggregations": {
+        "incidentPolicies.policyName.keyword": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 0,
+            "buckets": [
+                {
+                    "key": "policy611-005",
+                    "doc_count": 8,
+                    "severityTypeCode": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "key": 4,
+                                "doc_count": 4,
+                                "cnt": {
+                                    "value": 4
+                                }
+                            },
+                            {
+                                "key": 2,
+                                "doc_count": 2,
+                                "cnt": {
+                                    "value": 2
+                                }
+                            },
+                            {
+                                "key": 3,
+                                "doc_count": 2,
+                                "cnt": {
+                                    "value": 2
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "key": "policy611-001",
+                    "doc_count": 6,
+                    "severityTypeCode": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "key": 1,
+                                "doc_count": 6,
+                                "cnt": {
+                                    "value": 6
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

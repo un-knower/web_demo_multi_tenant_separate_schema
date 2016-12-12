@@ -10,5 +10,5 @@ import java.util.Map;
  */
 public interface NetworkIncidentReportAcc {
 
-    public SearchResponse selectNetworkIncident(QueryCondition queryCondition);
+    public SearchResponse searchNetworkIncident(QueryCondition queryCondition);
 }

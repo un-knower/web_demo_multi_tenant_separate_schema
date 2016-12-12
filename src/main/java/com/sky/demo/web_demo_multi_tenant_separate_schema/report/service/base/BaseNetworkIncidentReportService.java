@@ -13,8 +13,8 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.Incident
 
 import java.util.List;
 
-public interface BaseNetworkIncidentReportService
-extends IBaseIncidentReportService {
+public interface BaseNetworkIncidentReportService extends IBaseIncidentReportService {
+
     public List<EchartsForm> queryListOfPolicy(IncidentReportForm var1);
 
     public List<EchartsForm> queryListOfSource(IncidentReportForm var1);

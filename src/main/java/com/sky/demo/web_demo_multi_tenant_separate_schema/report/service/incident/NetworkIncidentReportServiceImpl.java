@@ -16,11 +16,9 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.util.IncidentRe
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortMode;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by user on 16/12/2.
@@ -65,7 +62,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setSortBuilders(sortBuilders);
 
         List<NetworkIncident> networkIncidents = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -96,7 +93,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         List<NetworkIncident> networkIncidents = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -124,7 +121,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         long count = 0;
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -153,7 +150,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         NetworkIncident networkIncident = null;
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -185,7 +182,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         NetworkIncident networkIncident = null;
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -217,7 +214,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         List<NetworkIncident> networkIncidents = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
@@ -251,7 +248,7 @@ public class NetworkIncidentReportServiceImpl extends AbstractIncidentReportServ
         queryCondition.setBoolQueryMusts(queryBuilders);
 
         List<NetworkIncident> networkIncidents = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.selectNetworkIncident(queryCondition);
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
         if (response != null) {
             logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
 
