@@ -28,4 +28,5 @@ public interface SearchService {
 
     public ExplainResponse explain(String index, String type, String id, QueryBuilder queryBuilder);
 
+    public SearchResponse aggregation(SearchCondition searchCondition);
 }

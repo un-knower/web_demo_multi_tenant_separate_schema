@@ -194,3 +194,52 @@ Incient
 
 
 
+
+date
+
+{
+    "from": 0,
+    "size": 0,
+    "_source": {
+        "includes": [
+            "COUNT",
+            "incidentPolicies.policyName.keyword",
+            "detectTime"
+        ],
+        "excludes": [
+
+        ]
+    },
+    "stored_fields": [
+        "incidentPolicies.policyName.keyword",
+        "detectTime"
+    ],
+    "aggregations": {
+        "incidentPolicies.policyName.keyword": {
+            "terms": {
+                "field": "incidentPolicies.policyName.keyword",
+                "size": 10,
+                "order": {
+                    "_count": "desc"
+                }
+            },
+            "aggregations": {
+                "detectTime": {
+                    "date_histogram": {
+                        "field": "detectTime",
+                        "interval": "day"
+                    },
+                    "aggregations": {
+                        "cnt": {
+                            "value_count": {
+                                "field": "_index"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+

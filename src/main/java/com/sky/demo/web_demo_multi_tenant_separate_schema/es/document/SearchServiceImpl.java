@@ -151,4 +151,29 @@ public class SearchServiceImpl implements SearchService {
 
         return response;
     }
+
+    @Override
+    public SearchResponse aggregation(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
+        SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
+        builder.setIndices((String[]) searchCondition.getIndexes().toArray())
+                .setTypes((String[]) searchCondition.getTypes().toArray())
+                .setQuery(searchCondition.getQueryBuilder())
+                .setFrom(searchCondition.getFrom())
+                .setSize(searchCondition.getSize())
+                .setSearchType(searchCondition.getSearchType())
+                .setExplain(searchCondition.getExplain());
+
+        if (CollectionUtils.isNotEmpty(searchCondition.getSortBuilders())) {
+            searchCondition.getSortBuilders().forEach(sortBuilder -> builder.addSort(sortBuilder));
+        }
+
+        if (CollectionUtils.isNotEmpty(searchCondition.getAggregationBuilders())) {
+            searchCondition.getAggregationBuilders().forEach(aggregationBuilder -> builder.addAggregation(aggregationBuilder));
+        }
+
+        SearchResponse response = builder.get();
+
+        return response;
+    }
 }

@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto;
 
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ public class SearchCondition implements Serializable {
 
     private QueryBuilder queryBuilder;
     private List<SortBuilder> sortBuilders;
+    private List<AggregationBuilder> aggregationBuilders;
 
     private Integer from;
     private Integer size;
@@ -54,6 +56,14 @@ public class SearchCondition implements Serializable {
 
     public void setSortBuilders(List<SortBuilder> sortBuilders) {
         this.sortBuilders = sortBuilders;
+    }
+
+    public List<AggregationBuilder> getAggregationBuilders() {
+        return aggregationBuilders;
+    }
+
+    public void setAggregationBuilders(List<AggregationBuilder> aggregationBuilders) {
+        this.aggregationBuilders = aggregationBuilders;
     }
 
     public Integer getFrom() {
@@ -95,6 +105,7 @@ public class SearchCondition implements Serializable {
                 ", types=" + types +
                 ", queryBuilder=" + queryBuilder +
                 ", sortBuilders=" + sortBuilders +
+                ", aggregationBuilders=" + aggregationBuilders +
                 ", from=" + from +
                 ", size=" + size +
                 ", searchType=" + searchType +
