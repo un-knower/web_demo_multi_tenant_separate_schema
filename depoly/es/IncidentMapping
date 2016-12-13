@@ -55,7 +55,7 @@
                         }
                     },
                     "detectTime": {
-                        "type": "long"
+                        "type": "date"
                     },
                     "detectedByName": {
                         "type": "text",
@@ -85,7 +85,88 @@
                             },
                             "destinationEntryInfo": {
                                 "properties": {
+                                    "appName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "appUuid": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "cityCode": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
                                     "commonName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "countryCode": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "department": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "deviceModel": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "deviceName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "distinguishedName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "domain": {
                                         "type": "text",
                                         "fields": {
                                             "keyword": {
@@ -97,6 +178,51 @@
                                     "entryType": {
                                         "type": "long"
                                     },
+                                    "entryUuid": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "fullName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "hostname": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "ip": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "logonName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
                                     "mail": {
                                         "type": "text",
                                         "fields": {
@@ -105,6 +231,78 @@
                                                 "ignore_above": 256
                                             }
                                         }
+                                    },
+                                    "manager": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "mobile": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "regionCode": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "telephone": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "title": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "url": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "username": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "destinationEntryName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
                                     }
                                 }
                             },
@@ -117,8 +315,20 @@
                             "isReleased": {
                                 "type": "boolean"
                             },
+                            "localeReleaseTime": {
+                                "type": "date",
+                            },
                             "released": {
                                 "type": "boolean"
+                            },
+                            "releasedBy": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
                             }
                         }
                     },
@@ -134,6 +344,15 @@
                                 }
                             },
                             "actionUuid": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "groupName": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -285,7 +504,7 @@
                         }
                     },
                     "incidentTime": {
-                        "type": "long"
+                        "type": "date"
                     },
                     "isIgnored": {
                         "type": "boolean"
@@ -295,6 +514,12 @@
                     },
                     "isVisible": {
                         "type": "boolean"
+                    },
+                    "localeDetectTime": {
+                        "type": "date",
+                    },
+                    "localeIncidentTime": {
+                        "type": "date",
                     },
                     "maxMatches": {
                         "type": "long"
@@ -316,7 +541,88 @@
                     },
                     "sourceEntryInfo": {
                         "properties": {
+                            "appName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "appUuid": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "cityCode": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "commonName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "countryCode": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "department": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "deviceModel": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "deviceName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "distinguishedName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "domain": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -328,6 +634,33 @@
                             "entryType": {
                                 "type": "long"
                             },
+                            "entryUuid": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "fullName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "hostname": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "ip": {
                                 "type": "text",
                                 "fields": {
@@ -336,6 +669,96 @@
                                         "ignore_above": 256
                                     }
                                 }
+                            },
+                            "logonName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "mail": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "manager": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "mobile": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "regionCode": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "telephone": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "title": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "url": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "username": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sourceEntryName": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
                             }
                         }
                     },

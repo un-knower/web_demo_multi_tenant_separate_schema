@@ -17,6 +17,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountAggregationBuilder;
 import org.slf4j.Logger;
@@ -108,13 +110,277 @@ implements BaseNetworkIncidentReportService {
             SearchHits searchHits = response.getHits();
             logger.info("------> SearchHit total : {}", searchHits.totalHits());
 
-            buildEcharsList(aggFirst, aggSecond, list, response);
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
         }
 
         long endTime = System.currentTimeMillis();
         logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.POLICY + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
         return list;
     }
+
+
+
+    @Override
+    public List<EchartsForm> queryListOfSource(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.SOURCE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "sourceEntryInfo.commonName.keyword";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.SOURCE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfDestination(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.DESTINATION + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "incidentDestinations.destinationEntryInfo.commonName.keyword";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.DESTINATION + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfChannelType(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.CHANNEL_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "channelTypeCode";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.CHANNEL_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfSeverityType(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.SEVERITY_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = null;
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.SEVERITY_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfActionType(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.ACTION_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "actionTypeCode";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.ACTION_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfPolicyGroup(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.POLICY_GROUP + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "incidentPolicies.groupName.keyword";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.POLICY_GROUP + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryListOfStatusType(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.STATUS_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "statusTypeCode";
+        String aggSecond = "severityTypeCode";
+        String aggThird = "cnt";
+        boolean isTrend = false;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.STATUS_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryTrendListOfSeverityType(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_SEVERITY_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "severityTypeCode";
+        String aggSecond = "detectTime";
+        String aggThird = "cnt";
+        boolean isTrend = true;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_SEVERITY_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
+    @Override
+    public List<EchartsForm> queryTrendListOfPolicyDetectTime(IncidentReportForm form) {
+        Preconditions.checkNotNull(form, "report is null");
+        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_POLICY_DETECT_TIME + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
+        long beginTime = System.currentTimeMillis();
+
+        String aggFirst = "incidentPolicies.policyName.keyword";
+        String aggSecond = "detectTime";
+        String aggThird = "cnt";
+        boolean isTrend = true;
+
+        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
+
+        List<EchartsForm> list = Lists.newArrayList();
+        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
+        if (response != null) {
+//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
+
+            SearchHits searchHits = response.getHits();
+            logger.info("------> SearchHit total : {}", searchHits.totalHits());
+
+            buildEcharsList(aggFirst, aggSecond, list, response, isTrend);
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_POLICY_DETECT_TIME + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
+        return list;
+    }
+
 
     private QueryCondition buildQueryCondition(IncidentReportForm form, String aggFirst, String aggSecond, String aggThird, boolean isTrend) {
         QueryCondition queryCondition = initQueryCondition();
@@ -153,12 +419,11 @@ implements BaseNetworkIncidentReportService {
             secondAggregationBuilder = AggregationBuilders
                     .dateHistogram(aggSecond)
                     .field(aggSecond)
-                    .subAggregation(thirdAggregationBuilder);
+                    .dateHistogramInterval(DateHistogramInterval.DAY);
         } else {
             secondAggregationBuilder = AggregationBuilders
                     .terms(aggSecond)
-                    .field(aggSecond)
-                    .subAggregation(thirdAggregationBuilder);
+                    .field(aggSecond);
         }
 
         AggregationBuilder firstAggregationBuilder = null;
@@ -168,40 +433,42 @@ implements BaseNetworkIncidentReportService {
                     .field(aggFirst)
                     .size(form.getShowLimit())
                     .order(Terms.Order.aggregation(aggThird, false))
-                    .subAggregation(secondAggregationBuilder);
+                    .subAggregation(secondAggregationBuilder)
+                    .subAggregation(thirdAggregationBuilder);
         } else {
-            firstAggregationBuilder = secondAggregationBuilder;
+            firstAggregationBuilder = secondAggregationBuilder
+                    .subAggregation(thirdAggregationBuilder);
         }
 
-        AggregationBuilder agg = AggregationBuilders
-                .terms(aggFirst)
-                .field(aggFirst)
-                .size(form.getShowLimit())
-                .order(Terms.Order.aggregation(aggThird, false))
-                .subAggregation(AggregationBuilders
-                        .terms(aggSecond)
-                        .field(aggSecond))
-                        .subAggregation(thirdAggregationBuilder);
-
-
 //        logger.info("Aggregation info: {}", JsonUtil.writeValueAsString(agg));
-        aggregationBuilderList.add(agg);
+        aggregationBuilderList.add(firstAggregationBuilder);
         queryCondition.setAggregationBuilders(aggregationBuilderList);
         return queryCondition;
     }
 
-    private void buildEcharsList(String aggFirst, String aggSecond, List<EchartsForm> list, SearchResponse response) {
+    private void buildEcharsList(String aggFirst, String aggSecond, List<EchartsForm> list, SearchResponse response, boolean isTrend) {
         if (StringUtils.isNotBlank(aggFirst)) {
             Terms terms = response.getAggregations().get(aggFirst);
             if (terms != null) {
                 for (Terms.Bucket bucket : terms.getBuckets()) {
-                    Terms subTerms = bucket.getAggregations().get(aggSecond);
-                    for (Terms.Bucket subBucket : subTerms.getBuckets()) {
-                        EchartsForm echartsForm = new EchartsForm();
-                        echartsForm.setX(bucket.getKey());
-                        echartsForm.setY(subBucket.getDocCount());
-                        echartsForm.setZ(subBucket.getKey());
-                        list.add(echartsForm);
+                    if (isTrend) {
+                        Histogram histogram = bucket.getAggregations().get(aggSecond);
+                        for (Histogram.Bucket subBucket : histogram.getBuckets()) {
+                            EchartsForm echartsForm = new EchartsForm();
+                            echartsForm.setX(bucket.getKey());
+                            echartsForm.setY(subBucket.getDocCount());
+                            echartsForm.setZ(subBucket.getKey());
+                            list.add(echartsForm);
+                        }
+                    } else {
+                        Terms subTerms = bucket.getAggregations().get(aggSecond);
+                        for (Terms.Bucket subBucket : subTerms.getBuckets()) {
+                            EchartsForm echartsForm = new EchartsForm();
+                            echartsForm.setX(bucket.getKey());
+                            echartsForm.setY(subBucket.getDocCount());
+                            echartsForm.setZ(subBucket.getKey());
+                            list.add(echartsForm);
+                        }
                     }
                 }
             }
@@ -216,267 +483,6 @@ implements BaseNetworkIncidentReportService {
                 }
             }
         }
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfSource(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.SOURCE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "sourceEntryInfo.commonName.keyword";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.SOURCE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfDestination(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.DESTINATION + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "incidentDestinations.destinationEntryInfo.commonName.keyword";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.DESTINATION + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfChannelType(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.CHANNEL_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "channelTypeCode";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.CHANNEL_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfSeverityType(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.SEVERITY_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = null;
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.SEVERITY_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfActionType(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.ACTION_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "actionTypeCode";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.ACTION_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfPolicyGroup(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.POLICY_GROUP + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "incidentPolicies.groupName.keyword";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.POLICY_GROUP + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryListOfStatusType(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.STATUS_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "statusTypeCode";
-        String aggSecond = "severityTypeCode";
-        String aggThird = "cnt";
-        boolean isTrend = false;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.STATUS_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryTrendListOfSeverityType(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_SEVERITY_TYPE + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "severityTypeCode";
-        String aggSecond = "detectTime";
-        String aggThird = "cnt";
-        boolean isTrend = true;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_SEVERITY_TYPE + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
-    }
-
-    @Override
-    public List<EchartsForm> queryTrendListOfPolicyDetectTime(IncidentReportForm form) {
-        Preconditions.checkNotNull(form, "report is null");
-        logger.info("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_POLICY_DETECT_TIME + ", filter:\n" + JsonUtil.writeValueAsString(form.getFilter()));
-        long beginTime = System.currentTimeMillis();
-
-        String aggFirst = "incidentPolicies.policyName.keyword";
-        String aggSecond = "detectTime";
-        String aggThird = "cnt";
-        boolean isTrend = true;
-
-        QueryCondition queryCondition = buildQueryCondition(form, aggFirst, aggSecond, aggThird, isTrend);
-
-        List<EchartsForm> list = Lists.newArrayList();
-        SearchResponse response = networkIncidentReportAcc.searchNetworkIncident(queryCondition);
-        if (response != null) {
-//            logger.debug("-----> SearchResponse : \n{}", JsonUtil.writeValueAsString(response));
-
-            SearchHits searchHits = response.getHits();
-            logger.info("------> SearchHit total : {}", searchHits.totalHits());
-
-            buildEcharsList(aggFirst, aggSecond, list, response);
-        }
-
-        long endTime = System.currentTimeMillis();
-        logger.debug("=========> IncidentDashboardType:" + IncidentDashboardType.TREND_POLICY_DETECT_TIME + ", cost:" + (endTime - beginTime) + ", list:\n" + JsonUtil.writeValueAsString(list));
-        return list;
     }
 
 

@@ -11,9 +11,9 @@
     "tagContent": "tag1",
     "breachContents": "\\\\172.0.0.1\\proxy.user.ini",
     "localeDetectTime": null,
-    "detectTime": 1468294205326,
+    "detectTime": 1468294200,
     "localeIncidentTime": null,
-    "incidentTime": 1468294208326,
+    "incidentTime": 1468295200,
     "maxMatches": 4,
     "transactionSize": 4446,
     "incidentPolicies": [
