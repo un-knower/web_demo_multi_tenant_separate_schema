@@ -52,7 +52,7 @@
             }
         },
         "detectTime": {
-            "type": "date"
+            "type": "long"
         },
         "detectedByName": {
             "type": "text",
@@ -502,7 +502,7 @@
             }
         },
         "incidentTime": {
-            "type": "date"
+            "type": "long"
         },
         "isIgnored": {
             "type": "boolean"
@@ -515,13 +515,11 @@
         },
         "localeDetectTime": {
             "type": "date",
-                                "format": "yyy-MM-dd HH:mm:ss"
-
+            "format": "yyy-MM-dd HH:mm:ss"
         },
         "localeIncidentTime": {
             "type": "date",
-                                "format": "yyy-MM-dd HH:mm:ss"
-
+            "format": "yyy-MM-dd HH:mm:ss"
         },
         "maxMatches": {
             "type": "long"
