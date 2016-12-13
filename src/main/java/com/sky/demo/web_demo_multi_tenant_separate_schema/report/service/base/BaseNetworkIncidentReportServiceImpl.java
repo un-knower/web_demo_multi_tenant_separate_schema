@@ -10,6 +10,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.QueryConditi
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentDashboardType;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.IncidentReportForm;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.util.IncidentReportFilterForEsUtil;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.Constants;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.json.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -330,7 +331,7 @@ implements BaseNetworkIncidentReportService {
         long beginTime = System.currentTimeMillis();
 
         String aggFirst = "severityTypeCode";
-        String aggSecond = "detectTime";
+        String aggSecond = "localeDetectTime";
         String aggThird = "cnt";
         boolean isTrend = true;
 
@@ -359,7 +360,7 @@ implements BaseNetworkIncidentReportService {
         long beginTime = System.currentTimeMillis();
 
         String aggFirst = "incidentPolicies.policyName.keyword";
-        String aggSecond = "detectTime";
+        String aggSecond = "localeDetectTime";
         String aggThird = "cnt";
         boolean isTrend = true;
 
@@ -419,7 +420,8 @@ implements BaseNetworkIncidentReportService {
             secondAggregationBuilder = AggregationBuilders
                     .dateHistogram(aggSecond)
                     .field(aggSecond)
-                    .dateHistogramInterval(DateHistogramInterval.DAY);
+                    .dateHistogramInterval(DateHistogramInterval.DAY)
+                    .format(Constants.DATE_PATTERN);
         } else {
             secondAggregationBuilder = AggregationBuilders
                     .terms(aggSecond)
@@ -457,7 +459,7 @@ implements BaseNetworkIncidentReportService {
                             EchartsForm echartsForm = new EchartsForm();
                             echartsForm.setX(bucket.getKey());
                             echartsForm.setY(subBucket.getDocCount());
-                            echartsForm.setZ(subBucket.getKey());
+                            echartsForm.setZ(subBucket.getKeyAsString());
                             list.add(echartsForm);
                         }
                     } else {

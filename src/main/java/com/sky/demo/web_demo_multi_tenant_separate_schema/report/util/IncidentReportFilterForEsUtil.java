@@ -3,6 +3,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.report.util;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto.*;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.util.Constants;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.SpringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -170,84 +171,84 @@ public class IncidentReportFilterForEsUtil {
     private static QueryBuilder buildFilterTime(FilterTimeForm timeForm) {
         RangeQueryBuilder queryBuilder = null;
         if (timeForm != null && timeForm.isEnableFilter() && timeForm.getTimeType() != null) {
-            DateTime beginDate = null;
-            DateTime endDate = null;
+            String beginDate = null;
+            String endDate = null;
             DateTime now = new DateTime();
             PeriodTimeType periodTimeType = timeForm.getTimeType();
             switch (periodTimeType) {
                 case CUSTOM_TIME: {
-                    beginDate = new DateTime(timeForm.getPreciseFrom());
-                    endDate = new DateTime(timeForm.getPreciseTo());
+                    beginDate = new DateTime(timeForm.getPreciseFrom()).toString(Constants.DATETIME_PATTERN);
+                    endDate = new DateTime(timeForm.getPreciseTo()).toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_PAST_N_DAY: {
                     DateTime pre = now.minusDays(timeForm.getLastPastDay() - 1).secondOfDay().withMinimumValue();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_24_HOURS: {
                     DateTime pre = now.minusHours(24);
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case YESTERDAY: {
                     DateTime pre = now.minusDays(1).secondOfDay().withMinimumValue();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusDays(1).secondOfDay().withMaximumValue();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_WEEK: {
                     DateTime pre = now.weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_WEEK: {
                     DateTime pre = now.minusWeeks(1).weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusWeeks(1).weekOfWeekyear().roundCeilingCopy();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_MONTH: {
                     DateTime pre = now.monthOfYear().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_MONTH: {
                     DateTime pre = now.minusMonths(1).monthOfYear().roundFloorCopy();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusMonths(1).monthOfYear().roundCeilingCopy();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now);
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now.minusMonths(3));
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = getLastDayOfQuarter(now.minusMonths(3));
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_YEAR: {
                     DateTime pre = now.year().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
             }
-            queryBuilder = QueryBuilders.rangeQuery("incidentTime")
-                    .from(beginDate.getMillis())
-                    .to(endDate.getMillis());
+            queryBuilder = QueryBuilders.rangeQuery("localeDetectTime")
+                    .from(beginDate)
+                    .to(endDate);
 
         }
         return queryBuilder;
@@ -489,84 +490,84 @@ public class IncidentReportFilterForEsUtil {
     private static QueryBuilder buildFilterIncidentTime(FilterIncidentTimeForm incidentTime) {
         RangeQueryBuilder queryBuilder = null;
         if (incidentTime != null && incidentTime.isEnableFilter() && incidentTime.getTimeType() != null) {
-            DateTime beginDate = null;
-            DateTime endDate = null;
+            String beginDate = null;
+            String endDate = null;
             DateTime now = new DateTime();
             PeriodTimeType periodTimeType = incidentTime.getTimeType();
             switch (periodTimeType) {
                 case CUSTOM_TIME: {
-                    beginDate = new DateTime(incidentTime.getPreciseFrom());
-                    endDate = new DateTime(incidentTime.getPreciseTo());
+                    beginDate = new DateTime(incidentTime.getPreciseFrom()).toString(Constants.DATETIME_PATTERN);
+                    endDate = new DateTime(incidentTime.getPreciseTo()).toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_PAST_N_DAY: {
                     DateTime pre = now.minusDays(incidentTime.getLastPastDay() - 1).secondOfDay().withMinimumValue();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_24_HOURS: {
                     DateTime pre = now.minusHours(24);
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case YESTERDAY: {
                     DateTime pre = now.minusDays(1).secondOfDay().withMinimumValue();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusDays(1).secondOfDay().withMaximumValue();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_WEEK: {
                     DateTime pre = now.weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_WEEK: {
                     DateTime pre = now.minusWeeks(1).weekOfWeekyear().roundFloorCopy();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusWeeks(1).weekOfWeekyear().roundCeilingCopy();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_MONTH: {
                     DateTime pre = now.monthOfYear().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_MONTH: {
                     DateTime pre = now.minusMonths(1).monthOfYear().roundFloorCopy();
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = now.minusMonths(1).monthOfYear().roundCeilingCopy();
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now);
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case LAST_QUARTER: {
                     DateTime pre = getFirstDayOfQuarter(now.minusMonths(3));
-                    beginDate = pre;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
                     pre = getLastDayOfQuarter(now.minusMonths(3));
-                    endDate = pre;
+                    endDate = pre.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
                 case THIS_YEAR: {
                     DateTime pre = now.year().roundFloorCopy();
-                    beginDate = pre;
-                    endDate = now;
+                    beginDate = pre.toString(Constants.DATETIME_PATTERN);
+                    endDate = now.toString(Constants.DATETIME_PATTERN);
                     break;
                 }
             }
-            queryBuilder = QueryBuilders.rangeQuery("incidentTime")
-                    .from(beginDate.getMillis())
-                    .to(endDate.getMillis());
+            queryBuilder = QueryBuilders.rangeQuery("localeIncidentTime")
+                    .from(beginDate)
+                    .to(endDate);
         }
         return queryBuilder;
     }
