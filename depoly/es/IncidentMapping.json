@@ -52,7 +52,7 @@
             }
         },
         "detectTime": {
-            "type": "long"
+            "type": "date"
         },
         "detectedByName": {
             "type": "text",
@@ -502,7 +502,7 @@
             }
         },
         "incidentTime": {
-            "type": "long"
+            "type": "date"
         },
         "isIgnored": {
             "type": "boolean"
