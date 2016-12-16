@@ -1,4 +1,4 @@
-package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.producer;
+package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.common.producer;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;

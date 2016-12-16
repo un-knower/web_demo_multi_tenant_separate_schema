@@ -1,4 +1,4 @@
-package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.producer;
+package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.common.producer;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.AppConfig;
 import org.apache.kafka.clients.producer.*;

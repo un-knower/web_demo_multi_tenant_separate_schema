@@ -18,7 +18,8 @@ public class ConsumerThreadHandler implements Runnable {
     }
 
     public void run() {
-        logger.info("Process: " + consumerRecord.value() + ", Offset: " + consumerRecord.offset()
+        logger.info("Process: " + consumerRecord.value()
+                + ", Offset: " + consumerRecord.offset()
                 + ", By ThreadID: " + Thread.currentThread().getId());
     }
 }

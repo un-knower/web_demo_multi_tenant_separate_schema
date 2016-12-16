@@ -1,6 +1,5 @@
-package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.consumer;
+package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.common.consumer;
 
-import com.google.common.collect.Lists;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.AppConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.Test;

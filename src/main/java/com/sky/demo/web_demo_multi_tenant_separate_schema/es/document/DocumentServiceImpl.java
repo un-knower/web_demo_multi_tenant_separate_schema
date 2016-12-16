@@ -36,7 +36,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentServiceImpl.class);
 
-    @Resource
+    //@Resource
     private EsClient esClient;
 
     @Override

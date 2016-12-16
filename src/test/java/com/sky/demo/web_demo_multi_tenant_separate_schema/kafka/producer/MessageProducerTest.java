@@ -1,6 +1,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.producer;
 
 import com.google.common.collect.Lists;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.kafka.common.producer.MessageProducer;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.AppConfig;
 import org.junit.Assert;
 import org.junit.Test;

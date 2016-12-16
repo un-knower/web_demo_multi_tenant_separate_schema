@@ -28,7 +28,7 @@ public class NetworkIncidentReportAccImpl implements NetworkIncidentReportAcc {
 
     private static final Logger logger = LoggerFactory.getLogger(NetworkIncidentReportAccImpl.class);
 
-    @Resource
+    //@Resource
     private EsClient esClient;
 
 
