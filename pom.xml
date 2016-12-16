@@ -13,16 +13,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springframework.version>4.1.6.RELEASE</springframework.version>
-        <project.sl4j.version>1.7.21</project.sl4j.version>
-        <project.jackson.version>2.8.1</project.jackson.version>
-        <project.shiro.version>1.2.3</project.shiro.version>
-        <project.kafka.version>0.10.0.0</project.kafka.version>
-        <project.es.version>5.0.0</project.es.version>
+        <sl4j.version>1.7.21</sl4j.version>
+        <logback.version>1.1.8</logback.version>
+        <jackson.version>2.8.1</jackson.version>
+        <shiro.version>1.2.3</shiro.version>
+        <kafka.version>0.10.0.0</kafka.version>
+        <elasticsearch.version>5.0.0</elasticsearch.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!--spring -->
+            <!--spring-->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -41,6 +42,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
             <dependency>
@@ -75,11 +81,6 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-asm</artifactId>
-                <version>${springframework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
                 <artifactId>spring-instrument</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
@@ -88,22 +89,27 @@
                 <artifactId>spring-aop</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
 
-            <!--log -->
+            <!--log-->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${project.sl4j.version}</version>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>${project.sl4j.version}</version>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>log4j-over-slf4j</artifactId>
-                <version>${project.sl4j.version}</version>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -113,12 +119,12 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.3</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.1.3</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
@@ -138,10 +144,11 @@
                 <version>1.4</version>
             </dependency>
             <!--<dependency>-->
-            <!--<groupId>org.apache.commons</groupId>-->
-            <!--<artifactId>commons-dbcp2</artifactId>-->
-            <!--<version>2.1.1</version>-->
+                <!--<groupId>org.apache.commons</groupId>-->
+                <!--<artifactId>commons-dbcp2</artifactId>-->
+                <!--<version>2.1.1</version>-->
             <!--</dependency>-->
+
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
@@ -159,7 +166,7 @@
                 <version>9.4-1201-jdbc41</version>
             </dependency>
 
-            <!-- mybatis module -->
+            <!--mybatis-->
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
@@ -173,10 +180,10 @@
 
             <!--servlet-->
             <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>servlet-api</artifactId>-->
-            <!--<version>2.5</version>-->
-            <!--<scope>provided</scope>-->
+                <!--<groupId>javax.servlet</groupId>-->
+                <!--<artifactId>servlet-api</artifactId>-->
+                <!--<version>2.5</version>-->
+                <!--<scope>provided</scope>-->
             <!--</dependency>-->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -190,25 +197,13 @@
                 <version>2.2</version>
                 <scope>provided</scope>
             </dependency>
-            <!--<dependency>-->
-            <!--<groupId>javax.servlet</groupId>-->
-            <!--<artifactId>servleZAt-api</artifactId>-->
-            <!--<version>2.5</version>-->
-            <!--<scope>provided</scope>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>javax.servlet.jsp</groupId>-->
-            <!--<artifactId>jsp-api</artifactId>-->
-            <!--<version>2.1</version>-->
-            <!--<scope>provided</scope>-->
-            <!--</dependency>-->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
                 <version>1.2</version>
             </dependency>
 
-            <!-- velocity -->
+            <!--velocity-->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
@@ -220,38 +215,53 @@
                 <version>2.0</version>
             </dependency>
 
-            <!--Quartz-->
+            <!--quartz-->
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>2.2.1</version>
             </dependency>
 
-            <!--util -->
+            <!--commons-->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>16.0.1</version>
+                <version>18.0</version>
             </dependency>
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>2.6</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>commons-lang</groupId>-->
+                <!--<artifactId>commons-lang</artifactId>-->
+                <!--<version>2.6</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>commons-collections</groupId>-->
+                <!--<artifactId>commons-collections</artifactId>-->
+                <!--<version>3.2.1</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>commons-digester</groupId>-->
+                <!--<artifactId>commons-digester</artifactId>-->
+                <!--<version>2.0</version>-->
+            <!--</dependency>-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
+                <version>3.5</version>
             </dependency>
             <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2.1</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-digester3</artifactId>
+                <version>3.2</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
@@ -263,23 +273,8 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.10</version>
             </dependency>
-            <dependency>
-                <groupId>commons-digester</groupId>
-                <artifactId>commons-digester</artifactId>
-                <version>2.0</version>
-            </dependency>
 
-            <!--<dependency>-->
-            <!--<groupId>commons-dbcp</groupId>-->
-            <!--<artifactId>commons-dbcp</artifactId>-->
-            <!--<version>1.4</version>-->
-            <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>org.apache.commons</groupId>-->
-            <!--<artifactId>commons-dbcp2</artifactId>-->
-            <!--<version>2.1.1</version>-->
-            <!--</dependency>-->
-
+            <!--junit-->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -287,9 +282,9 @@
                 <scope>test</scope>
             </dependency>
             <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit-dep</artifactId>-->
-            <!--<version>4.10</version>-->
+                <!--<groupId>junit</groupId>-->
+                <!--<artifactId>junit-dep</artifactId>-->
+                <!--<version>4.10</version>-->
             <!--</dependency>-->
 
             <dependency>
@@ -298,6 +293,17 @@
                 <version>2.7</version>
             </dependency>
 
+            <!--http-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>4.4.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore-nio</artifactId>
+                <version>4.4.5</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
@@ -305,8 +311,8 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>4.4.5</version>
+                <artifactId>httpasyncclient</artifactId>
+                <version>4.1.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -324,17 +330,17 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${project.jackson.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${project.jackson.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${project.jackson.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!--<dependency>-->
@@ -352,25 +358,38 @@
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-all</artifactId>
-                <version>${project.shiro.version}</version>
+                <version>${shiro.version}</version>
             </dependency>
 
             <!--Kafka-->
             <!--<dependency>-->
                 <!--<groupId>org.apache.kafka</groupId>-->
                 <!--<artifactId>kafka_2.11</artifactId>-->
-                <!--<version>${project.kafka.version}</version>-->
+                <!--<version>${kafka.version}</version>-->
             <!--</dependency>-->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
-                <version>${project.kafka.version}</version>
+                <version>${kafka.version}</version>
             </dependency>
 
+            <!--elasticsearch-->
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>transport</artifactId>
-                <version>${project.es.version}</version>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <!--redis-->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>1.7.5.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>2.9.0</version>
             </dependency>
 
             <dependency>
@@ -384,6 +403,7 @@
                 <artifactId>ECharts</artifactId>
                 <version>2.2.6</version>
             </dependency>
+
 
 
         </dependencies>
@@ -409,6 +429,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
@@ -430,6 +454,18 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
         </dependency>
 
         <dependency>
@@ -460,7 +496,6 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
@@ -482,7 +517,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -491,7 +525,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -506,7 +539,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
@@ -525,12 +557,16 @@
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-digester3</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -545,10 +581,6 @@
             <artifactId>commons-codec</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-digester</groupId>
-            <artifactId>commons-digester</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -558,11 +590,19 @@
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
+            <artifactId>httpasyncclient</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -588,10 +628,6 @@
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-all</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.kafka</groupId>-->
-            <!--<artifactId>kafka_2.11</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
@@ -599,6 +635,14 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>transport</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>

@@ -1,8 +1,10 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.dao.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Joiner;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.basedb.BaseTenantDao;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -140,7 +142,8 @@ public class AccountDaoImpl extends BaseTenantDao implements AccountDao {       
     @Override
     public int insert(Account record) {
         StringBuilder sql = new StringBuilder();
-        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+//        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+        String param = Joiner.on(",").join(Collections.nCopies(INSERT_COLUMN.split(",").length, "?"));
 
         sql.append("insert into ")
 //                .append(getSchemaDot())

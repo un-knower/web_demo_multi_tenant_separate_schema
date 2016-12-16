@@ -3,6 +3,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.dao.impl;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -271,7 +272,8 @@ public class JdbcAnLogDaoImpl extends BaseTenantDao implements JdbcAnLogDao {   
     @Override
     public int insert(final AnLog record) {
         StringBuilder sql = new StringBuilder();
-        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+//        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+        String param = Joiner.on(",").join(Collections.nCopies(INSERT_COLUMN.split(",").length, "?"));
 
         sql.append("insert into ")
 //                .append(getSchemaDot())
@@ -363,7 +365,8 @@ public class JdbcAnLogDaoImpl extends BaseTenantDao implements JdbcAnLogDao {   
     @Override
     public int batchInsert(final List<AnLog> recordList) {
         StringBuilder sql = new StringBuilder();
-        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+//        String param = StringUtils.repeat("?", ",", INSERT_COLUMN.split(",").length);
+        String param = Joiner.on(",").join(Collections.nCopies(INSERT_COLUMN.split(",").length, "?"));
 
         sql.append("insert into ")
 //                .append(getSchemaDot())
