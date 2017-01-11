@@ -172,8 +172,6 @@ public class TenantDaoImpl extends BaseDefaultDao implements TenantDao { //BaseD
             params.add(offset);
         }
 
-        logger.info("select * params:" + params);
-
         RowMapper<Tenant> rowMapper = BeanPropertyRowMapper.newInstance(Tenant.class);
         List<Tenant> result = getDefaultJdbcTemplate().query(sql.toString(), params.toArray(), rowMapper);
 

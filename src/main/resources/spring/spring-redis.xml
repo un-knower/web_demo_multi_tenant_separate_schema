@@ -44,18 +44,25 @@
     </bean>
 
     <!--sentinel-->
-    <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:password="${redis.password}">-->
+    <!--<bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"-->
+          <!--p:password="${redis.password}">-->
         <!--<constructor-arg name="sentinelConfig" ref="sentinelConfig" />-->
         <!--<constructor-arg name="poolConfig" ref="poolConfig" />-->
     <!--</bean>-->
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="valueSerializer" ref="valueSerializer"/>
     </bean>
 
     <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
+        <property name="keySerializer" ref="stringSerializer"/>
+        <property name="valueSerializer" ref="valueSerializer"/>
     </bean>
 
+    <bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+    <bean id="valueSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
 
 </beans>

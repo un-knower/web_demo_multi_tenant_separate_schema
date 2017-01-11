@@ -106,7 +106,9 @@ public class RestTemplateWrapper {
 
     @PreDestroy
     public void destroy() throws Exception {
-        this.factory.destroy();
+        if (factory != null) {
+            factory.destroy();
+        }
     }
 
 
