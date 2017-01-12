@@ -53,16 +53,16 @@
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="keySerializer" ref="stringSerializer"/>
-        <property name="valueSerializer" ref="valueSerializer"/>
+        <property name="valueSerializer" ref="jdkSerializer"/>
     </bean>
 
     <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <property name="keySerializer" ref="stringSerializer"/>
-        <property name="valueSerializer" ref="valueSerializer"/>
+        <property name="valueSerializer" ref="jdkSerializer"/>
     </bean>
 
     <bean id="stringSerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-    <bean id="valueSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+    <bean id="jdkSerializer" class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
 
 </beans>
