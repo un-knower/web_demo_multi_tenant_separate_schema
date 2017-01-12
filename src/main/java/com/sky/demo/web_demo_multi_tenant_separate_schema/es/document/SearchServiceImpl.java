@@ -9,10 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.util.CollectionUtil;
 import org.elasticsearch.action.explain.ExplainResponse;
-import org.elasticsearch.action.search.MultiSearchRequestBuilder;
-import org.elasticsearch.action.search.MultiSearchResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -91,8 +88,26 @@ public class SearchServiceImpl implements SearchService {
                 .setExplain(searchCondition.getExplain());
 
 
-        SearchResponse response = builder.get();        //.execute().actionGet();
+        SearchResponse response = builder.get();
+        String scrollId = response.getScrollId();
+        logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+        //Scroll until no hits are returned
+        do {
 
+            response = esClient.getTransportClient()
+                    .prepareSearchScroll(scrollId)
+                    .setScroll(new TimeValue(60000))
+                    .get();   //.execute().actionGet();
+
+            scrollId = response.getScrollId();  //maybe multi index
+            logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+
+        } while (response.getHits().getHits().length != 0);
+
+
+        ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
+                .prepareClearScroll().get();
+        logger.info("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
         return response;
     }
 
@@ -111,6 +126,8 @@ public class SearchServiceImpl implements SearchService {
                 .setExplain(searchCondition.getExplain());
         SearchResponse response = builder.get();
 
+        String scrollId = response.getScrollId();
+        logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
         //Scroll until no hits are returned
         do {
             for (SearchHit hit : response.getHits().getHits()) {
@@ -118,10 +135,19 @@ public class SearchServiceImpl implements SearchService {
                 result.add(hit);
             }
 
-            response = esClient.getTransportClient().prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
+            response = esClient.getTransportClient()
+                    .prepareSearchScroll(scrollId)
+                    .setScroll(new TimeValue(60000))
+                    .get();   //.execute().actionGet();
+
+            scrollId = response.getScrollId();
+            logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
 
         } while (response.getHits().getHits().length != 0);
 
+        ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
+                .prepareClearScroll().get();
+        logger.info("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
         return result;
     }
 
