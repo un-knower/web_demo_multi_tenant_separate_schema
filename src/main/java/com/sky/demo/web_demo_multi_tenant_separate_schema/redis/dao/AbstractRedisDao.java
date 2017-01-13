@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 /**
  * Created by user on 17/1/12.
  */
-public abstract class AbstractRedisDao<K, V> {
+public abstract class AbstractRedisDao {
 
     @Resource
-    protected RedisTemplate redisTemplate;
+    protected RedisTemplate<String, Object> redisTemplate;
 
 }
