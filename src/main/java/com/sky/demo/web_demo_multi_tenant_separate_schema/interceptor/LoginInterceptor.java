@@ -40,6 +40,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         IGNORE_URIS.add("/http");
         IGNORE_URIS.add("/report");
+        IGNORE_URIS.add("/redis");
     }
 
     private static final Predicate<String> isContainIgnoreUrl = new Predicate<String>() {
