@@ -1,10 +1,13 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.redis.dao;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
  * Created by user on 17/1/13.
  */
+@Repository
 public class ListRedisDaoImpl extends AbstractRedisDao implements ListRedisDao {
 
 

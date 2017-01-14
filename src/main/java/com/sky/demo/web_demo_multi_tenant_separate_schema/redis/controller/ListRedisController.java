@@ -2,8 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.redis.controller;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetData;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.base.RetStatus;
-import com.sky.demo.web_demo_multi_tenant_separate_schema.redis.dao.ListRedisDao;
-import com.sky.demo.web_demo_multi_tenant_separate_schema.redis.dao.ValueRedisDao;
+import com.sky.demo.web_demo_multi_tenant_separate_schema.redis.service.ListRedisService;
 import com.sky.demo.web_demo_multi_tenant_separate_schema.util.RetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by user on 17/1/12.
  */
-@RequestMapping("/redis")
+@RequestMapping("/redis/list")
 @Controller
-public class RedisController {
+public class ListRedisController {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListRedisController.class);
 
     @Resource
-    private ListRedisDao listRedisDao;
+    private ListRedisService listRedisService;
 
 
     @RequestMapping("/push")
@@ -35,7 +34,7 @@ public class RedisController {
         RetData<String> ret = null;
 
         try {
-            listRedisDao.push(key, value);
+            listRedisService.push(key, value);
             ret = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
             logger.error("string redis set error", e);
@@ -50,7 +49,7 @@ public class RedisController {
         RetData<Object> ret = null;
 
         try {
-            Object result = listRedisDao.pop(key);
+            Object result = listRedisService.pop(key);
             ret = RetUtil.buildSuccessRet(result);
         } catch (Exception e) {
             logger.error("string redis set error", e);
@@ -65,7 +64,7 @@ public class RedisController {
         RetData<String> ret = null;
 
         try {
-            listRedisDao.enquene(key, value);
+            listRedisService.enquene(key, value);
             ret = RetUtil.buildSuccessRet("success");
         } catch (Exception e) {
             logger.error("string redis set error", e);
@@ -80,7 +79,7 @@ public class RedisController {
         RetData<Object> ret = null;
 
         try {
-            Object result = listRedisDao.dequene(key);
+            Object result = listRedisService.dequene(key);
             ret = RetUtil.buildSuccessRet(result);
         } catch (Exception e) {
             logger.error("string redis set error", e);
