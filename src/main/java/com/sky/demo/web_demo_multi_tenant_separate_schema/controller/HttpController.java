@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -122,4 +123,17 @@ public class HttpController {
 
         throw new Exception("fuck suppress");
     }
+
+
+    @RequestMapping(value = "/redirect/down/{id}")
+    public String redirectDown(@PathVariable int id, HttpServletRequest request, HttpServletResponse response) {
+        String url = "http://127.0.0.1:8080/web_demo" + "/http/delete/" + id;
+        logger.info("redirect delete, url: {}", url);
+
+        //response.setStatus(HttpStatus.SC_TEMPORARY_REDIRECT);
+        //response.setHeader("Location", url);
+
+        return "redirect:" + url;
+    }
+
 }
