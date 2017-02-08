@@ -20,6 +20,8 @@ public class ListRedisServiceImpl implements ListRedisService {
     @Resource
     private ListRedisDao listRedisDao;
 
+
+    //for stack
     @Override
     public void push(String key, Object value) {
         Preconditions.checkNotNull(key, "key is null!");
@@ -36,6 +38,7 @@ public class ListRedisServiceImpl implements ListRedisService {
         return listRedisDao.pop(key);
     }
 
+    //for queue
     @Override
     public void enquene(String key, Object value) {
         Preconditions.checkNotNull(key, "key is null!");
@@ -49,8 +52,10 @@ public class ListRedisServiceImpl implements ListRedisService {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list dequene(), key:{}", key);
-        return dequene(key);
+        return listRedisDao.dequene(key);
     }
+
+
 
     @Override
     public long size(String key) {

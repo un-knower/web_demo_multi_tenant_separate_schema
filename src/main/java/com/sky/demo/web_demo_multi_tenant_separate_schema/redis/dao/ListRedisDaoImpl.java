@@ -1,5 +1,6 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.redis.dao;
 
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -8,27 +9,31 @@ import java.util.List;
  * Created by user on 17/1/13.
  */
 @Repository
-public class ListRedisDaoImpl extends AbstractRedisDao implements ListRedisDao {
+public class ListRedisDaoImpl<T> extends AbstractRedisDao implements ListRedisDao<T> {
 
 
     @Override
-    public void push(final String key, final Object value) {
-        redisTemplate.opsForList().leftPush(key, value);
+    public <T> void push(final String key, final T value) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        listOperations.leftPush(key, value);
     }
 
     @Override
-    public Object pop(final String key) {
-        return redisTemplate.opsForList().leftPop(key);
+    public <T> T pop(final String key) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        return listOperations.leftPop(key);
     }
 
     @Override
-    public void enquene(final String key, final Object value) {
-        redisTemplate.opsForList().leftPush(key, value);
+    public <T> void enquene(final String key, final T value) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        listOperations.leftPush(key, value);
     }
 
     @Override
-    public Object dequene(final String key) {
-        return redisTemplate.opsForList().rightPop(key);
+    public <T> T dequene(final String key) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        return listOperations.rightPop(key);
     }
 
     @Override
@@ -37,23 +42,27 @@ public class ListRedisDaoImpl extends AbstractRedisDao implements ListRedisDao {
     }
 
     @Override
-    public List<Object> range(String key, long start, int end) {
-        return redisTemplate.opsForList().range(key, start, end);
+    public <T> List<T> range(String key, long start, int end) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        return listOperations.range(key, start, end);
     }
 
     @Override
-    public void remove(String key, int i, Object value) {
-        redisTemplate.opsForList().remove(key, i, value);
+    public <T> void remove(String key, int i, T value) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        listOperations.remove(key, i, value);
     }
 
     @Override
-    public Object index(String key, long index) {
-        return redisTemplate.opsForList().index(key, index);
+    public <T> T index(String key, long index) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        return listOperations.index(key, index);
     }
 
     @Override
-    public void set(String key, long index, Object value) {
-        redisTemplate.opsForList().set(key, index, value);
+    public <T> void set(String key, long index, T value) {
+        ListOperations<String, T> listOperations =  redisTemplate.opsForList();
+        listOperations.set(key, index, value);
     }
 
     @Override
