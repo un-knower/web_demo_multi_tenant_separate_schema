@@ -13,7 +13,7 @@ import java.util.List;
  * Created by user on 17/1/14.
  */
 @Service
-public class ListRedisServiceImpl implements ListRedisService {
+public class ListRedisServiceImpl<T> implements ListRedisService<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(ListRedisServiceImpl.class);
 
@@ -23,7 +23,7 @@ public class ListRedisServiceImpl implements ListRedisService {
 
     //for stack
     @Override
-    public void push(String key, Object value) {
+    public <T> void push(String key, T value) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list push(), key:{}", key);
@@ -31,16 +31,16 @@ public class ListRedisServiceImpl implements ListRedisService {
     }
 
     @Override
-    public Object pop(String key) {
+    public <T> T pop(String key) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list pop(), key:{}", key);
-        return listRedisDao.pop(key);
+        return (T)listRedisDao.pop(key);
     }
 
     //for queue
     @Override
-    public void enquene(String key, Object value) {
+    public <T> void enquene(String key, T value) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list enquene(), key:{}", key);
@@ -48,11 +48,11 @@ public class ListRedisServiceImpl implements ListRedisService {
     }
 
     @Override
-    public Object dequene(String key) {
+    public <T> T dequene(String key) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list dequene(), key:{}", key);
-        return listRedisDao.dequene(key);
+        return (T)listRedisDao.dequene(key);
     }
 
 
@@ -66,7 +66,7 @@ public class ListRedisServiceImpl implements ListRedisService {
     }
 
     @Override
-    public List<Object> range(String key, long start, int end) {
+    public <T> List<T> range(String key, long start, int end) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list range(), key:{}", key);
@@ -74,7 +74,7 @@ public class ListRedisServiceImpl implements ListRedisService {
     }
 
     @Override
-    public void remove(String key, int i, Object value) {
+    public <T> void remove(String key, int i, T value) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list remove(), key:{}", key);
@@ -82,15 +82,15 @@ public class ListRedisServiceImpl implements ListRedisService {
     }
 
     @Override
-    public Object index(String key, long index) {
+    public <T> T index(String key, long index) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list index(), key:{}", key);
-        return listRedisDao.index(key, index);
+        return (T)listRedisDao.index(key, index);
     }
 
     @Override
-    public void set(String key, long index, Object value) {
+    public <T> void set(String key, long index, T value) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis list set(), key:{}", key);

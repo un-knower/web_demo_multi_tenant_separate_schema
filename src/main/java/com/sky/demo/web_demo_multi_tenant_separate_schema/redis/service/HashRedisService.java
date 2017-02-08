@@ -6,13 +6,13 @@ import java.util.Map;
 /**
  * Created by user on 17/1/14.
  */
-public interface HashRedisService {
+public interface HashRedisService<T> {
 
-    public boolean addHash(final String key, final String field, final Object value);
+    public <T> boolean addHash(final String key, final String field, final T value);
 
-    public boolean addHash(final String key, final Map<String, Object> filedValueMap);
+    public <T> boolean addHash(final String key, final Map<String, T> filedValueMap);
 
-    public Object getHashField(final String key, final String field);
+    public <T> T getHashField(final String key, final String field);
 
     public boolean deleteHashField(final String key, final List<String> field);
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by user on 17/1/14.
  */
 @Service
-public class HashRedisServiceImpl implements HashRedisService {
+public class HashRedisServiceImpl<T> implements HashRedisService<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(HashRedisServiceImpl.class);
 
@@ -22,7 +22,7 @@ public class HashRedisServiceImpl implements HashRedisService {
     private HashRedisDao hashRedisDao;
 
     @Override
-    public boolean addHash(String key, String field, Object value) {
+    public <T> boolean addHash(String key, String field, T value) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash add(), key:{}", key);
@@ -31,7 +31,7 @@ public class HashRedisServiceImpl implements HashRedisService {
     }
 
     @Override
-    public boolean addHash(String key, Map<String, Object> filedValueMap) {
+    public <T> boolean addHash(String key, Map<String, T> filedValueMap) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash add(), key:{}", key);
@@ -40,11 +40,11 @@ public class HashRedisServiceImpl implements HashRedisService {
     }
 
     @Override
-    public Object getHashField(String key, String field) {
+    public <T> T getHashField(String key, String field) {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash getHashField(), key:{}, field:{}", key, field);
-        return hashRedisDao.getHashField(key, field);
+        return (T)hashRedisDao.getHashField(key, field);
     }
 
     @Override

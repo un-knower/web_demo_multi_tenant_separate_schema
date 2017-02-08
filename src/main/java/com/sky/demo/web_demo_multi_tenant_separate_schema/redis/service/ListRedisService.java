@@ -5,35 +5,35 @@ import java.util.List;
 /**
  * Created by user on 17/1/14.
  */
-public interface ListRedisService {
+public interface ListRedisService<T> {
 
     /**
      * 入栈
      * @param key
      * @param value
      */
-    public void push(final String key, final Object value);
+    public <T> void push(final String key, final T value);
 
     /**
      * 出栈
      * @param key
      * @return
      */
-    public Object pop(final String key);
+    public <T> T pop(final String key);
 
     /**
      * 入队
      * @param key
      * @param value
      */
-    public void enquene(final String key, final Object value);
+    public <T> void enquene(final String key, final T value);
 
     /**
      * 出对
      * @param key
      * @return
      */
-    public Object dequene(final String key);
+    public <T> T dequene(final String key);
 
 
     /**
@@ -50,7 +50,7 @@ public interface ListRedisService {
      * @param end
      * @return
      */
-    public List<Object> range(final String key, final long start, final int end);
+    public <T> List<T> range(final String key, final long start, final int end);
 
     /**
      * 移除
@@ -58,7 +58,7 @@ public interface ListRedisService {
      * @param i
      * @param value
      */
-    public void remove(final String key, final int i, final Object value);
+    public <T> void remove(final String key, final int i, final T value);
 
     /**
      * 检索
@@ -66,7 +66,7 @@ public interface ListRedisService {
      * @param index
      * @return
      */
-    public Object index(final String key, final long index);
+    public <T> T index(final String key, final long index);
 
     /**
      * 设置值
@@ -74,7 +74,7 @@ public interface ListRedisService {
      * @param index
      * @param value
      */
-    public void set(final String key, final long index, final Object value);
+    public <T> void set(final String key, final long index, final T value);
 
     /**
      * 裁剪
