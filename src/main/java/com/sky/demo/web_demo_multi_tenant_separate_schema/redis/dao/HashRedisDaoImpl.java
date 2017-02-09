@@ -23,24 +23,21 @@ public class HashRedisDaoImpl<T> extends AbstractRedisDao implements HashRedisDa
         return true;
     }
 
-    //TODO
     @Override
     public <T> boolean addHash(String key, String field, T value, long timeout) {
-        //TODO
-        boolean result = true;
-//                redisTemplate.execute(new RedisCallback<Boolean>() {
-//            @Override
-//            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
-//                //setNX 不存在则增加
-//                Boolean result = connection.hSetNX(key.getBytes(), field.getBytes(), String.valueOf(value).getBytes()).booleanValue();
-//
-//                if (result == true &&  timeout > 0) {
-//                    connection.expire(key.getBytes(), timeout);
-//                }
-//                return result;
-//
-//            }
-//        });
+        boolean result = (Boolean)redisTemplate.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                //setNX 不存在则增加
+                Boolean result = connection.hSetNX(key.getBytes(), field.getBytes(), String.valueOf(value).getBytes()).booleanValue();
+
+                if (result == true &&  timeout > 0) {
+                    connection.expire(key.getBytes(), timeout);
+                }
+                return result;
+
+            }
+        });
         return result;
     }
 
@@ -53,7 +50,16 @@ public class HashRedisDaoImpl<T> extends AbstractRedisDao implements HashRedisDa
 
     @Override
     public <T> boolean addHash(String key, Map<String, T> filedValueMap, long timeout) {
-        //TODO
+        boolean result = (Boolean)redisTemplate.execute(new RedisCallback<Boolean>() {
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                for (String hashKey : filedValueMap.keySet()) {
+                    connection.hSetNX(key.getBytes(), hashKey.getBytes(), String.valueOf(filedValueMap.get(hashKey)).getBytes());
+                    if (timeout > 0)
+                        connection.expire(key.getBytes(), timeout);
+                }
+                return true;
+            }
+        });
         return false;
     }
 
@@ -62,7 +68,7 @@ public class HashRedisDaoImpl<T> extends AbstractRedisDao implements HashRedisDa
         HashOperations<String, String, T> hashOperations = redisTemplate.opsForHash();
         T result = hashOperations.get(key, field);
 
-//        Object result = redisTemplate.execute(new RedisCallback<Object>() {
+//        T result = (T)redisTemplate.execute(new RedisCallback<Object>() {
 //            @Override
 //            public Object doInRedis(RedisConnection connection) throws DataAccessException {
 //                return connection.hGet(key.getBytes(), field.getBytes());
@@ -76,4 +82,11 @@ public class HashRedisDaoImpl<T> extends AbstractRedisDao implements HashRedisDa
         redisTemplate.opsForHash().delete(key, field.toArray());
         return true;
     }
+
+    @Override
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
+
+
 }

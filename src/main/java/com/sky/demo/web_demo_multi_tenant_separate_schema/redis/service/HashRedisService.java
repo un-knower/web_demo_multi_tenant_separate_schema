@@ -15,4 +15,6 @@ public interface HashRedisService<T> {
     public <T> T getHashField(final String key, final String field);
 
     public boolean deleteHashField(final String key, final List<String> field);
+
+
 }

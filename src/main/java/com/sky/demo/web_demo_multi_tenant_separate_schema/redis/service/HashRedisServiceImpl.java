@@ -26,8 +26,7 @@ public class HashRedisServiceImpl<T> implements HashRedisService<T> {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash add(), key:{}", key);
-        hashRedisDao.addHash(key, field, value);
-        return true;
+        return hashRedisDao.addHash(key, field, value);
     }
 
     @Override
@@ -35,8 +34,7 @@ public class HashRedisServiceImpl<T> implements HashRedisService<T> {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash add(), key:{}", key);
-        hashRedisDao.addHash(key, filedValueMap);
-        return true;
+        return hashRedisDao.addHash(key, filedValueMap);
     }
 
     @Override
@@ -52,7 +50,6 @@ public class HashRedisServiceImpl<T> implements HashRedisService<T> {
         Preconditions.checkNotNull(key, "key is null!");
 
         logger.info("redis hash deleteHashField(), key:{}, field:{}", key, field);
-        hashRedisDao.deleteHashField(key, field);
-        return true;
+        return hashRedisDao.deleteHashField(key, field);
     }
 }

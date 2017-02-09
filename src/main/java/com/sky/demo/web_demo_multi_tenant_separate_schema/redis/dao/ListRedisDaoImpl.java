@@ -69,4 +69,9 @@ public class ListRedisDaoImpl<T> extends AbstractRedisDao implements ListRedisDa
     public void trim(String key, long start, long end) {
         redisTemplate.opsForList().trim(key, start, end);
     }
+
+    @Override
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
 }

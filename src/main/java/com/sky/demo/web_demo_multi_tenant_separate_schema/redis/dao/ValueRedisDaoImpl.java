@@ -37,9 +37,9 @@ public class ValueRedisDaoImpl<T> extends AbstractRedisDao implements ValueRedis
     }
 
     @Override
-    public boolean delete(String key) {
+    public void delete(String key) {
         redisTemplate.delete(key);
-        return true;
     }
+
 
 }

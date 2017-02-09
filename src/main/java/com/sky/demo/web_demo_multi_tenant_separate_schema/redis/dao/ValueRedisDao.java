@@ -10,5 +10,5 @@ public interface ValueRedisDao<T> {
 
     public <T> T get(final String key);
 
-    public boolean delete(final String key);
+    public void delete(final String key);
 }

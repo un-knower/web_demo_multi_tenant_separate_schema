@@ -84,4 +84,6 @@ public interface ListRedisDao<T> {
      */
     public void trim(final String key, final long start, final long end);
 
+    public void delete(final String key);
+
 }
