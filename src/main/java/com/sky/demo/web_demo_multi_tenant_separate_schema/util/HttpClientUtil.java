@@ -518,11 +518,7 @@ public class HttpClientUtil {
                     .build();
 
 
-        } catch (NoSuchAlgorithmException e) {
-            logger.error("create ssl error", e);
-        } catch (KeyStoreException e) {
-            logger.error("create ssl error", e);
-        } catch (KeyManagementException e) {
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             logger.error("create ssl error", e);
         } catch (FileNotFoundException e) {
             logger.error("create ssl error", e);
