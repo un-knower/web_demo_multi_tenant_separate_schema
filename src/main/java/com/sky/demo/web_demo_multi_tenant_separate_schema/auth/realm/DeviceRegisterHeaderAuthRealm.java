@@ -50,14 +50,14 @@ public class DeviceRegisterHeaderAuthRealm extends AuthorizingRealm {
             String deviceToken = "sky";
             logger.debug("device token is {}", deviceToken);
 
-            String tokenCheck = SHAUtil.encrypt(timestamp + deviceToken);
+            String tokenCheck = SHAUtil.SHASumForString(timestamp + deviceToken);
             if (!tokenCheck.equals(tokenStr)) {
                 throw new AuthenticationException("Invalid token");
             }
 
             //注： 如果只传 timestamp 、默认的token 是无法识别租户信息的
 
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             logger.error("encrypt token error" + e);
             throw new AuthenticationException("encrypt token error");
         }

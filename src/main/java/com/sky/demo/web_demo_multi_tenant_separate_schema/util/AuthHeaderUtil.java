@@ -37,7 +37,7 @@ public class AuthHeaderUtil {
             authCode = timestamp + token;
         }
 
-        String enCodeBySha = SHAUtil.encrypt(authCode);       //SHA-256
+        String enCodeBySha = SHAUtil.SHASumForString(authCode);       //SHA-256
         System.out.println("SHA-256 : " + enCodeBySha);
         String code = null;
         if (StringUtils.isNotBlank(id)) {

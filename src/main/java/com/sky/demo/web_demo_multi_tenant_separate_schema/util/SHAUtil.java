@@ -1,8 +1,11 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,21 +17,31 @@ public class SHAUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(SHAUtil.class);
 
-    public static String encrypt(String str) throws UnsupportedEncodingException {
-        MessageDigest sha = null;
+    private static final String DEFAULT_SHA = "SHA-256";
+
+    public static String SHASumForString(String input) {
+        Preconditions.checkNotNull(input, "input is null!");
+        String result = null;
+
         try {
-            sha = MessageDigest.getInstance("SHA-256");
-        } catch (Exception e) {
-            logger.error("MessageDigest get error",e);
-            return "";
+            MessageDigest messageDigest = MessageDigest.getInstance(DEFAULT_SHA);
+
+            byte[] byteArray = input.getBytes("UTF-8");
+            byte[] resultByteArray = messageDigest.digest(byteArray);
+
+//            result = new String(resultByteArray, StandardCharsets.UTF_8);
+            result = byteArrayToString(resultByteArray);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            logger.error("sha string error",e);
         }
 
-        byte[] byteArray = str.getBytes("UTF-8");
-        byte[] md5Bytes = sha.digest(byteArray);
+        return result;
+    }
 
-        StringBuffer hexValue = new StringBuffer();
-        for (int i = 0; i < md5Bytes.length; i++) {
-            int val = ((int) md5Bytes[i]) & 0xff;
+    private static String byteArrayToString(byte[] bytes) {
+        StringBuilder hexValue = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            int val = ((int) bytes[i]) & 0xff;
             if (val < 16) {
                 hexValue.append("0");
             }
@@ -40,12 +53,7 @@ public class SHAUtil {
 
     public static void main(String[] args) {
         String str = "abc";
-        String encrypt = null;
-        try {
-            encrypt = SHAUtil.encrypt(str);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        String encrypt = SHAUtil.SHASumForString(str);
         System.out.println(encrypt);
     }
 }
