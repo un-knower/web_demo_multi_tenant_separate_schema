@@ -6,6 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.google.common.base.Preconditions;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,9 +54,29 @@ public class SHAUtil {
     }
 
 
+    public static String SHAForStrByDigestUtils(String input) {
+        Preconditions.checkNotNull(input, "input is null");
+
+        return DigestUtils.sha256Hex(input);
+    }
+
+    public static String SHAForStrByGuava(String input) {
+        Preconditions.checkNotNull(input, "input is null");
+
+        HashCode hashCode = Hashing.sha256().hashString(input, StandardCharsets.UTF_8);
+        return hashCode.toString();
+    }
+
+
     public static void main(String[] args) {
         String str = "abc";
         String encrypt = SHAUtil.SHASumForString(str);
+        System.out.println(encrypt);
+
+        encrypt = SHAForStrByDigestUtils(str);
+        System.out.println(encrypt);
+
+        encrypt = SHAForStrByGuava(str);
         System.out.println(encrypt);
     }
 }
