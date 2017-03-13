@@ -19,8 +19,10 @@ public interface SearchService {
     public SearchResponse search(String index, String type, QueryBuilder queryBuilder, SortBuilder sortBuilder, int from, int size);
 
     public SearchResponse search(SearchCondition searchCondition);
+    public long searchCount(SearchCondition searchCondition);
 
     public SearchResponse searchUsingScroll(SearchCondition searchCondition);
+    public long searchCountUsingScroll(SearchCondition searchCondition);
 
     public List<SearchHit> searchUsingScrollAllHits(SearchCondition searchCondition);
 

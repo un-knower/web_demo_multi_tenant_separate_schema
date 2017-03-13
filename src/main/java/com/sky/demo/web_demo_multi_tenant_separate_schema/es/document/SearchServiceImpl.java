@@ -77,6 +77,32 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    public long searchCount(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
+        SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
+        builder.setIndices((String[]) searchCondition.getIndexes().toArray())
+                .setTypes((String[]) searchCondition.getTypes().toArray())
+                .setQuery(searchCondition.getQueryBuilder())
+                .setFrom(searchCondition.getFrom())
+                .setSize(searchCondition.getSize())
+                .setSearchType(searchCondition.getSearchType())
+                .setExplain(searchCondition.getExplain());
+
+        if (CollectionUtils.isNotEmpty(searchCondition.getSortBuilders())) {
+            searchCondition.getSortBuilders().forEach(sortBuilder -> builder.addSort(sortBuilder));
+        }
+
+        SearchResponse response = builder.get();
+
+        long count = 0;
+        if (response != null) {
+            count = response.getHits().getTotalHits();
+        }
+        logger.info("search count result : {}", count);
+        return count;
+    }
+
+    @Override
     public SearchResponse searchUsingScroll(SearchCondition searchCondition) {
         Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
 
@@ -107,8 +133,46 @@ public class SearchServiceImpl implements SearchService {
 
         ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
                 .prepareClearScroll().get();
-        logger.info("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
+        logger.debug("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
         return response;
+    }
+
+    @Override
+    public long searchCountUsingScroll(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
+
+        SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
+        builder.setIndices((String[]) searchCondition.getIndexes().toArray())
+                .setTypes((String[]) searchCondition.getTypes().toArray())
+                .setScroll(new TimeValue(60000))
+                .setSize(searchCondition.getSize())          //max of SIZE hits will be returned for each scroll
+                .setExplain(searchCondition.getExplain());
+
+
+        SearchResponse response = builder.get();
+        String scrollId = response.getScrollId();
+        logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+        //Scroll until no hits are returned
+        long count = 0;
+        do {
+            count += response.getHits().getHits().length;
+
+            response = esClient.getTransportClient()
+                    .prepareSearchScroll(scrollId)
+                    .setScroll(new TimeValue(60000))
+                    .get();   //.execute().actionGet();
+
+            scrollId = response.getScrollId();  //maybe multi index
+            logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+
+        } while (response.getHits().getHits().length != 0);
+
+
+        ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
+                .prepareClearScroll().get();
+        logger.debug("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
+        logger.info("search count result : {}", count);
+        return count;
     }
 
     @Override
