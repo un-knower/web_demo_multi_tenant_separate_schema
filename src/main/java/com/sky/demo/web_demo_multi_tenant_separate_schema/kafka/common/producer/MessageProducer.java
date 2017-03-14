@@ -26,6 +26,9 @@ public class MessageProducer {
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //对于每个partition的batch buffer大小
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);      //等多久，如果buffer没满，比如设为1，即消息发送会多1ms的延迟，如果buffer没满
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432); //整个producer可以用于buffer的内存大小
+
+        props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 10 * 1024 * 1024); //max request size
+
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 

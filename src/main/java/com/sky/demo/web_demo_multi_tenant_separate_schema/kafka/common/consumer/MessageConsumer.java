@@ -35,6 +35,9 @@ public class MessageConsumer {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //latest, earliest, none
 
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 30000);       //consumer活性超时时间
+
+        props.put("fetch.message.max.bytes", 10 * 1024 * 1024);       //consumer fetch max size
+
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
