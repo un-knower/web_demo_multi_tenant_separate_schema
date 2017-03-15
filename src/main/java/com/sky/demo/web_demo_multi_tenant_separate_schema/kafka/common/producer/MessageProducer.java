@@ -17,25 +17,27 @@ public class MessageProducer {
     private static final Logger logger = LoggerFactory.getLogger(MessageProducer.class);
 
 
-    private static Properties props;
+    private static Properties properties = null;
+    private static Producer<String, String> producer = null;
     static {
-        props = new Properties();
-        props.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
-        props.put(ProducerConfig.ACKS_CONFIG, "all");       //ack方式，all，会等所有的commit，最慢的方式
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);        //失败是否重试，设置会有可能产生重复数据
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //对于每个partition的batch buffer大小
-        props.put(ProducerConfig.LINGER_MS_CONFIG, 1);      //等多久，如果buffer没满，比如设为1，即消息发送会多1ms的延迟，如果buffer没满
-        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432); //整个producer可以用于buffer的内存大小
+        try {
+            properties = new Properties();
+            properties.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
+            properties.put(ProducerConfig.ACKS_CONFIG, "all");       //ack方式，all，会等所有的commit，最慢的方式
+            properties.put(ProducerConfig.RETRIES_CONFIG, 0);        //失败是否重试，设置会有可能产生重复数据
+            properties.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384); //对于每个partition的batch buffer大小
+            properties.put(ProducerConfig.LINGER_MS_CONFIG, 1);      //等多久，如果buffer没满，比如设为1，即消息发送会多1ms的延迟，如果buffer没满
+            properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432); //整个producer可以用于buffer的内存大小
+            properties.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 10485760); //max request size
 
-        props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 10 * 1024 * 1024); //max request size
+            properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+            properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-
+            producer = new KafkaProducer<>(properties);     // if config error, this constructor will throw exception
+        } catch (Exception e) {
+            logger.error("init message producer error", e);
+        }
     }
-
-    private static Producer<String, String> producer = new KafkaProducer<>(props);
-
 
 
     //singleton

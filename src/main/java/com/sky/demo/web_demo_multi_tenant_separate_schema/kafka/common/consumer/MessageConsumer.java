@@ -21,29 +21,28 @@ public class MessageConsumer {
     private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
 
 
-    private static Properties props;
+    private static Properties properties = null;
     static {
-        props = new Properties();
-        props.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "test8");
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, AppConfig.getItem("kafka.enable.auto.commit")); //是否自动commit
-        props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);     //定时commit的周期
-        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);              //poll max size
+        properties = new Properties();
+        properties.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "test8");
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, AppConfig.getItem("kafka.enable.auto.commit")); //是否自动commit
+        properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, 1000);     //定时commit的周期
+        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);              //poll max size
 
         //设置使用最开始的offset偏移量为该group.id的earliest。如果不设置，则会是latest，即该topic最新一个消息的offset
         //如果采用latest，消费者只能得到其启动后，生产者生产的消息
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //latest, earliest, none
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //latest, earliest, none
 
-        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 30000);       //consumer活性超时时间
+        properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 30000);       //consumer活性超时时间
+        properties.put("fetch.message.max.bytes", 10485760);       //consumer fetch max size  10MB
 
-        props.put("fetch.message.max.bytes", 10 * 1024 * 1024);       //consumer fetch max size
-
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
     }
 
-    private KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(props);
+    private KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
 
     // singleton
