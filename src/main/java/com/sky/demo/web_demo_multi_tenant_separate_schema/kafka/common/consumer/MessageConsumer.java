@@ -35,20 +35,25 @@ public class MessageConsumer {
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); //latest, earliest, none
 
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 30000);       //consumer活性超时时间
-        properties.put("fetch.message.max.bytes", 10485760);       //consumer fetch max size  10MB
+
+        //fetch.message.max.bytes  is old consumer config(0.8)
+        //properties.put("fetch.message.max.bytes", 10485760);       //consumer fetch max size  10MB
+        properties.put(ConsumerConfig.MAX_PARTITION_FETCH_BYTES_CONFIG, 10485760);       //consumer fetch max size  10MB
 
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
 
     }
 
-    private KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
+    private KafkaConsumer<String, String> consumer;
 
 
     // singleton
     private static MessageConsumer INSTANCE = new MessageConsumer();
 
-    private MessageConsumer() {}
+    private MessageConsumer() {
+        this.consumer = new KafkaConsumer<String, String>(properties);
+    }
 
     public static MessageConsumer getInstance() {
         return INSTANCE;
