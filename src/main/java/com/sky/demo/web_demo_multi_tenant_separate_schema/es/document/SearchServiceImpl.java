@@ -32,7 +32,7 @@ public class SearchServiceImpl implements SearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchServiceImpl.class);
 
-    //@Resource
+    @Resource
     private EsClient esClient;
 
 

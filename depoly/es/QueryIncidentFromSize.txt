@@ -1,0 +1,48 @@
+
+SELECT * FROM myindex
+where name=''
+order by id desc
+limit 10,20
+
+
+
+from-size
+curl -XGET '127.0.0.1:9200/tenant1/network/_search?pretty' -d '
+{
+    "from": 10,
+    "size": 20,
+    "query": {
+        "match_all" : {
+        }
+    },
+    "sort": [
+        {
+            "id": {
+                "order": "desc"
+            }
+        }
+    ]
+}
+'
+
+scroll
+# from 不起作用
+curl -XGET 'localhost:9200/tenant1/network/_search?pretty&scroll=1m' -d '
+{
+    "from": 5,
+    "size": 10,
+    "query": {
+        "match_all" : {
+        }
+    },
+    "sort": [
+     {
+         "id": {
+             "order": "desc"
+         }
+     }
+    ]
+}
+'
+
+

@@ -10,7 +10,7 @@ limit 3
 
 
 
-
+curl -XGET 'localhost:9200/tenant1/network/_search' -d '
 {
 	"from": 0,
 	"size": 0,
@@ -137,14 +137,15 @@ limit 3
 		}
 	}
 }
+'
 
 
 
 
 
+Incident
 
-Incient
-
+curl -XGET 'localhost:9200/tenant1/network/_search' -d '
 {
     "from": 0,
     "size": 0,
@@ -191,12 +192,12 @@ Incient
         }
     }
 }
-
+'
 
 
 
 date
-
+curl -XGET 'localhost:9200/tenant1/network/_search' -d '
 {
     "from": 0,
     "size": 0,
@@ -241,7 +242,7 @@ date
         }
     }
 }
-
+'
 
 
 

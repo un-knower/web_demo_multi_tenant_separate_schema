@@ -17,7 +17,7 @@ import java.net.UnknownHostException;
 /**
  * Created by user on 16/11/28.
  */
-//@Component
+@Component
 public class EsClient {
 
     private static final Logger logger = LoggerFactory.getLogger(EsClient.class);
