@@ -155,7 +155,7 @@ public class QueryBuilderUtil {
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
 
         if (CollectionUtils.isNotEmpty(musts)) {
-            musts.forEach(must -> builder.must());
+            musts.forEach(must -> builder.must(must));
         }
         if (CollectionUtils.isNotEmpty(mustNots)) {
             mustNots.forEach(mustNot -> builder.mustNot(mustNot));

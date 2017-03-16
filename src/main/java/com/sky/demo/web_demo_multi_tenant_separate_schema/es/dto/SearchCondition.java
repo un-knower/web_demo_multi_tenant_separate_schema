@@ -1,5 +1,7 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -13,25 +15,32 @@ import java.util.List;
  */
 public class SearchCondition implements Serializable {
 
-    private List<String> indexes;
+    private List<String> indices;
     private List<String> types;
 
-    private QueryBuilder queryBuilder;
+    private List<QueryBuilder> queryBuilderMusts;      //for bool query must
+    private List<QueryBuilder> queryBuilderMustNots;   //for bool query must nots
+    private List<QueryBuilder> queryBuilderShoulds;    //for bool query shoulds
+    private List<QueryBuilder> queryBuilderFilters;    //for bool query filters
+
     private List<SortBuilder> sortBuilders;
     private List<AggregationBuilder> aggregationBuilders;
 
     private Integer from;
     private Integer size;
+    private List<String> fetchSourceIncludes;   //for includes
+    private List<String> storeFields;           //for stores
 
     private SearchType searchType;
     private Boolean explain;
 
-    public List<String> getIndexes() {
-        return indexes;
+
+    public List<String> getIndices() {
+        return indices;
     }
 
-    public void setIndexes(List<String> indexes) {
-        this.indexes = indexes;
+    public void setIndices(List<String> indices) {
+        this.indices = indices;
     }
 
     public List<String> getTypes() {
@@ -42,12 +51,36 @@ public class SearchCondition implements Serializable {
         this.types = types;
     }
 
-    public QueryBuilder getQueryBuilder() {
-        return queryBuilder;
+    public List<QueryBuilder> getQueryBuilderMusts() {
+        return queryBuilderMusts;
     }
 
-    public void setQueryBuilder(QueryBuilder queryBuilder) {
-        this.queryBuilder = queryBuilder;
+    public void setQueryBuilderMusts(List<QueryBuilder> queryBuilderMusts) {
+        this.queryBuilderMusts = queryBuilderMusts;
+    }
+
+    public List<QueryBuilder> getQueryBuilderMustNots() {
+        return queryBuilderMustNots;
+    }
+
+    public void setQueryBuilderMustNots(List<QueryBuilder> queryBuilderMustNots) {
+        this.queryBuilderMustNots = queryBuilderMustNots;
+    }
+
+    public List<QueryBuilder> getQueryBuilderShoulds() {
+        return queryBuilderShoulds;
+    }
+
+    public void setQueryBuilderShoulds(List<QueryBuilder> queryBuilderShoulds) {
+        this.queryBuilderShoulds = queryBuilderShoulds;
+    }
+
+    public List<QueryBuilder> getQueryBuilderFilters() {
+        return queryBuilderFilters;
+    }
+
+    public void setQueryBuilderFilters(List<QueryBuilder> queryBuilderFilters) {
+        this.queryBuilderFilters = queryBuilderFilters;
     }
 
     public List<SortBuilder> getSortBuilders() {
@@ -82,6 +115,22 @@ public class SearchCondition implements Serializable {
         this.size = size;
     }
 
+    public List<String> getFetchSourceIncludes() {
+        return fetchSourceIncludes;
+    }
+
+    public void setFetchSourceIncludes(List<String> fetchSourceIncludes) {
+        this.fetchSourceIncludes = fetchSourceIncludes;
+    }
+
+    public List<String> getStoreFields() {
+        return storeFields;
+    }
+
+    public void setStoreFields(List<String> storeFields) {
+        this.storeFields = storeFields;
+    }
+
     public SearchType getSearchType() {
         return searchType;
     }
@@ -100,16 +149,21 @@ public class SearchCondition implements Serializable {
 
     @Override
     public String toString() {
-        return "SearchCondition{" +
-                "indexes=" + indexes +
-                ", types=" + types +
-                ", queryBuilder=" + queryBuilder +
-                ", sortBuilders=" + sortBuilders +
-                ", aggregationBuilders=" + aggregationBuilders +
-                ", from=" + from +
-                ", size=" + size +
-                ", searchType=" + searchType +
-                ", explain=" + explain +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("indices", indices)
+                .add("types", types)
+                .add("queryBuilderMusts", queryBuilderMusts)
+                .add("queryBuilderMustNots", queryBuilderMustNots)
+                .add("queryBuilderShoulds", queryBuilderShoulds)
+                .add("queryBuilderFilters", queryBuilderFilters)
+                .add("sortBuilders", sortBuilders)
+                .add("aggregationBuilders", aggregationBuilders)
+                .add("from", from)
+                .add("size", size)
+                .add("fetchSourceIncludes", fetchSourceIncludes)
+                .add("storeFields", storeFields)
+                .add("searchType", searchType)
+                .add("explain", explain)
+                .toString();
     }
 }

@@ -1,4 +1,4 @@
-package com.sky.demo.web_demo_multi_tenant_separate_schema.es.document;
+package com.sky.demo.web_demo_multi_tenant_separate_schema.es.search;
 
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto.SearchCondition;
 import org.elasticsearch.action.explain.ExplainResponse;
@@ -21,10 +21,15 @@ public interface SearchService {
     public SearchResponse search(SearchCondition searchCondition);
     public long searchCount(SearchCondition searchCondition);
 
-    public SearchResponse searchUsingScroll(SearchCondition searchCondition);
-    public long searchCountUsingScroll(SearchCondition searchCondition);
+    /**
+     * 深度分页
+     * @param searchCondition
+     * @return
+     */
+    public SearchResponse searchByScroll(SearchCondition searchCondition);
+    public long searchCountByScroll(SearchCondition searchCondition);
 
-    public List<SearchHit> searchUsingScrollAllHits(SearchCondition searchCondition);
+    public List<SearchHit> searchByScrollAllHits(SearchCondition searchCondition);
 
     public MultiSearchResponse multiSearch(List<SearchRequestBuilder> searchRequestBuilders);
 

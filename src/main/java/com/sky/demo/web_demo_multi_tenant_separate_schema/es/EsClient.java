@@ -34,19 +34,25 @@ public class EsClient {
 
     @PostConstruct
     public void init() {
+        //ImmutableSettings has been removed since 2.0
+        try {
+            buildTransportClient();
+        } catch (Exception e) {
+            logger.error("build TransportClient error", e);
+        }
+    }
+
+    private void buildTransportClient() throws UnknownHostException {
         Settings settings = Settings.builder()
                 .put("cluster.name", AppConfig.getItem("es.cluster.name"))
                 .put("client.transport.sniff", true)
                 .build();
 
-        try {
-            transportClient = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(
-                            InetAddress.getByName(AppConfig.getItem("es.server.host")),
-                            Integer.parseInt(AppConfig.getItem("es.server.port"))));
-        } catch (UnknownHostException e) {
-            logger.error("build TransportClient error", e);
-        }
+
+        transportClient = new PreBuiltTransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress(
+                        InetAddress.getByName(AppConfig.getItem("es.server.host")),
+                        Integer.parseInt(AppConfig.getItem("es.server.port"))));
 
     }
 
@@ -58,7 +64,15 @@ public class EsClient {
     }
 
 
-
+    public TransportClient rebuild() {
+        logger.warn("connection is down.... try to rebuild connection");
+        try {
+            buildTransportClient();
+        } catch (Exception e) {
+            logger.error("rebuild TransportClient error", e);
+        }
+        return transportClient;
+    }
 
 
 

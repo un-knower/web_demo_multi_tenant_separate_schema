@@ -46,3 +46,23 @@ curl -XGET 'localhost:9200/tenant1/network/_search?pretty&scroll=1m' -d '
 '
 
 
+#结果不需要排序，则可以设置search_type=scan
+#注：2.1之后废除
+#search_type=count,scan
+curl -XGET 'localhost:9200/tenant1/network/_search?pretty&search_type=scan&scroll=1m' -d '
+{
+    "from": 5,
+    "size": 10,
+    "query": {
+        "match_all" : {
+        }
+    },
+    "sort": [
+     {
+         "id": {
+             "order": "desc"
+         }
+     }
+    ]
+}
+'
