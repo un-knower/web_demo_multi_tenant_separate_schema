@@ -35,7 +35,8 @@ public class SearchServiceImpl implements SearchService {
     @Resource
     private EsClient esClient;
 
-    private static final int MAX_SEARCH_SIZE = 10000;
+    private static final int MAX_SEARCH_SIZE = 5;
+    private static final int SCROLL_TIME_VALUE_MINUTES = 1;
 
 
     @Override
@@ -62,7 +63,9 @@ public class SearchServiceImpl implements SearchService {
     public SearchResponse search(SearchCondition searchCondition) {
         Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
         SearchResponse response = getSearchResponse(searchCondition);
+        long total = response.getHits().getTotalHits();
 
+        logger.info("search by scroll total size : {}, result:\n", total, response);
         return response;
     }
 
@@ -81,35 +84,28 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    public List<SearchHit> searchHits(SearchCondition searchCondition) {
+        Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
+        List<SearchHit> searchHits = Lists.newArrayList();
+        SearchResponse response = getSearchResponse(searchCondition);
+
+        if (response != null) {
+            SearchHit[] hits = response.getHits().getHits();
+            searchHits.addAll(Lists.newArrayList(hits));
+        }
+        logger.info("search hits size : {}, result : {}", searchHits.size(), searchHits);
+
+        return searchHits;
+    }
+
+    @Override
     public SearchResponse searchByScroll(SearchCondition searchCondition) {
         Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
 
-        TransportClient client = getTransportWithRetry();
-        SearchRequestBuilder builder = client.prepareSearch();
-        builder.setIndices(searchCondition.getIndices().stream().toArray(String[]::new))
-                .setTypes(searchCondition.getTypes().stream().toArray(String[]::new))
-                .setScroll(TimeValue.timeValueMinutes(1))
-                .setSize(searchCondition.getSize());          //注意啊！scroll里面的size是相对于每个分片来说的，所以实际返回的数量是：分片的数量*size
+        SearchResponse response = getSearchResponseByScroll(searchCondition);
+        long total = response.getHits().getTotalHits();
 
-        SearchResponse response = builder.get();
-        String scrollId = response.getScrollId();
-        logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
-        //Scroll until no hits are returned
-        do {
-
-            response = esClient.getTransportClient()
-                    .prepareSearchScroll(scrollId)
-                    .setScroll(TimeValue.timeValueMinutes(1))
-                    .get();   //.execute().actionGet();
-
-            scrollId = response.getScrollId();  //maybe multi index
-            logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
-
-        } while (response.getHits().getHits().length != 0);
-
-        ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
-                .prepareClearScroll().get();
-        logger.debug("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
+        logger.info("search by scroll total size : {}, result:\n", total, response);
         return response;
     }
 
@@ -122,22 +118,21 @@ public class SearchServiceImpl implements SearchService {
         builder.setIndices(searchCondition.getIndices().stream().toArray(String[]::new))
                 .setTypes(searchCondition.getTypes().stream().toArray(String[]::new))
                 .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)  //search_type=scan removed, replaced by sort by _doc
-                .setScroll(TimeValue.timeValueMinutes(1))
+                .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
                 .setSize(MAX_SEARCH_SIZE);          //max of SIZE hits will be returned for each scroll
 
         SearchResponse response = builder.get();
 
-        long total = response.getHits().getTotalHits();
-
+        long total = response.getHits().getTotalHits(); //第一次不返回数据
         String scrollId = response.getScrollId();
-        logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+        logger.info("total={}, scrollId={}, took time={} ms", total, scrollId, response.getTookInMillis());
         //Scroll until no hits are returned
         long count = 0;
         do {
             count += response.getHits().getHits().length;
 
             response = client.prepareSearchScroll(scrollId)
-                    .setScroll(TimeValue.timeValueMinutes(1))
+                    .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
                     .get();
 
             scrollId = response.getScrollId();  //maybe multi index
@@ -150,42 +145,89 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<SearchHit> searchByScrollAllHits(SearchCondition searchCondition) {
+    public List<SearchHit> searchHitsByScroll(SearchCondition searchCondition) {
         Preconditions.checkNotNull(searchCondition, "searchCondition is null!");
-
         List<SearchHit> result = Lists.newArrayList();
 
-        SearchRequestBuilder builder = esClient.getTransportClient().prepareSearch();
-        builder.setIndices((String[]) searchCondition.getIndices().toArray())
-                .setTypes((String[]) searchCondition.getTypes().toArray())
-                .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
-                .setScroll(TimeValue.timeValueMinutes(1))
-                .setQuery(QueryBuilders.termQuery("", ""))
-                .setExplain(searchCondition.getExplain());
-        SearchResponse response = builder.get();
-
+        SearchResponse response = getSearchResponseByScroll(searchCondition);
         String scrollId = response.getScrollId();
         logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
-        //Scroll until no hits are returned
-        do {
-            for (SearchHit hit : response.getHits().getHits()) {
-                //Handle the hit...
-                result.add(hit);
-            }
 
-            response = esClient.getTransportClient()
-                    .prepareSearchScroll(scrollId)
-                    .setScroll(TimeValue.timeValueMinutes(1))
-                    .get();   //.execute().actionGet();
+        int from = searchCondition.getFrom() == null ? 0 : searchCondition.getFrom();
+        int scrollSize = MAX_SEARCH_SIZE;
+        if (from > 0) {
+            scrollSize = from < MAX_SEARCH_SIZE ? from : MAX_SEARCH_SIZE;
+        }
 
+        int skipTime = from / scrollSize;
+        int lastOffset = from - scrollSize * skipTime;
+        int size = searchCondition.getSize();  // limit
+
+        logger.info("from={}, scrollSize={}, skipTime={}, lastOffset={}, size={}", from, scrollSize, skipTime, lastOffset, size);
+
+
+        long current = 0;
+        //skip
+        for (int i = 0; i < skipTime; i++) {
+            TransportClient client = getTransportWithRetry();
+            response = client.prepareSearchScroll(scrollId)
+                    .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
+                    .get();
+
+            int length = response.getHits().getHits().length;
             scrollId = response.getScrollId();
-            logger.info("scrollId={}, took time={} ms", scrollId, response.getTookInMillis());
+            current += length;
 
-        } while (response.getHits().getHits().length != 0);
+            logger.info("remain skipTime={}, length={}, current={}, scrollId={}, took time={} ms",
+                    skipTime, length, current, scrollId, response.getTookInMillis());
+        }
 
-        ClearScrollResponse clearScrollResponse = esClient.getTransportClient()
-                .prepareClearScroll().get();
-        logger.info("clear scroll , id={}, isSucceeded={}", scrollId, clearScrollResponse.isSucceeded());
+        //此时需要再查询一次
+//        if (scrollSize == MAX_SEARCH_SIZE && skipTime > 0) {
+//            TransportClient client = getTransportWithRetry();
+//            response = client.prepareSearchScroll(scrollId)
+//                    .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
+//                    .get();
+//
+//            int length = response.getHits().getHits().length;
+//            scrollId = response.getScrollId();
+//            logger.info("length={}, scrollId={}, took time={} ms", length, scrollId, response.getTookInMillis());
+//
+//        }
+
+        //Scroll until no hits are returned
+
+
+        int putIn = 0;
+        for (int i = lastOffset; i < (lastOffset + size); i++) {
+            if (i < response.getHits().getHits().length) {
+                result.add(response.getHits().getAt(i));
+                putIn++;
+            }
+        }
+        size -= putIn;
+
+        while (response.getHits().getHits().length > 0 && size > 0){
+            TransportClient client = getTransportWithRetry();
+            response = client.prepareSearchScroll(scrollId)
+                    .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
+                    .get();
+
+            int length = response.getHits().getHits().length;
+            scrollId = response.getScrollId();
+            logger.info("length={}, scrollId={}, took time={} ms", length, scrollId, response.getTookInMillis());
+
+
+            putIn = 0;
+            for (int i= 0; i < size; i++) {
+                if (i < response.getHits().getHits().length) {
+                    result.add(response.getHits().getAt(i));
+                    putIn++;
+                }
+            }
+            size -= putIn;
+        }
+
         return result;
     }
 
@@ -299,6 +341,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
 
+    //for agg, count
     private SearchResponse getSearchResponseByScroll(SearchCondition searchCondition) {
         SearchResponse searchResponse = null;
         TransportClient transportClient = getTransportWithRetry();  // connection may be close
@@ -306,9 +349,19 @@ public class SearchServiceImpl implements SearchService {
         SearchRequestBuilder searchRequestBuilder = transportClient.prepareSearch();
         searchRequestBuilder.setIndices(searchCondition.getIndices().stream().toArray(String[]::new))
                 .setTypes(searchCondition.getTypes().stream().toArray(String[]::new))
-                .setFrom(searchCondition.getFrom() == null ? 0 : searchCondition.getFrom());
+                .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES));
 
 //        searchRequestBuilder.searchAfter();
+
+        //from, size in scroll can not used directly
+        //searchRequestBuilder will use other size;
+        int from = searchCondition.getFrom() == null ? 0 : searchCondition.getFrom();
+        int scrollSize = MAX_SEARCH_SIZE;
+        if (from > 0) {
+            scrollSize = from < MAX_SEARCH_SIZE ? from : MAX_SEARCH_SIZE;
+        }
+        searchRequestBuilder.setSize(scrollSize);   //注意！scroll里面的size是相对于每个分片来说的，所以实际返回的数量是：分片的数量*size
+
 
         //searchType
         if (searchCondition.getSearchType() != null) {
@@ -317,11 +370,6 @@ public class SearchServiceImpl implements SearchService {
         //explain
         if (searchCondition.getExplain() != null) {
             searchRequestBuilder.setExplain(searchCondition.getExplain());
-        }
-
-        //size  (size of each shard)
-        if (searchCondition.getSize() != null) {
-            searchRequestBuilder.setSize(searchCondition.getSize());
         }
 
         //fetch source
@@ -363,6 +411,9 @@ public class SearchServiceImpl implements SearchService {
         if (CollectionUtils.isNotEmpty(searchCondition.getSortBuilders())) {
             logger.debug("sort builders:{}", searchCondition.getSortBuilders());
             searchCondition.getSortBuilders().forEach(sortBuilder -> searchRequestBuilder.addSort(sortBuilder));
+        } else {
+            //不关心顺序，可以通过 sort _doc
+            searchRequestBuilder.addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC);
         }
 
         //agg

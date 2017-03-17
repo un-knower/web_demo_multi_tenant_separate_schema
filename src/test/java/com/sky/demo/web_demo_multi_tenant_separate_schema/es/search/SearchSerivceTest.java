@@ -5,6 +5,7 @@ import com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto.SearchCondition
 import com.sky.demo.web_demo_multi_tenant_separate_schema.es.util.QueryBuilderUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -52,8 +53,8 @@ public class SearchSerivceTest {
         //aggregation
 
         //from size
-        condition.setFrom(5);
-        condition.setSize(2);
+        condition.setFrom(10);
+        condition.setSize(6);
 
         //searchType
         //explain
@@ -98,7 +99,20 @@ public class SearchSerivceTest {
         System.out.println("count: " + count);
     }
 
+    @Test
+    public void test_searchHis() {
+        List<SearchHit> searchHits = searchService.searchHits(condition);
 
+        System.out.println("Hit size:" + searchHits.size());
+        searchHits.forEach(
+                hit -> {
+                    System.out.println(hit.getSourceAsString());
+                }
+        );
+    }
+
+
+    //=====================scroll api=========================
     @Test
     public void test_searchByScroll() {
         SearchResponse searchResponse = searchService.searchByScroll(condition);
@@ -118,7 +132,17 @@ public class SearchSerivceTest {
         System.out.println("count: " + count);
     }
 
+    @Test
+    public void test_searchHitsByScroll() {
+        List<SearchHit> searchHits = searchService.searchHitsByScroll(condition);
 
+        System.out.println("Hit size:" + searchHits.size());
+        searchHits.forEach(
+                hit -> {
+                    System.out.println(hit.getSourceAsString());
+                }
+        );
+    }
 
 
 

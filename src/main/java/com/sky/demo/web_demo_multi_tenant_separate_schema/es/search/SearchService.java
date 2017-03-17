@@ -18,18 +18,26 @@ public interface SearchService {
 
     public SearchResponse search(String index, String type, QueryBuilder queryBuilder, SortBuilder sortBuilder, int from, int size);
 
+    /**
+     * 普通分页
+     * for agg
+     * @param searchCondition
+     * @return
+     */
     public SearchResponse search(SearchCondition searchCondition);
     public long searchCount(SearchCondition searchCondition);
+    public List<SearchHit> searchHits(SearchCondition searchCondition);
 
     /**
      * 深度分页
+     * for agg
      * @param searchCondition
      * @return
      */
     public SearchResponse searchByScroll(SearchCondition searchCondition);
     public long searchCountByScroll(SearchCondition searchCondition);
+    public List<SearchHit> searchHitsByScroll(SearchCondition searchCondition);
 
-    public List<SearchHit> searchByScrollAllHits(SearchCondition searchCondition);
 
     public MultiSearchResponse multiSearch(List<SearchRequestBuilder> searchRequestBuilders);
 

@@ -26,8 +26,8 @@ public class SearchCondition implements Serializable {
     private List<SortBuilder> sortBuilders;
     private List<AggregationBuilder> aggregationBuilders;
 
-    private Integer from;
-    private Integer size;
+    private Integer from;                   //分页偏移
+    private Integer size;                   //分页大小
     private List<String> fetchSourceIncludes;   //for includes
     private List<String> storeFields;           //for stores
 
