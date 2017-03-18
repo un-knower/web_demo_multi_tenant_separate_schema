@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import sun.nio.ch.sctp.*;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -37,14 +36,15 @@ public class DispatcherManager {
 
 
     @Value("${dispatch.switch}")
-    private boolean dispatchSwitch;
+    private String dispatchSwitch;
 
 
 
     @PostConstruct
     public void init() {
-        logger.info("init dispatcher manager....  dispatchSwitch={}", dispatchSwitch);
-        if (dispatchSwitch) {
+        logger.info("init dispatcher manager....  dispatchSwitch={}", Boolean.valueOf(dispatchSwitch));
+        if (Boolean.valueOf(dispatchSwitch)) {
+
             //init Executors
             incidentDispatchExecutor = Executors.newSingleThreadExecutor();
             evidenceDispatchExecutor = Executors.newSingleThreadExecutor();
@@ -60,7 +60,7 @@ public class DispatcherManager {
             //start all
             incidentDispatchExecutor.submit(incidentDispatcher);
             evidenceDispatchExecutor.submit(evidenceDispatcher);
-            multiDispatchers.forEach( dispatcher -> multiDispatchExecutor.submit(dispatcher));
+            multiDispatchers.forEach(dispatcher -> multiDispatchExecutor.submit(dispatcher));
 
         }
     }
@@ -69,7 +69,8 @@ public class DispatcherManager {
     @PreDestroy
     public void destroy() {
         logger.info("destroy dispatcher manager....");
-        if (dispatchSwitch) {
+        if (Boolean.valueOf(dispatchSwitch)) {
+
             terminateAllDispatchers();
             shutdownAllExecutors();
         }
