@@ -117,8 +117,8 @@ public class SearchServiceImpl implements SearchService {
         SearchRequestBuilder builder = client.prepareSearch();
         builder.setIndices(searchCondition.getIndices().stream().toArray(String[]::new))
                 .setTypes(searchCondition.getTypes().stream().toArray(String[]::new))
-                .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)  //search_type=scan removed, replaced by sort by _doc
                 .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
+                .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)  //search_type=scan removed, replaced by sort by _doc
                 .setSize(MAX_SEARCH_SIZE);          //max of SIZE hits will be returned for each scroll
 
         SearchResponse response = builder.get();
@@ -182,22 +182,8 @@ public class SearchServiceImpl implements SearchService {
                     skipTime, length, current, scrollId, response.getTookInMillis());
         }
 
-        //此时需要再查询一次
-//        if (scrollSize == MAX_SEARCH_SIZE && skipTime > 0) {
-//            TransportClient client = getTransportWithRetry();
-//            response = client.prepareSearchScroll(scrollId)
-//                    .setScroll(TimeValue.timeValueMinutes(SCROLL_TIME_VALUE_MINUTES))
-//                    .get();
-//
-//            int length = response.getHits().getHits().length;
-//            scrollId = response.getScrollId();
-//            logger.info("length={}, scrollId={}, took time={} ms", length, scrollId, response.getTookInMillis());
-//
-//        }
 
-        //Scroll until no hits are returned
-
-
+        //从lastOffset 开始读取数据
         int putIn = 0;
         for (int i = lastOffset; i < (lastOffset + size); i++) {
             if (i < response.getHits().getHits().length) {
@@ -207,6 +193,7 @@ public class SearchServiceImpl implements SearchService {
         }
         size -= putIn;
 
+        //继续拉取数据
         while (response.getHits().getHits().length > 0 && size > 0){
             TransportClient client = getTransportWithRetry();
             response = client.prepareSearchScroll(scrollId)
@@ -276,6 +263,12 @@ public class SearchServiceImpl implements SearchService {
                 .setTypes(searchCondition.getTypes().stream().toArray(String[]::new))
                 .setFrom(searchCondition.getFrom() == null ? 0 : searchCondition.getFrom());
 
+
+        //size  (size of each shard)
+        if (searchCondition.getSize() != null) {
+            searchRequestBuilder.setSize(searchCondition.getSize());
+        }
+
         //searchType
         if (searchCondition.getSearchType() != null) {
             searchRequestBuilder.setSearchType(searchCondition.getSearchType());
@@ -283,11 +276,6 @@ public class SearchServiceImpl implements SearchService {
         //explain
         if (searchCondition.getExplain() != null) {
             searchRequestBuilder.setExplain(searchCondition.getExplain());
-        }
-
-        //size  (size of each shard)
-        if (searchCondition.getSize() != null) {
-            searchRequestBuilder.setSize(searchCondition.getSize());
         }
 
         //fetch source
