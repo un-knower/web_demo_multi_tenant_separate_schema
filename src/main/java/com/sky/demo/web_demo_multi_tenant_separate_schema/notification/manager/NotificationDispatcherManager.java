@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Created by user on 17/3/18.
@@ -62,16 +59,18 @@ public class NotificationDispatcherManager {
                             })
             );
 
-            endpointExecutor = MoreExecutors.listeningDecorator(
-                    new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
-                            new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),
-                            new RejectedExecutionHandler() {
-                                @Override
-                                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                                    logger.error("endpoint notification reject dispatch...");
-                                }
-                            })
-            );
+//            endpointExecutor = MoreExecutors.listeningDecorator(
+//                    new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
+//                            new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),
+//                            new RejectedExecutionHandler() {
+//                                @Override
+//                                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+//                                    logger.error("endpoint notification reject dispatch...");
+//                                }
+//                            })
+//            );
+
+            endpointExecutor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(CORE_POOL_SIZE));
 
             //init dispatcher
             networkNotificationDispatcher = getNetworkNotificationDispatcher();
@@ -79,7 +78,9 @@ public class NotificationDispatcherManager {
 
             //start
             networkExecutor.submit(networkNotificationDispatcher);
-            endpointExecutor.submit(endpointNotificationDispatcher);
+            for (int i = 0;i < CORE_POOL_SIZE;i++) {
+                endpointExecutor.submit(endpointNotificationDispatcher);
+            }
 
         }
 
