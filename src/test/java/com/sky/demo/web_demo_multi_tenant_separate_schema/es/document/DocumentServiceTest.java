@@ -7,6 +7,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.script.ScriptType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -77,7 +78,7 @@ public class DocumentServiceTest {
         String type = "animal";
         String id = "AViqdNQRJz8I0zRWn2BQ";
 
-        Script script = new Script("", ScriptService.ScriptType.INLINE, null, null);
+        Script script = new Script(ScriptType.INLINE, "", "", null);
 
         UpdateResponse response = documentService.updateDocumentByScript(index, type, id, script);
         System.out.println(response);
