@@ -28,7 +28,14 @@ ImportSQL()
 CreateSchema()
 {
     read -p "input tenant schema name:" SCHEMA_NAME
-    echo -e "\n ==> create schema : ${SCHEMA_NAME} ..."
+
+    if [ ${#SCHEMA_NAME} -le 3 ]; then
+        echo "input tenant schema name too short, need more than 3 character"
+        return 1;
+    #elif []; then
+
+    else
+        echo -e "\n ==> create schema : ${SCHEMA_NAME} ..."
 #   psql -h ${DB_IP} -p ${DB_PORT} -U ${DB_USERNAME} -d ${DB_NAME} < ${FILE}
 #   sudo -u postgres psql -f ${INIT_SQL}  | grep "ERROR" | tee -a /tmp/${DATE}.log
 #CREATE_SCHEMA=`psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} dbname=${DB_NAME}" << EOF
@@ -40,8 +47,8 @@ psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} db
     \set ON_ERROR_STOP TRUE
     create schema ${SCHEMA_NAME};
 EOF
-
-
+        retrun 0;
+    fi
 
 }
 
