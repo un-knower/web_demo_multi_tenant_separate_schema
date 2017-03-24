@@ -15,7 +15,7 @@
         <springframework.version>4.2.6.RELEASE</springframework.version>
         <sl4j.version>1.7.21</sl4j.version>
         <logback.version>1.1.8</logback.version>
-        <jackson.version>2.8.1</jackson.version>
+        <jackson.version>2.8.6</jackson.version>
         <shiro.version>1.3.2</shiro.version>
         <kafka.version>0.10.0.0</kafka.version>
         <elasticsearch.version>5.2.2</elasticsearch.version>
@@ -343,6 +343,21 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-smile</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-cbor</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
             <!--<dependency>-->
                 <!--<groupId>org.codehaus.jackson</groupId>-->
@@ -645,6 +660,18 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-smile</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
