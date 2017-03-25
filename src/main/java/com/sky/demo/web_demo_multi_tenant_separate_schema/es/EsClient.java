@@ -46,6 +46,8 @@ public class EsClient {
         Settings settings = Settings.builder()
                 .put("cluster.name", AppConfig.getItem("es.cluster.name"))
                 .put("client.transport.sniff", true)
+                .put("client.transport.ping_timeout", "10s")        //The time to wait for a ping response from a node. Defaults to 5s.
+                .put("client.transport.nodes_sampler_interval", "10s")      //How often to sample / ping the nodes listed and connected. Defaults to 5s.
                 .build();
 
 
