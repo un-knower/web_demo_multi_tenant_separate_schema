@@ -32,9 +32,7 @@ CreateSchema()
     if [ ${#SCHEMA_NAME} -le 3 ]; then
         echo "input tenant schema name too short, need more than 3 character"
         return 1;
-    #elif []; then
-
-    else
+    elif echo "${SCHEMA_NAME}" | grep -q '^[a-z][a-z0-9]\+$' ; then
         echo -e "\n ==> create schema : ${SCHEMA_NAME} ..."
 #   psql -h ${DB_IP} -p ${DB_PORT} -U ${DB_USERNAME} -d ${DB_NAME} < ${FILE}
 #   sudo -u postgres psql -f ${INIT_SQL}  | grep "ERROR" | tee -a /tmp/${DATE}.log
@@ -47,7 +45,10 @@ psql "host=${DB_IP} port=${DB_PORT} user=${DB_USERNAME} password=${DB_PASSWD} db
     \set ON_ERROR_STOP TRUE
     create schema ${SCHEMA_NAME};
 EOF
-        retrun 0;
+        return 0;
+    else
+        echo "invalid input!"
+        return 1;
     fi
 
 }
@@ -67,5 +68,5 @@ if [ $? -eq 0 ]; then
 else
     echo -e "input schema error!! \n\n"
 fi
-echo -e "import sql completed...\n\n"
+echo -e "\nimport sql completed...\n\n"
 
