@@ -281,9 +281,9 @@ public class SearchServiceImpl implements SearchService {
         //fetch source includes
         if (CollectionUtils.isNotEmpty(searchCondition.getFetchSourceIncludes())
                 || CollectionUtils.isNotEmpty(searchCondition.getFetchSourceExcludes())) {
-            searchRequestBuilder.setFetchSource(
-                    searchCondition.getFetchSourceIncludes().stream().toArray(String[]::new),
-                    searchCondition.getFetchSourceExcludes().stream().toArray(String[]::new));
+            String[] includes = CollectionUtils.isNotEmpty(searchCondition.getFetchSourceIncludes()) ? searchCondition.getFetchSourceIncludes().stream().toArray(String[]::new) : null;
+            String[] excludes = CollectionUtils.isNotEmpty(searchCondition.getFetchSourceExcludes()) ? searchCondition.getFetchSourceExcludes().stream().toArray(String[]::new) : null;
+            searchRequestBuilder.setFetchSource(includes, excludes);
         }
 
         //store field
