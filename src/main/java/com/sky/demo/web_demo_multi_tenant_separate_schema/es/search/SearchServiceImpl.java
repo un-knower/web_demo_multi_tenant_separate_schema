@@ -278,10 +278,12 @@ public class SearchServiceImpl implements SearchService {
             searchRequestBuilder.setExplain(searchCondition.getExplain());
         }
 
-        //fetch source
-        if (CollectionUtils.isNotEmpty(searchCondition.getFetchSourceIncludes())) {
-            searchRequestBuilder.setFetchSource(searchCondition.getFetchSourceIncludes()
-                    .stream().toArray(String[]::new), null);
+        //fetch source includes
+        if (CollectionUtils.isNotEmpty(searchCondition.getFetchSourceIncludes())
+                || CollectionUtils.isNotEmpty(searchCondition.getFetchSourceExcludes())) {
+            searchRequestBuilder.setFetchSource(
+                    searchCondition.getFetchSourceIncludes().stream().toArray(String[]::new),
+                    searchCondition.getFetchSourceExcludes().stream().toArray(String[]::new));
         }
 
         //store field

@@ -1,7 +1,6 @@
 package com.sky.demo.web_demo_multi_tenant_separate_schema.es.dto;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
@@ -29,6 +28,7 @@ public class SearchCondition implements Serializable {
     private Integer from;                   //分页偏移
     private Integer size;                   //分页大小
     private List<String> fetchSourceIncludes;   //for includes
+    private List<String> fetchSourceExcludes;   //for excludes
     private List<String> storeFields;           //for stores
 
     private SearchType searchType;
@@ -123,6 +123,14 @@ public class SearchCondition implements Serializable {
         this.fetchSourceIncludes = fetchSourceIncludes;
     }
 
+    public List<String> getFetchSourceExcludes() {
+        return fetchSourceExcludes;
+    }
+
+    public void setFetchSourceExcludes(List<String> fetchSourceExcludes) {
+        this.fetchSourceExcludes = fetchSourceExcludes;
+    }
+
     public List<String> getStoreFields() {
         return storeFields;
     }
@@ -147,6 +155,7 @@ public class SearchCondition implements Serializable {
         this.explain = explain;
     }
 
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -161,6 +170,7 @@ public class SearchCondition implements Serializable {
                 .add("from", from)
                 .add("size", size)
                 .add("fetchSourceIncludes", fetchSourceIncludes)
+                .add("fetchSourceExcludes", fetchSourceExcludes)
                 .add("storeFields", storeFields)
                 .add("searchType", searchType)
                 .add("explain", explain)
