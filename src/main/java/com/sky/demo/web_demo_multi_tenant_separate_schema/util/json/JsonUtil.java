@@ -2,7 +2,9 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util.json;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,9 @@ public class JsonUtil {
     static {
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+//        objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //属性为NULL不序列化, 注意：只对VO起作用，Map List不起作用
     }
 
     /**
