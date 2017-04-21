@@ -129,6 +129,10 @@ public class RestTemplateWrapper {
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
+
+        //set timeout
+        requestFactory.setConnectTimeout(20 * 1000);
+        requestFactory.setReadTimeout(60 * 1000);
         return requestFactory;
     }
 
