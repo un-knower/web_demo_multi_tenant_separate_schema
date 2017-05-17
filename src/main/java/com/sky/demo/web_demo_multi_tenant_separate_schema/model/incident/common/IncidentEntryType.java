@@ -2,7 +2,7 @@
  * Decompiled with CFR 0_118.
  *
  * Could not load the following classes:
- *  com.skyguard.sps.base.common.locale.Localizer
+ *  com.sky.sps.base.common.locale.Localizer
  */
 package com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.common;
 

@@ -3,10 +3,10 @@
  * 
  * Could not load the following classes:
  *  com.google.common.collect.Lists
- *  com.skyguard.sps.base.common.echarts.base.EchartsForm
- *  com.skyguard.sps.dlp.common.incident.dm.discovery.DiscoveryIncident
- *  com.skyguard.sps.dlp.common.report.dm.IncidentType
- *  com.skyguard.sps.dlp.common.report.dm.dto.DiscoveryIncidentOption
+ *  com.sky.sps.base.common.echarts.base.EchartsForm
+ *  com.sky.sps.dlp.common.incident.dm.discovery.DiscoveryIncident
+ *  com.sky.sps.dlp.common.report.dm.IncidentType
+ *  com.sky.sps.dlp.common.report.dm.dto.DiscoveryIncidentOption
  *  org.apache.commons.lang.StringUtils
  *  org.springframework.jdbc.core.BeanPropertyRowMapper
  *  org.springframework.jdbc.core.RowMapper

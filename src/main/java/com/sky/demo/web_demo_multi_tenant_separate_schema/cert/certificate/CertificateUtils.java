@@ -290,7 +290,7 @@ public class CertificateUtils {
             X509Certificate intermediateCertificate = CertificateUtils.loadCertificateFromFile(Paths.get("D:\\certtest\\seven\\dlp-intermediate.crt", new String[0]));
             long beginDate = System.currentTimeMillis();
             long endDate = beginDate + DEFAULT_EXPIRATION;
-            X509Name subjectName = new X509Name("C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=endpoint.skyguardmis.com");
+            X509Name subjectName = new X509Name("C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=endpoint.skymis.com");
             X509Name issuerDN = new X509Name(intermediateCertificate.getSubjectDN().getName());
             KeyPair endpointKeyPair = CertificateUtils.genearateDefaultKeyPair("RSA", "BC", 2048);
             CertificateInfo certificateInfo = new CertificateInfo.Builder().beginDate(new Date(beginDate)).endDate(new Date(endDate)).issuerDN(issuerDN).subjectName(subjectName).keyPair(endpointKeyPair).signatureAlgorithm("SHA256WithRSAEncryption").build();

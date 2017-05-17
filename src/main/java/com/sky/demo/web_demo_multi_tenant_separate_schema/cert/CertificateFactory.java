@@ -2,10 +2,10 @@
  * Decompiled with CFR 0_118.
  * 
  * Could not load the following classes:
- *  com.skyguard.sps.base.common.util.DBHostInfo
- *  com.skyguard.sps.base.utils.certificate.CertificateInfo
- *  com.skyguard.sps.base.utils.certificate.CertificateInfo$Builder
- *  com.skyguard.sps.base.utils.certificate.CertificateUtils
+ *  com.sky.sps.base.common.util.DBHostInfo
+ *  com.sky.sps.base.utils.certificate.CertificateInfo
+ *  com.sky.sps.base.utils.certificate.CertificateInfo$Builder
+ *  com.sky.sps.base.utils.certificate.CertificateUtils
  *  org.bouncycastle.asn1.x509.X509Name
  *  org.springframework.stereotype.Component
  */
@@ -25,9 +25,9 @@ import java.util.Date;
 @Component
 public class CertificateFactory {
 
-    public static final String WEB_SERVICE_SUBJECT = "C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=webService.skyguardmis.com";
-    public static final String WEB_MANAGER_SUBJECT = "C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=webManager.skyguardmis.com";
-    public static final String THRIFT_SUBJECT = "C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=thrift.skyguardmis.com";
+    public static final String WEB_SERVICE_SUBJECT = "C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=webService.skymis.com";
+    public static final String WEB_MANAGER_SUBJECT = "C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=webManager.skymis.com";
+    public static final String THRIFT_SUBJECT = "C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=thrift.skymis.com";
 
     public CertificateInfo instanceCertificateInfo(X509Name subject) throws Exception {
         X509Certificate intermediateCertificate = CertificateUtils.loadCertificateFromFile(

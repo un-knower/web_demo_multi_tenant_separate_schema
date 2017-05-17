@@ -3,7 +3,7 @@
  * 
  * Could not load the following classes:
  *  com.google.common.base.Preconditions
- *  com.skyguard.sps.dlp.common.report.dm.IncidentType
+ *  com.sky.sps.dlp.common.report.dm.IncidentType
  *  org.slf4j.Logger
  *  org.slf4j.LoggerFactory
  *  org.springframework.stereotype.Service

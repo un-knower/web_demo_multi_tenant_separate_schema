@@ -4,7 +4,7 @@
  * Could not load the following classes:
  *  com.google.common.collect.ImmutableList
  *  com.google.common.collect.Lists
- *  com.skyguard.sps.base.common.locale.Localizer
+ *  com.sky.sps.base.common.locale.Localizer
  */
 package com.sky.demo.web_demo_multi_tenant_separate_schema.model.incident.discovery;
 

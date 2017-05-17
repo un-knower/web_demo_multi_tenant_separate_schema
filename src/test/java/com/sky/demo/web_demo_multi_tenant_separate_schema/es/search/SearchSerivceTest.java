@@ -22,7 +22,8 @@ import java.util.List;
  * Created by user on 17/3/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:spring/spring-service.xml"})
+//@ContextConfiguration(locations={"classpath:spring/spring-service.xml"})
+@ContextConfiguration(classes={SearchServiceConfig.class})
 public class SearchSerivceTest {
 
     @Resource

@@ -4,7 +4,7 @@
  * Could not load the following classes:
  *  com.google.common.base.Objects
  *  com.google.common.base.Objects$ToStringHelper
- *  com.skyguard.sps.base.common.base.RelationColumn
+ *  com.sky.sps.base.common.base.RelationColumn
  */
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto;
 

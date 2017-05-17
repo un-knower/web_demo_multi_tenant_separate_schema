@@ -6,13 +6,13 @@
  *  com.google.common.base.Splitter
  *  com.google.common.collect.Lists
  *  com.google.common.collect.Maps
- *  com.skyguard.sps.base.common.directory.dm.entry.BaseDirectoryEntry
- *  com.skyguard.sps.base.common.directory.dm.entry.DirectoryGroup
- *  com.skyguard.sps.base.common.directory.dm.entry.DirectoryUser
- *  com.skyguard.sps.base.server.directory.service.DirectoryLocalEntryService
- *  com.skyguard.sps.base.server.util.SpringUtil
- *  com.skyguard.sps.base.utils.common.SqlUtil
- *  com.skyguard.sps.base.utils.context.UserContext
+ *  com.sky.sps.base.common.directory.dm.entry.BaseDirectoryEntry
+ *  com.sky.sps.base.common.directory.dm.entry.DirectoryGroup
+ *  com.sky.sps.base.common.directory.dm.entry.DirectoryUser
+ *  com.sky.sps.base.server.directory.service.DirectoryLocalEntryService
+ *  com.sky.sps.base.server.util.SpringUtil
+ *  com.sky.sps.base.utils.common.SqlUtil
+ *  com.sky.sps.base.utils.context.UserContext
  *  org.apache.commons.collections.CollectionUtils
  *  org.apache.commons.lang.StringUtils
  *  org.joda.time.DateTime

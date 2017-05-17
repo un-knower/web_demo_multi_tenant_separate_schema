@@ -4,13 +4,13 @@
  * Could not load the following classes:
  *  com.google.common.base.Joiner
  *  com.google.common.base.Preconditions
- *  com.skyguard.sps.base.common.echarts.base.EchartsForm
- *  com.skyguard.sps.base.utils.json.JsonUtils
- *  com.skyguard.sps.dlp.common.endpoint.dm.constant.EndpointTerminalType
- *  com.skyguard.sps.dlp.common.report.dm.dto.IncidentDashboardType
- *  com.skyguard.sps.dlp.common.report.dm.dto.IncidentReportFilterForm
- *  com.skyguard.sps.dlp.common.report.dm.dto.IncidentReportForm
- *  com.skyguard.sps.dlp.common.report.util.IncidentReportFilterUtil
+ *  com.sky.sps.base.common.echarts.base.EchartsForm
+ *  com.sky.sps.base.utils.json.JsonUtils
+ *  com.sky.sps.dlp.common.endpoint.dm.constant.EndpointTerminalType
+ *  com.sky.sps.dlp.common.report.dm.dto.IncidentDashboardType
+ *  com.sky.sps.dlp.common.report.dm.dto.IncidentReportFilterForm
+ *  com.sky.sps.dlp.common.report.dm.dto.IncidentReportForm
+ *  com.sky.sps.dlp.common.report.util.IncidentReportFilterUtil
  *  org.slf4j.Logger
  *  org.slf4j.LoggerFactory
  *  org.springframework.stereotype.Service

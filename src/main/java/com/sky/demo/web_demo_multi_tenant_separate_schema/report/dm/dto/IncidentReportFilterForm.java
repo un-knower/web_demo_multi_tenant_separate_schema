@@ -4,8 +4,8 @@
  * Could not load the following classes:
  *  com.google.common.base.Objects
  *  com.google.common.base.Objects$ToStringHelper
- *  com.skyguard.sps.base.common.base.Relation
- *  com.skyguard.sps.base.utils.json.JsonUtils
+ *  com.sky.sps.base.common.base.Relation
+ *  com.sky.sps.base.utils.json.JsonUtils
  */
 package com.sky.demo.web_demo_multi_tenant_separate_schema.report.dm.dto;
 

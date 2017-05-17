@@ -2,9 +2,9 @@
  * Decompiled with CFR 0_118.
  * 
  * Could not load the following classes:
- *  com.skyguard.sps.base.common.util.DBHostInfo
- *  com.skyguard.sps.base.utils.certificate.CertificateInfo
- *  com.skyguard.sps.base.utils.certificate.CertificateUtils
+ *  com.sky.sps.base.common.util.DBHostInfo
+ *  com.sky.sps.base.utils.certificate.CertificateInfo
+ *  com.sky.sps.base.utils.certificate.CertificateUtils
  *  org.apache.commons.io.FileUtils
  *  org.apache.commons.io.IOUtils
  *  org.bouncycastle.asn1.DEREncodable
@@ -59,7 +59,7 @@ public class CertificateManager {
         try {
             if (!Files.exists(Paths.get(AppConfig.getItem("webManager.cert.path"), new String[0]), new LinkOption[0])) {
                 CertificateInfo certificateInfo = this.certificateFactory.instanceCertificateInfo(
-                        new X509Name("C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=webManager.skyguardmis.com"));
+                        new X509Name("C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=webManager.skymis.com"));
 
                 X509V3CertificateGenerator gen = CertificateUtils.createCertGenerator(certificateInfo);
                 gen.addExtension(X509Extensions.BasicConstraints, false, new BasicConstraints(false));
@@ -79,7 +79,7 @@ public class CertificateManager {
         try {
             if (!Files.exists(Paths.get(AppConfig.getItem("webService.cert.path"), new String[0]), new LinkOption[0])) {
                 CertificateInfo certificateInfo = this.certificateFactory.instanceCertificateInfo(
-                        new X509Name("C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=webService.skyguardmis.com"));
+                        new X509Name("C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=webService.skymis.com"));
                 X509V3CertificateGenerator gen = CertificateUtils.createCertGenerator(certificateInfo);
                 gen.addExtension(X509Extensions.BasicConstraints, false, new BasicConstraints(false));
                 X509Certificate newCert = gen.generate(certificateInfo.getIntermidateKeyPair().getPrivate(), "BC");
@@ -98,7 +98,7 @@ public class CertificateManager {
         try {
             if (!Files.exists(Paths.get(AppConfig.getItem("keystore.file"), new String[0]), new LinkOption[0])) {
                 CertificateInfo certificateInfo = certificateFactory.instanceCertificateInfo(
-                        new X509Name("C=CH, ST=BJ, L=BJ, O=skyguard, OU=skyguard, CN=thrift.skyguardmis.com"));
+                        new X509Name("C=CH, ST=BJ, L=BJ, O=sky, OU=sky, CN=thrift.skymis.com"));
                 X509V3CertificateGenerator gen = CertificateUtils.createCertGenerator(certificateInfo);
                 gen.addExtension(X509Extensions.BasicConstraints, false, new BasicConstraints(false));
 

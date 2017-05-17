@@ -4,9 +4,9 @@
  * Could not load the following classes:
  *  com.google.common.base.Objects
  *  com.google.common.base.Objects$ToStringHelper
- *  com.skyguard.sps.base.common.base.Relation
- *  com.skyguard.sps.base.common.base.RelationColumn
- *  com.skyguard.sps.base.common.echarts.series.SeriesType
+ *  com.sky.sps.base.common.base.Relation
+ *  com.sky.sps.base.common.base.RelationColumn
+ *  com.sky.sps.base.common.echarts.series.SeriesType
  *  javax.validation.constraints.Size
  *  org.hibernate.validator.constraints.NotBlank
  */
