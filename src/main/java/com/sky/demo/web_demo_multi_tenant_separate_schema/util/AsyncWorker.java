@@ -2,6 +2,7 @@ package com.sky.demo.web_demo_multi_tenant_separate_schema.util;
 
 import java.util.concurrent.*;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,12 @@ public class AsyncWorker {
     private static final int MAX_QUEUE_SIZE = 100;
     private static final int KEEP_ALIVE_TIME = 60;
 
-    private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
+    private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+            CORE_POOL_SIZE,
+            MAX_POOL_SIZE,
+            KEEP_ALIVE_TIME, TimeUnit.SECONDS,
             new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE),
+            new ThreadFactoryBuilder().setNameFormat("AsyncWorkerThread-%d").build(),
             new RejectedExecutionHandler() {
                 @Override
                 public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
