@@ -24,7 +24,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations={"classpath:spring/spring-service.xml"})
 @ContextConfiguration(classes={SearchServiceConfig.class})
-public class SearchSerivceTest {
+public class SearchServiceTest {
 
     @Resource
     private SearchService searchService;
