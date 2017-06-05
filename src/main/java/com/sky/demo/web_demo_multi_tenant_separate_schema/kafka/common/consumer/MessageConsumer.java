@@ -27,11 +27,13 @@ public class MessageConsumer {
         properties.put("bootstrap.servers", AppConfig.getItem("kafka.bootstrap.servers"));
         properties.put("group.id", "test8");
         properties.put("enable.auto.commit", AppConfig.getItem("kafka.enable.auto.commit")); //是否自动commit
-        properties.put("auto.commit.interval.ms", 1000);     //定时commit的周期
+        properties.put("auto.commit.interval.ms", 1000);     //定时commit的周期，将offset值刷新到zk节点
         properties.put("max.poll.records", 10);              //poll max size
 
-        //设置使用最开始的offset偏移量为该group.id的earliest。如果不设置，则会是latest，即该topic最新一个消息的offset
-        //如果采用latest，消费者只能得到其启动后，生产者生产的消息
+        //当Kafka中没有初始偏移或如果当前偏移在服务器上不再存在时（例如，因为该数据已被删除）
+        //earliest： 避免出现 offset 丢失的时候，跳过需要消费的数据的情况
+        //latest：默认值，消费者只能得到其启动后，生产者生产的消息
+        //none：如果没有为消费者组找到以前的偏移，则向消费者抛出异常
         properties.put("auto.offset.reset", "earliest");     //latest, earliest, none
 
         properties.put("session.timeout.ms", 30000);         //consumer活性超时时间
